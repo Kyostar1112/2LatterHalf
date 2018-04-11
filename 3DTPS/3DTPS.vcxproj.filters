@@ -1,0 +1,238 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="ソース ファイル">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="リソース ファイル">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="シェーダー ファイル">
+      <UniqueIdentifier>{f32f7ddd-e2aa-4111-89bf-09523bc1e5b7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SuperClass">
+      <UniqueIdentifier>{5b4f2c24-371f-4a46-a89d-606ebc0e6452}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sprite">
+      <UniqueIdentifier>{724ce3eb-6481-4b36-8be4-cf845fffa909}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SceneMgr">
+      <UniqueIdentifier>{282f78e9-7fe1-4dec-972e-f4b4c3df2740}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="SourceCode\DebugText.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\DxInput.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Main.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Particle.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Enemy.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Common.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Sphere.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Player.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Num.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\File.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Explosin.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Effects.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\PShot.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Ray.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Resource.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Sound.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\DX9Mesh.cpp">
+      <Filter>SuperClass</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\D3DXSKINMESH.cpp">
+      <Filter>SuperClass</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Sprite.cpp">
+      <Filter>Sprite</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Sprite2D.cpp">
+      <Filter>Sprite</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Sp2DMgrPushButn.cpp">
+      <Filter>Sprite</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Character.cpp">
+      <Filter>SuperClass</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\CharacterSkin.cpp">
+      <Filter>SuperClass</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\OverScene.cpp">
+      <Filter>SceneMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\GameObject.cpp">
+      <Filter>SuperClass</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\ClearScene.cpp">
+      <Filter>SceneMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\StageScene.cpp">
+      <Filter>SceneMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\TitleScene.cpp">
+      <Filter>SceneMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\ResultScene.cpp">
+      <Filter>SceneMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\BaseScene.cpp">
+      <Filter>SuperClass</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="SourceCode\Common.h">
+      <Filter>ソース ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Main.h">
+      <Filter>ソース ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Explosin.h">
+      <Filter>ソース ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\DebugText.h">
+      <Filter>ソース ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\DxInput.h">
+      <Filter>ソース ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Effects.h">
+      <Filter>ソース ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Enemy.h">
+      <Filter>ソース ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\File.h">
+      <Filter>ソース ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Global.h">
+      <Filter>ソース ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\MyMacro.h">
+      <Filter>ソース ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Ray.h">
+      <Filter>ソース ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Num.h">
+      <Filter>ソース ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Particle.h">
+      <Filter>ソース ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Player.h">
+      <Filter>ソース ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\PShot.h">
+      <Filter>ソース ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Resource.h">
+      <Filter>ソース ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Sound.h">
+      <Filter>ソース ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Sphere.h">
+      <Filter>ソース ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\DX9Mesh.h">
+      <Filter>SuperClass</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\D3DXSKINMESH.h">
+      <Filter>SuperClass</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Sprite.h">
+      <Filter>Sprite</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Sprite2D.h">
+      <Filter>Sprite</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Sp2DMgrPushButn.h">
+      <Filter>Sprite</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Character.h">
+      <Filter>SuperClass</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\CharacterSkin.h">
+      <Filter>SuperClass</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\GameObject.h">
+      <Filter>SuperClass</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\ClearScene.h">
+      <Filter>SceneMgr</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\StageScene.h">
+      <Filter>SceneMgr</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\TitleScene.h">
+      <Filter>SceneMgr</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\OverScene.h">
+      <Filter>SceneMgr</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\ResultScene.h">
+      <Filter>SceneMgr</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\BaseScene.h">
+      <Filter>SuperClass</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="Shader\DebugText.hlsl">
+      <Filter>シェーダー ファイル</Filter>
+    </FxCompile>
+    <FxCompile Include="Shader\MeshSkin.hlsl">
+      <Filter>シェーダー ファイル</Filter>
+    </FxCompile>
+    <FxCompile Include="Shader\PointSprite.hlsl">
+      <Filter>シェーダー ファイル</Filter>
+    </FxCompile>
+    <FxCompile Include="Shader\Simple.hlsl">
+      <Filter>シェーダー ファイル</Filter>
+    </FxCompile>
+    <FxCompile Include="Shader\Sprite2D.hlsl">
+      <Filter>シェーダー ファイル</Filter>
+    </FxCompile>
+    <FxCompile Include="Shader\Ray.hlsl">
+      <Filter>シェーダー ファイル</Filter>
+    </FxCompile>
+    <FxCompile Include="Shader\Mesh.hlsl">
+      <Filter>シェーダー ファイル</Filter>
+    </FxCompile>
+  </ItemGroup>
+</Project>
