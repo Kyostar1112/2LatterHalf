@@ -62,7 +62,7 @@ HRESULT clsDX9Mesh::InitDx9(HWND hWnd)
 
 	//「Direct3D」ｵﾌﾞｼﾞｪｸﾄの作成.
 	m_pD3d = Direct3DCreate9(D3D_SDK_VERSION);
-	if (m_pD3d == NULL){
+	if (m_pD3d == NULL) {
 		MessageBox(NULL,
 			"Dx9ｵﾌﾞｼﾞｪｸﾄ作成失敗", "InitDx9", MB_OK);
 		return E_FAIL;
@@ -195,9 +195,9 @@ HRESULT clsDX9Mesh::LoadXMesh(LPSTR fileName)
 			char path[64] = "";
 			int  path_count = lstrlen(fileName);
 
-			for (int k = path_count; k >= 0; k--){
-				if (fileName[k] == '\\'){
-					for (int j = 0; j <= k; j++){
+			for (int k = path_count; k >= 0; k--) {
+				if (fileName[k] == '\\') {
+					for (int j = 0; j <= k; j++) {
 						path[j] = fileName[j];
 					}
 					path[k + 1] = '\0';
@@ -215,11 +215,11 @@ HRESULT clsDX9Mesh::LoadXMesh(LPSTR fileName)
 			//ﾃｸｽﾁｬ作成.
 			if (FAILED(
 				D3DX11CreateShaderResourceViewFromFileA(
-				m_pDevice11,
-				m_pMaterials[i].szTextureName,//ﾃｸｽﾁｬﾌｧｲﾙ名.
-				NULL, NULL,
-				&m_pMaterials[i].pTexture,//(out)ﾃｸｽﾁｬｵﾌﾞｼﾞｪｸﾄ.
-				NULL)))
+					m_pDevice11,
+					m_pMaterials[i].szTextureName,//ﾃｸｽﾁｬﾌｧｲﾙ名.
+					NULL, NULL,
+					&m_pMaterials[i].pTexture,//(out)ﾃｸｽﾁｬｵﾌﾞｼﾞｪｸﾄ.
+					NULL)))
 			{
 				MessageBox(NULL, m_pMaterials[i].szTextureName,
 					"ﾃｸｽﾁｬ作成失敗", MB_OK);
@@ -278,7 +278,7 @@ HRESULT clsDX9Mesh::LoadXMesh(LPSTR fileName)
 
 		if (FAILED(
 			m_pDevice11->CreateBuffer(
-			&bd, &InitData, &m_ppIndexBuffer[i])))
+				&bd, &InitData, &m_ppIndexBuffer[i])))
 		{
 			MessageBox(NULL, "ｲﾝﾃﾞｯｸｽﾊﾞｯﾌｧ作成失敗",
 				"LoadXMesh()", MB_OK);
@@ -320,14 +320,14 @@ HRESULT clsDX9Mesh::LoadXMesh(LPSTR fileName)
 		InitData.pSysMem = pVertex;
 
 		//ﾃｸｽﾁｬ座標がﾏｲﾅｽ対策.
-		if (m_bTexture){
+		if (m_bTexture) {
 			//※ﾃｸｽﾁｬがあれば処理する.
 			//頂点数分繰り返し.
-			for (int i = 0; i < m_pMesh->GetNumVertices(); i++){
-				if (pVertex[i].vTex.x < 0.0f){
+			for (int i = 0; i < m_pMesh->GetNumVertices(); i++) {
+				if (pVertex[i].vTex.x < 0.0f) {
 					pVertex[i].vTex.x += 1.0f;
 				}
-				if (pVertex[i].vTex.y < 0.0f){
+				if (pVertex[i].vTex.y < 0.0f) {
 					pVertex[i].vTex.y += 1.0f;
 				}
 			}
@@ -365,7 +365,7 @@ HRESULT clsDX9Mesh::LoadXMesh(LPSTR fileName)
 	//ｻﾝﾌﾟﾗｰ作成.
 	if (FAILED(
 		m_pDevice11->CreateSamplerState(
-		&SamDesc, &m_pSampleLinear)))//(out)ｻﾝﾌﾟﾗｰ.
+			&SamDesc, &m_pSampleLinear)))//(out)ｻﾝﾌﾟﾗｰ.
 	{
 		MessageBox(NULL, "ｻﾝﾌﾟﾗ作成失敗", "ｴﾗｰ", MB_OK);
 		return E_FAIL;
@@ -390,21 +390,21 @@ HRESULT clsDX9Mesh::InitShader()
 #endif//#ifdef _DEBUG
 
 	//HLSLからﾊﾞｰﾃｯｸｽｼｪｰﾀﾞのﾌﾞﾛﾌﾞを作成.
-	if (m_bTexture){
+	if (m_bTexture) {
 		if (FAILED(
 			D3DX11CompileFromFile(
-			SHADER_NAME, NULL, NULL, "VS_Main", "vs_5_0",
-			uCompileFlag, 0, NULL, &pCompiledShader, &pErrors, NULL)))
+				SHADER_NAME, NULL, NULL, "VS_Main", "vs_5_0",
+				uCompileFlag, 0, NULL, &pCompiledShader, &pErrors, NULL)))
 		{
 			MessageBox(NULL, "hlsl読込失敗(VS_Main)", "ｴﾗｰ", MB_OK);
 			return E_FAIL;
 		}
 	}
-	else{
+	else {
 		if (FAILED(
 			D3DX11CompileFromFile(
-			SHADER_NAME, NULL, NULL, "VS_NoTex", "vs_5_0",
-			uCompileFlag, 0, NULL, &pCompiledShader, &pErrors, NULL)))
+				SHADER_NAME, NULL, NULL, "VS_NoTex", "vs_5_0",
+				uCompileFlag, 0, NULL, &pCompiledShader, &pErrors, NULL)))
 		{
 			MessageBox(NULL, "hlsl読込失敗(VS_NoTex)", "ｴﾗｰ", MB_OK);
 			return E_FAIL;
@@ -415,10 +415,10 @@ HRESULT clsDX9Mesh::InitShader()
 	//上記で作成したﾌﾞﾛﾌﾞから「ﾊﾞｰﾃｯｸｽｼｪｰﾀﾞ」を作成.
 	if (FAILED(
 		m_pDevice11->CreateVertexShader(
-		pCompiledShader->GetBufferPointer(),
-		pCompiledShader->GetBufferSize(),
-		NULL,
-		&m_pVertexShader)))//(out)ﾊﾞｰﾃｯｸｽｼｪｰﾀﾞ.
+			pCompiledShader->GetBufferPointer(),
+			pCompiledShader->GetBufferSize(),
+			NULL,
+			&m_pVertexShader)))//(out)ﾊﾞｰﾃｯｸｽｼｪｰﾀﾞ.
 	{
 		MessageBox(NULL, "vs作成失敗", "ｴﾗｰ", MB_OK);
 		return E_FAIL;
@@ -455,11 +455,11 @@ HRESULT clsDX9Mesh::InitShader()
 	//頂点ｲﾝﾌﾟｯﾄﾚｲｱｳﾄの作成.
 	if (FAILED(
 		m_pDevice11->CreateInputLayout(
-		layout,
-		numElements,
-		pCompiledShader->GetBufferPointer(),
-		pCompiledShader->GetBufferSize(),
-		&m_pVertexLayout)))//(out)頂点ｲﾝﾌﾟｯﾄﾚｲｱｳﾄ.
+			layout,
+			numElements,
+			pCompiledShader->GetBufferPointer(),
+			pCompiledShader->GetBufferSize(),
+			&m_pVertexLayout)))//(out)頂点ｲﾝﾌﾟｯﾄﾚｲｱｳﾄ.
 	{
 		MessageBox(NULL, "頂点ｲﾝﾌﾟｯﾄﾚｲｱｳﾄ作成失敗", "ｴﾗｰ", MB_OK);
 		return E_FAIL;
@@ -467,21 +467,21 @@ HRESULT clsDX9Mesh::InitShader()
 	SAFE_RELEASE(pCompiledShader);
 
 	//HLSLからﾋﾟｸｾﾙｼｪｰﾀﾞのﾌﾞﾛﾌﾞを作成.
-	if (m_bTexture){
+	if (m_bTexture) {
 		if (FAILED(
 			D3DX11CompileFromFile(
-			SHADER_NAME, NULL, NULL, "PS_Main", "ps_5_0",
-			uCompileFlag, 0, NULL, &pCompiledShader, &pErrors, NULL)))
+				SHADER_NAME, NULL, NULL, "PS_Main", "ps_5_0",
+				uCompileFlag, 0, NULL, &pCompiledShader, &pErrors, NULL)))
 		{
 			MessageBox(NULL, "hlsl読込失敗(PS_Main)", "ｴﾗｰ", MB_OK);
 			return E_FAIL;
 		}
 	}
-	else{
+	else {
 		if (FAILED(
 			D3DX11CompileFromFile(
-			SHADER_NAME, NULL, NULL, "PS_NoTex", "ps_5_0",
-			uCompileFlag, 0, NULL, &pCompiledShader, &pErrors, NULL)))
+				SHADER_NAME, NULL, NULL, "PS_NoTex", "ps_5_0",
+				uCompileFlag, 0, NULL, &pCompiledShader, &pErrors, NULL)))
 		{
 			MessageBox(NULL, "hlsl読込失敗(PS_NoTex)", "ｴﾗｰ", MB_OK);
 			return E_FAIL;
@@ -492,10 +492,10 @@ HRESULT clsDX9Mesh::InitShader()
 	//上記で作成したﾌﾞﾛﾌﾞから「ﾋﾟｸｾﾙｼｪｰﾀﾞ」を作成.
 	if (FAILED(
 		m_pDevice11->CreatePixelShader(
-		pCompiledShader->GetBufferPointer(),
-		pCompiledShader->GetBufferSize(),
-		NULL,
-		&m_pPixelShader)))//(out)ﾋﾟｸｾﾙｼｪｰﾀﾞ.
+			pCompiledShader->GetBufferPointer(),
+			pCompiledShader->GetBufferSize(),
+			NULL,
+			&m_pPixelShader)))//(out)ﾋﾟｸｾﾙｼｪｰﾀﾞ.
 	{
 		MessageBox(NULL, "ps作成失敗", "ｴﾗｰ", MB_OK);
 		return E_FAIL;
@@ -516,9 +516,9 @@ HRESULT clsDX9Mesh::InitShader()
 	//ｺﾝｽﾀﾝﾄﾊﾞｯﾌｧ作成.
 	if (FAILED(
 		m_pDevice11->CreateBuffer(
-		&cb,
-		NULL,
-		&m_pConstantBuffer0)))
+			&cb,
+			NULL,
+			&m_pConstantBuffer0)))
 	{
 		MessageBox(NULL, "ｺﾝｽﾀﾝﾄﾊﾞｯﾌｧ作成失敗", "ｴﾗｰ", MB_OK);
 		return E_FAIL;
@@ -535,9 +535,9 @@ HRESULT clsDX9Mesh::InitShader()
 	//ｺﾝｽﾀﾝﾄﾊﾞｯﾌｧ作成.
 	if (FAILED(
 		m_pDevice11->CreateBuffer(
-		&cb,
-		NULL,
-		&m_pConstantBuffer1)))
+			&cb,
+			NULL,
+			&m_pConstantBuffer1)))
 	{
 		MessageBox(NULL, "ｺﾝｽﾀﾝﾄﾊﾞｯﾌｧ作成失敗", "ｴﾗｰ", MB_OK);
 		return E_FAIL;
@@ -577,14 +577,14 @@ void clsDX9Mesh::Render(D3DXMATRIX &mView, D3DXMATRIX &mProj,
 		&mYaw);	//Y軸回転行列.
 
 	//方向によって進行させる値を設定.
-	switch (m_enDir){
-		case enDirection_Foward:	//前進.
-			//向かう方向×進める値(0.1f)
-			m_vPos += vecAxisZ * 0.1f;
-			break;
-		case enDirection_Backward:	//後退.
-			m_vPos -= vecAxisZ * 0.1f;
-			break;
+	switch (m_enDir) {
+	case enDirection_Foward:	//前進.
+		//向かう方向×進める値(0.1f)
+		m_vPos += vecAxisZ * 0.1f;
+		break;
+	case enDirection_Backward:	//後退.
+		m_vPos -= vecAxisZ * 0.1f;
+		break;
 	}
 	m_enDir = enDirection_Stop;	//停止.
 	//============================================
@@ -608,9 +608,9 @@ void clsDX9Mesh::Render(D3DXMATRIX &mView, D3DXMATRIX &mProj,
 	//ﾊﾞｯﾌｧ内のﾃﾞｰﾀの書き換え開始時にMap.
 	if (SUCCEEDED(
 		m_pDeviceContext11->Map(
-		m_pConstantBuffer0, 0,
-		D3D11_MAP_WRITE_DISCARD,
-		0, &pData)))
+			m_pConstantBuffer0, 0,
+			D3D11_MAP_WRITE_DISCARD,
+			0, &pData)))
 	{
 		MESHSHADER_CONSTANT_BUFFER_ZERO cb;//ｺﾝｽﾀﾝﾄﾊﾞｯﾌｧ.
 
@@ -672,7 +672,7 @@ void clsDX9Mesh::Render(D3DXMATRIX &mView, D3DXMATRIX &mProj,
 	for (DWORD i = 0; i < m_NumAttr; i++)
 	{
 		//使用されていないﾏﾃﾘｱﾙ対策.
-		if (m_pMaterials[m_AttrID[i]].dwNumFace == 0){
+		if (m_pMaterials[m_AttrID[i]].dwNumFace == 0) {
 			continue;
 		}
 		//ｲﾝﾃﾞｯｸｽﾊﾞｯﾌｧをｾｯﾄ.
@@ -682,8 +682,8 @@ void clsDX9Mesh::Render(D3DXMATRIX &mView, D3DXMATRIX &mProj,
 		D3D11_MAPPED_SUBRESOURCE pData1;
 		if (SUCCEEDED(
 			m_pDeviceContext11->Map(
-			m_pConstantBuffer1, 0, D3D11_MAP_WRITE_DISCARD,
-			0, &pData1)))
+				m_pConstantBuffer1, 0, D3D11_MAP_WRITE_DISCARD,
+				0, &pData1)))
 		{
 			MESHSHADER_CONSTANT_BUFFER1 cb;
 			//ｱﾝﾋﾞｴﾝﾄ,ﾃﾞｨﾌｭｰｽﾞ,ｽﾍﾟｷｭﾗをｼｪｰﾀﾞに渡す.
@@ -705,14 +705,14 @@ void clsDX9Mesh::Render(D3DXMATRIX &mView, D3DXMATRIX &mProj,
 			1, 1, &m_pConstantBuffer1);
 
 		//ﾃｸｽﾁｬをｼｪｰﾀﾞに渡す.
-		if (m_pMaterials[m_AttrID[i]].pTexture){
+		if (m_pMaterials[m_AttrID[i]].pTexture) {
 			//ﾃｸｽﾁｬがあるとき.
 			m_pDeviceContext11->PSSetSamplers(
 				0, 1, &m_pSampleLinear);
 			m_pDeviceContext11->PSSetShaderResources(
 				0, 1, &m_pMaterials[m_AttrID[i]].pTexture);
 		}
-		else{
+		else {
 			//ﾃｸｽﾁｬがないとき.
 			ID3D11ShaderResourceView* Nothing[1] = { 0 };
 			m_pDeviceContext11->PSSetShaderResources(
@@ -763,7 +763,7 @@ void clsDX9Mesh::SetBlend(bool flg)
 	//ﾌﾞﾚﾝﾄﾞｽﾃｰﾄ作成.
 	if (FAILED(
 		m_pDevice11->CreateBlendState(
-		&blendDesc, &m_pBlendState)))
+			&blendDesc, &m_pBlendState)))
 	{
 		MessageBox(NULL, "ﾌﾞﾚﾝﾄﾞｽﾃｰﾄ作成失敗", "ｴﾗｰ", MB_OK);
 	}
@@ -803,14 +803,14 @@ D3DXVECTOR3 clsDX9Mesh::UpdatePos(D3DXVECTOR3 oldPos)
 	Pos = oldPos;
 
 	//方向によって進行させる値を設定.
-	switch (m_enDir){
-		case enDirection_Foward:	//前進.
-			//向かう方向×進める値(0.1f)
-			Pos += m_vecAxisZ * 0.1f;
-			break;
-		case enDirection_Backward:	//後退.
-			Pos -= m_vecAxisZ * 0.1f;
-			break;
+	switch (m_enDir) {
+	case enDirection_Foward:	//前進.
+		//向かう方向×進める値(0.1f)
+		Pos += m_vecAxisZ * 0.1f;
+		break;
+	case enDirection_Backward:	//後退.
+		Pos -= m_vecAxisZ * 0.1f;
+		break;
 	}
 	m_enDir = enDirection_Stop;	//停止.
 	m_fYaw = 0.0f;

@@ -28,15 +28,15 @@ public:
 		D3DXVECTOR4 vColor = D3DXVECTOR4(1.0f, 1.0f, 1.0f, 1.0f),
 		bool alphaFlg = false);
 
-	clsDX9Mesh* GetPointor(){
+	clsDX9Mesh* GetPointor() {
 		return m_pModel;
 	}
 
-	LPD3DXMESH GetMesh(){
+	LPD3DXMESH GetMesh() {
 		return m_pModel->m_pMesh;
 	}
 
-	LPD3DXMESH GetMeshForRay(){
+	LPD3DXMESH GetMeshForRay() {
 		return m_pModel->m_pMeshForRay;
 	}
 

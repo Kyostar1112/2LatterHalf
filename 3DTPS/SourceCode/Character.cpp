@@ -48,14 +48,14 @@ void clsDX9Mesh::UpdatePos()
 		&mYaw);	//Y軸回転行列.
 
 	//方向によって進行させる値を設定.
-	switch (m_enDir){
-		case enDirection_Foward:	//前進.
-			//向かう方向×進める値(0.1f)
-			m_vPos += vecAxisZ * 0.1f;
-			break;
-		case enDirection_Backward:	//後退.
-			m_vPos -= vecAxisZ * 0.1f;
-			break;
+	switch (m_enDir) {
+	case enDirection_Foward:	//前進.
+		//向かう方向×進める値(0.1f)
+		m_vPos += vecAxisZ * 0.1f;
+		break;
+	case enDirection_Backward:	//後退.
+		m_vPos -= vecAxisZ * 0.1f;
+		break;
 	}
 	m_enDir = enDirection_Stop;	//停止.
 	//============================================
@@ -77,7 +77,7 @@ void clsCharacter::Render(D3DXMATRIX &mView, D3DXMATRIX &mProj,
 //座標や回転値を更新する.
 void clsCharacter::Update()
 {
-	if (m_pModel == NULL){
+	if (m_pModel == NULL) {
 		return;
 	}
 
@@ -110,23 +110,23 @@ void clsCharacter::UpdatePos()
 	//方向によって進行させる値を設定.
 	switch (m_enDir)
 	{
-		case enDirection_Stop:
-			break;
-		case enDirection_Foward:	//前進.
-			//向かう方向*進める値(0.1f).
-			m_vPos += vecAxisZ * 0.15f * m_fSpd;
-			//		m_fWalkLangth -= 0.15f * m_fSpd;
-			break;
-		case enDirection_Backward:	//後退.
-			m_vPos -= vecAxisZ * 0.15f * m_fSpd;
-			//		m_fWalkLangth -= 0.15f * m_fSpd;
-			break;
-			//case enDirection_LeftTurn:
-			//	break;
-			//case enDirection_RightTurn:
-			//	break;
-			//default:
-			//	break;
+	case enDirection_Stop:
+		break;
+	case enDirection_Foward:	//前進.
+		//向かう方向*進める値(0.1f).
+		m_vPos += vecAxisZ * 0.15f * m_fSpd;
+		//		m_fWalkLangth -= 0.15f * m_fSpd;
+		break;
+	case enDirection_Backward:	//後退.
+		m_vPos -= vecAxisZ * 0.15f * m_fSpd;
+		//		m_fWalkLangth -= 0.15f * m_fSpd;
+		break;
+		//case enDirection_LeftTurn:
+		//	break;
+		//case enDirection_RightTurn:
+		//	break;
+		//default:
+		//	break;
 	}
 	m_enDir = enDirection_Stop;//停止.
 }

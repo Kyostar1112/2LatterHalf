@@ -13,7 +13,7 @@ BOOL CALLBACK EnumJoysticksCallBack(const DIDEVICEINSTANCE *pdidInstance, VOID *
 		pdidInstance->guidInstance,	// デバイスの番号
 		&pPad2,	// (out)作成されるデバイスオブジェクト
 		NULL);
-	if (hRlt != DI_OK){
+	if (hRlt != DI_OK) {
 		return DIENUM_CONTINUE;	// 次のデバイスを要求
 	}
 	return DIENUM_STOP;	// 列挙停止
@@ -70,7 +70,7 @@ bool clsDxInput::initDI(HWND hWnd)
 		IID_IDirectInput8,		// 固定：UnicodeとAnsiの区別用
 		(VOID**)&m_pDI,			// (out)DxInputオブジェクト
 		NULL);					// NULL固定
-	if (hRlt != DI_OK){
+	if (hRlt != DI_OK) {
 		MessageBox(NULL, "DxInputの作成に失敗", "エラー", MB_OK);
 		return false;
 	}
@@ -83,21 +83,21 @@ bool clsDxInput::initDI(HWND hWnd)
 		EnumJoysticksCallBack,	// コントローラの列挙関数
 		NULL,					// コールバック関数からの値
 		DIEDFL_ATTACHEDONLY);	// 繋がっているﾓﾉのみ
-	if (hRlt != DI_OK){
+	if (hRlt != DI_OK) {
 		MessageBox(NULL, "ｺﾝﾄﾛｰﾗの確認に失敗", "エラー", MB_OK);
 	}
 
 	m_pPad = pPad2;
 
 	// コントローラの接続確認
-	if (pPad2 == NULL){
+	if (pPad2 == NULL) {
 		//MessageBox( NULL, "ｺﾝﾄﾛｰﾗが接続されていません", "エラー", MB_OK );
 	}
 	else {
 		// コントローラ構造体のデータフォーマットを作成
 		hRlt = pPad2->SetDataFormat(
 			&c_dfDIJoystick2);	//固定
-		if (hRlt != DI_OK){
+		if (hRlt != DI_OK) {
 			MessageBox(NULL, "ﾃﾞｰﾀﾌｫｰﾏｯﾄの作成失敗", "エラー", MB_OK);
 		}
 		// (他のデバイスとの)協調レベルの設定
@@ -105,7 +105,7 @@ bool clsDxInput::initDI(HWND hWnd)
 			hWnd,
 			DISCL_EXCLUSIVE |	// 排他アクセス
 			DISCL_FOREGROUND);	// フォアグラウンドアクセス権
-		if (hRlt != DI_OK){
+		if (hRlt != DI_OK) {
 			MessageBox(NULL, "協調ﾚﾍﾞﾙの設定失敗", "エラー", MB_OK);
 		}
 		// 使用可能なオブジェクト(ボタンなど)の列挙
@@ -113,7 +113,7 @@ bool clsDxInput::initDI(HWND hWnd)
 			EnumObjectsCallBack,	// オブジェクト列挙関数
 			(VOID*)hWnd,			// コールバック関数に送る情報
 			DIDFT_ALL);			// 全てのオブジェクト
-		if (hRlt != DI_OK){
+		if (hRlt != DI_OK) {
 			MessageBox(NULL, "ｵﾌﾞｼﾞｪｸﾄの列挙に失敗", "エラー", MB_OK);
 		}
 	}
@@ -131,7 +131,7 @@ HRESULT clsDxInput::UpdateInputState()
 	InitInputState();
 
 	//ｼﾞｮｲｽﾃｨｯｸの接続確認.
-	if (m_pPad == NULL){
+	if (m_pPad == NULL) {
 		return E_FAIL;
 	}
 
@@ -141,7 +141,7 @@ HRESULT clsDxInput::UpdateInputState()
 	{
 		//ｺﾝﾄﾛｰﾗへのｱｸｾｽ権を取得する.
 		hRslt = m_pPad->Acquire();
-		while (hRslt == DIERR_INPUTLOST){
+		while (hRslt == DIERR_INPUTLOST) {
 			hRslt = m_pPad->Acquire();
 		}
 		return S_OK;
@@ -151,24 +151,24 @@ HRESULT clsDxInput::UpdateInputState()
 	hRslt = m_pPad->GetDeviceState(
 		sizeof(DIJOYSTATE2),	//取得するｻｲｽﾞ.
 		&js);					//(out)取得ﾃﾞｰﾀ.
-	if (hRslt != DI_OK){
+	if (hRslt != DI_OK) {
 		return hRslt;
 	}
 
 	//左ｱﾅﾛｸﾞｽﾃｨｯｸ(ｽﾃｨｯｸの傾き具合(遊び)の値を500,-500として考える)
-	if (js.lX > 500){
+	if (js.lX > 500) {
 		//右ｷｰ.
 		AddInputState(enPKey_Right);
 	}
-	else if (js.lX < -500){
+	else if (js.lX < -500) {
 		//左ｷｰ.
 		AddInputState(enPKey_Left);
 	}
-	if (js.lY > 500){
+	if (js.lY > 500) {
 		//上ｷｰ.
 		AddInputState(enPKey_Down);
 	}
-	else if (js.lY < -500){
+	else if (js.lY < -500) {
 		//下ｷｰ.
 		AddInputState(enPKey_Up);
 	}
@@ -212,7 +212,7 @@ HRESULT clsDxInput::UpdateInputState()
 	for (int iKey = enPKey_00; iKey < enPKey_Max; iKey++)
 	{
 		//ｺﾝﾄﾛｰﾗのﾎﾞﾀﾝの配列開始番号が0からなので開始位置をずらす.
-		if (js.rgbButtons[iKey - enPKey_00] & 0x80){
+		if (js.rgbButtons[iKey - enPKey_00] & 0x80) {
 			//ﾙｰﾌﾟ変数を列挙体型にｷｬｽﾄして渡す.
 			AddInputState((enPKey)iKey);
 		}
@@ -239,7 +239,7 @@ void clsDxInput::InitInputState()
 bool clsDxInput::IsPressKey(enPKey enKey)
 {
 	// >> ｼﾌﾄ演算子:右にｼﾌﾄ.
-	if ((m_uInputState >> enKey) & 1){
+	if ((m_uInputState >> enKey) & 1) {
 		return true;
 	}
 	return false;

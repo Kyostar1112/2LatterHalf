@@ -10,10 +10,10 @@
 #include "Player.h"
 #include "Num.h"
 
-namespace ConstantStageScene{
+namespace ConstantStageScene {
 	const int SHOT_MAX = 255;	//ショットの最大数.
 	const int SHOT_INTERVAL_CNT = 20;	//ショットの間隔.
-	const int ENEMYMAX = 10;	//一度の画面に出てくる敵の最大数.
+	const int ENEMYMAX = 1;	//一度の画面に出てくる敵の最大数.
 	const int SPAWNCNT = 60.0f;//敵のスポーンするタイミング.
 	const int PLAYERHP = 15;	//プレイヤーの体力.
 	const int PLAYERINVINCIBLETIME = 60;	//プレイヤーの無敵時間.
@@ -22,6 +22,7 @@ namespace ConstantStageScene{
 	const int StageEnemyDowndigit = 4;	//敵の撃破したスコアの桁数.
 	const int StageClearTimeMax = 60;	//ゲームクリアまでの時間.
 }
+namespace CSS = ConstantStageScene;
 
 class clsStageScene
 	:public clsSceneBase
@@ -33,7 +34,7 @@ public:
 	void Create();
 	void Init();
 	void UpDate();
-	void ModelRender(){};
+	void ModelRender() {};
 	void ModelRender1();
 	void ExpRender();
 	void ModelRender2();

@@ -25,11 +25,11 @@ HRESULT clsSprite::Init()
 	m_pDeviceContext11 = Resource->GetSpriteRenderSet().pContext11;
 
 	//ｼｪｰﾀﾞ作成.
-	if (FAILED(InitShader())){
+	if (FAILED(InitShader())) {
 		return E_FAIL;
 	}
 	//板ﾎﾟﾘｺﾞﾝ作成.
-	if (FAILED(InitModel())){
+	if (FAILED(InitModel())) {
 		return E_FAIL;
 	}
 
@@ -54,17 +54,17 @@ HRESULT clsSprite::InitShader()
 	//HLSLからﾊﾞｰﾃｯｸｽｼｪｰﾀﾞのﾌﾞﾛﾌﾞを作成.
 	if (FAILED(
 		D3DX11CompileFromFile(
-		SHADER_NAME,	//ｼｪｰﾀﾞﾌｧｲﾙ名(HLSLﾌｧｲﾙ)
-		NULL,			//ﾏｸﾛ定義の配列へのﾎﾟｲﾝﾀ(未使用)
-		NULL,			//ｲﾝｸﾙｰﾄﾞﾌｧｲﾙを扱うｲﾝﾀｰﾌｪｲｽへのﾎﾟｲﾝﾀ(未使用)
-		"VS_Ita",		//ｼｪｰﾀﾞｴﾝﾄﾘｰﾎﾟｲﾝﾄ関数の名前.
-		"vs_5_0",		//ｼｪｰﾀﾞのﾓﾃﾞﾙを指定する文字列(ﾌﾟﾛﾌｧｲﾙ)
-		uCompileFlag,	//ｼｪｰﾀﾞｺﾝﾊﾟｲﾙﾌﾗｸﾞ.
-		0,				//ｴﾌｪｸﾄｺﾝﾊﾟｲﾙﾌﾗｸﾞ(未使用)
-		NULL,			//ｽﾚｯﾄﾞﾎﾟﾝﾌﾟｲﾝﾀｰﾌｪｲｽへのﾎﾟｲﾝﾀ(未使用)
-		&pCompiledShader,//ﾌﾞﾛﾌﾞを格納するﾒﾓﾘへのﾎﾟｲﾝﾀ.
-		&pErrors,		//ｴﾗｰと警告一覧を格納するﾒﾓﾘへのﾎﾟｲﾝﾀ.
-		NULL)))		//戻り値へのﾎﾟｲﾝﾀ(未使用)
+			SHADER_NAME,	//ｼｪｰﾀﾞﾌｧｲﾙ名(HLSLﾌｧｲﾙ)
+			NULL,			//ﾏｸﾛ定義の配列へのﾎﾟｲﾝﾀ(未使用)
+			NULL,			//ｲﾝｸﾙｰﾄﾞﾌｧｲﾙを扱うｲﾝﾀｰﾌｪｲｽへのﾎﾟｲﾝﾀ(未使用)
+			"VS_Ita",		//ｼｪｰﾀﾞｴﾝﾄﾘｰﾎﾟｲﾝﾄ関数の名前.
+			"vs_5_0",		//ｼｪｰﾀﾞのﾓﾃﾞﾙを指定する文字列(ﾌﾟﾛﾌｧｲﾙ)
+			uCompileFlag,	//ｼｪｰﾀﾞｺﾝﾊﾟｲﾙﾌﾗｸﾞ.
+			0,				//ｴﾌｪｸﾄｺﾝﾊﾟｲﾙﾌﾗｸﾞ(未使用)
+			NULL,			//ｽﾚｯﾄﾞﾎﾟﾝﾌﾟｲﾝﾀｰﾌｪｲｽへのﾎﾟｲﾝﾀ(未使用)
+			&pCompiledShader,//ﾌﾞﾛﾌﾞを格納するﾒﾓﾘへのﾎﾟｲﾝﾀ.
+			&pErrors,		//ｴﾗｰと警告一覧を格納するﾒﾓﾘへのﾎﾟｲﾝﾀ.
+			NULL)))		//戻り値へのﾎﾟｲﾝﾀ(未使用)
 	{
 		MessageBox(NULL, "hlsl読込失敗", "ｴﾗｰ", MB_OK);
 		return E_FAIL;
@@ -74,10 +74,10 @@ HRESULT clsSprite::InitShader()
 	//上記で作成したﾌﾞﾛﾌﾞから「ﾊﾞｰﾃｯｸｽｼｪｰﾀﾞ」を作成.
 	if (FAILED(
 		m_pDevice11->CreateVertexShader(
-		pCompiledShader->GetBufferPointer(),
-		pCompiledShader->GetBufferSize(),
-		NULL,
-		&m_pVertexShader)))//(out)ﾊﾞｰﾃｯｸｽｼｪｰﾀﾞ.
+			pCompiledShader->GetBufferPointer(),
+			pCompiledShader->GetBufferSize(),
+			NULL,
+			&m_pVertexShader)))//(out)ﾊﾞｰﾃｯｸｽｼｪｰﾀﾞ.
 	{
 		MessageBox(NULL, "vs作成失敗", "ｴﾗｰ", MB_OK);
 		return E_FAIL;
@@ -109,11 +109,11 @@ HRESULT clsSprite::InitShader()
 	//頂点ｲﾝﾌﾟｯﾄﾚｲｱｳﾄの作成.
 	if (FAILED(
 		m_pDevice11->CreateInputLayout(
-		layout,
-		numElements,
-		pCompiledShader->GetBufferPointer(),
-		pCompiledShader->GetBufferSize(),
-		&m_pVertexLayout)))//(out)頂点ｲﾝﾌﾟｯﾄﾚｲｱｳﾄ.
+			layout,
+			numElements,
+			pCompiledShader->GetBufferPointer(),
+			pCompiledShader->GetBufferSize(),
+			&m_pVertexLayout)))//(out)頂点ｲﾝﾌﾟｯﾄﾚｲｱｳﾄ.
 	{
 		MessageBox(NULL, "頂点ｲﾝﾌﾟｯﾄﾚｲｱｳﾄ作成失敗", "ｴﾗｰ", MB_OK);
 		return E_FAIL;
@@ -123,17 +123,17 @@ HRESULT clsSprite::InitShader()
 	//HLSLからﾋﾟｸｾﾙｼｪｰﾀﾞのﾌﾞﾛﾌﾞを作成.
 	if (FAILED(
 		D3DX11CompileFromFile(
-		SHADER_NAME,	//ｼｪｰﾀﾞﾌｧｲﾙ名(HLSLﾌｧｲﾙ)
-		NULL,
-		NULL,
-		"PS_Ita",		//ｼｪｰﾀﾞｴﾝﾄﾘｰﾎﾟｲﾝﾄ関数の名前.
-		"ps_5_0",		//ｼｪｰﾀﾞのﾓﾃﾞﾙを指定する文字列(ﾌﾟﾛﾌｧｲﾙ)
-		uCompileFlag,	//ｼｪｰﾀﾞｺﾝﾊﾟｲﾙﾌﾗｸﾞ.
-		0,
-		NULL,
-		&pCompiledShader,//ﾌﾞﾛﾌﾞを格納するﾒﾓﾘへのﾎﾟｲﾝﾀ.
-		&pErrors,
-		NULL)))
+			SHADER_NAME,	//ｼｪｰﾀﾞﾌｧｲﾙ名(HLSLﾌｧｲﾙ)
+			NULL,
+			NULL,
+			"PS_Ita",		//ｼｪｰﾀﾞｴﾝﾄﾘｰﾎﾟｲﾝﾄ関数の名前.
+			"ps_5_0",		//ｼｪｰﾀﾞのﾓﾃﾞﾙを指定する文字列(ﾌﾟﾛﾌｧｲﾙ)
+			uCompileFlag,	//ｼｪｰﾀﾞｺﾝﾊﾟｲﾙﾌﾗｸﾞ.
+			0,
+			NULL,
+			&pCompiledShader,//ﾌﾞﾛﾌﾞを格納するﾒﾓﾘへのﾎﾟｲﾝﾀ.
+			&pErrors,
+			NULL)))
 	{
 		MessageBox(NULL, "hlsl(ps)読込失敗", "ｴﾗｰ", MB_OK);
 		return E_FAIL;
@@ -143,10 +143,10 @@ HRESULT clsSprite::InitShader()
 	//上記で作成したﾌﾞﾛﾌﾞから「ﾋﾟｸｾﾙｼｪｰﾀﾞ」を作成.
 	if (FAILED(
 		m_pDevice11->CreatePixelShader(
-		pCompiledShader->GetBufferPointer(),
-		pCompiledShader->GetBufferSize(),
-		NULL,
-		&m_pPixelShader)))//(out)ﾋﾟｸｾﾙｼｪｰﾀﾞ.
+			pCompiledShader->GetBufferPointer(),
+			pCompiledShader->GetBufferSize(),
+			NULL,
+			&m_pPixelShader)))//(out)ﾋﾟｸｾﾙｼｪｰﾀﾞ.
 	{
 		MessageBox(NULL, "ps作成失敗", "ｴﾗｰ", MB_OK);
 		return E_FAIL;
@@ -167,9 +167,9 @@ HRESULT clsSprite::InitShader()
 	//ｺﾝｽﾀﾝﾄﾊﾞｯﾌｧ作成.
 	if (FAILED(
 		m_pDevice11->CreateBuffer(
-		&cb,
-		NULL,
-		&m_pConstantBuffer)))
+			&cb,
+			NULL,
+			&m_pConstantBuffer)))
 	{
 		MessageBox(NULL, "ｺﾝｽﾀﾝﾄﾊﾞｯﾌｧ作成失敗", "ｴﾗｰ", MB_OK);
 		return E_FAIL;
@@ -215,7 +215,7 @@ HRESULT clsSprite::InitModel()
 	//頂点ﾊﾞｯﾌｧの作成.
 	if (FAILED(
 		m_pDevice11->CreateBuffer(
-		&bd, &InitData, &m_pVertexBuffer)))
+			&bd, &InitData, &m_pVertexBuffer)))
 	{
 		MessageBox(NULL, "頂点ﾊﾞｯﾌｧ作成失敗", "ｴﾗｰ", MB_OK);
 		return E_FAIL;
@@ -246,7 +246,7 @@ HRESULT clsSprite::InitModel()
 	//ｻﾝﾌﾟﾗｰ作成.
 	if (FAILED(
 		m_pDevice11->CreateSamplerState(
-		&SamDesc, &m_pSampleLinear)))//(out)ｻﾝﾌﾟﾗｰ.
+			&SamDesc, &m_pSampleLinear)))//(out)ｻﾝﾌﾟﾗｰ.
 	{
 		MessageBox(NULL, "ｻﾝﾌﾟﾗ作成失敗", "ｴﾗｰ", MB_OK);
 		return E_FAIL;
@@ -255,11 +255,11 @@ HRESULT clsSprite::InitModel()
 	//ﾃｸｽﾁｬ作成.
 	if (FAILED(
 		D3DX11CreateShaderResourceViewFromFile(
-		m_pDevice11,		//ﾘｿｰｽを使用するﾃﾞﾊﾞｲｽへのﾎﾟｲﾝﾀ.
-		"Data\\Image\\Explosion.png",//ﾌｧｲﾙ名.
-		NULL, NULL,
-		&m_pTexture,	//(out)ﾃｸｽﾁｬ.
-		NULL)))
+			m_pDevice11,		//ﾘｿｰｽを使用するﾃﾞﾊﾞｲｽへのﾎﾟｲﾝﾀ.
+			"Data\\Image\\Explosion.png",//ﾌｧｲﾙ名.
+			NULL, NULL,
+			&m_pTexture,	//(out)ﾃｸｽﾁｬ.
+			NULL)))
 	{
 		MessageBox(NULL, "ﾃｸｽﾁｬ作成失敗", "ｴﾗｰ", MB_OK);
 		return E_FAIL;
@@ -303,8 +303,8 @@ void clsSprite::Render()
 	//ﾊﾞｯﾌｧ内のﾃﾞｰﾀの書き方開始時にmap.
 	if (SUCCEEDED(
 		m_pDeviceContext11->Map(
-		m_pConstantBuffer, 0,
-		D3D11_MAP_WRITE_DISCARD, 0, &pData)))
+			m_pConstantBuffer, 0,
+			D3D11_MAP_WRITE_DISCARD, 0, &pData)))
 	{
 		//ﾜｰﾙﾄﾞ,ｶﾒﾗ,ﾌﾟﾛｼﾞｪｸｼｮﾝ行列を渡す.
 		D3DXMATRIX m = mWorld * mView * mProj;
@@ -317,10 +317,10 @@ void clsSprite::Render()
 		cd.vColor = vColor;
 
 		//ﾃｸｽﾁｬ座標.
-		if (m_AnimCount % 8 == 0){
+		if (m_AnimCount % 8 == 0) {
 			m_texUV.x += 1.0f / 8.0f;
 			m_AnimCount = 0;
-			if (m_texUV.x >= 1.0f){
+			if (m_texUV.x >= 1.0f) {
 				m_texUV.x = 0.0f;
 				m_texUV.y += 1.0f / 8.0f;
 			}

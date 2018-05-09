@@ -22,8 +22,8 @@ struct WHSIZE_FLOAT
 class clsCommon
 {
 public:
-	clsCommon(){};
-	virtual ~clsCommon(){};
+	clsCommon() {};
+	virtual ~clsCommon() {};
 
 	//“§‰ß(±ÙÌ§ÌŞÚİÄŞ)İ’è‚ÌØ‚è‘Ö‚¦.
 	void SetBlend(bool flg);

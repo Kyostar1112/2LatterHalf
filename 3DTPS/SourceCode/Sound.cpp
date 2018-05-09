@@ -26,7 +26,7 @@ bool clsSound::Open(LPCTSTR sFName, char *sAlias, HWND hWnd)
 	strcat_s(command, sizeof(command), " alias ");
 	strcat_s(command, sizeof(command), m_sAlias);//´²Ø±½‚ğŒ‹‡.
 
-	if (mciSendString(command, NULL, 0, m_hWnd) == 0){
+	if (mciSendString(command, NULL, 0, m_hWnd) == 0) {
 		return true;
 	}
 	return false;
@@ -40,7 +40,7 @@ bool clsSound::Close()
 
 	strcat_s(command, sizeof(command), m_sAlias);//´²Ø±½‚ğŒ‹‡.
 
-	if (mciSendString(command, NULL, 0, m_hWnd) == 0){
+	if (mciSendString(command, NULL, 0, m_hWnd) == 0) {
 		return true;
 	}
 	return false;
@@ -53,12 +53,12 @@ bool clsSound::Play(bool bNotify)
 	char command[STR_BUFF_MAX] = "play ";
 
 	strcat_s(command, sizeof(command), m_sAlias);//´²Ø±½‚ğŒ‹‡.
-	if (bNotify){
+	if (bNotify) {
 		strcat_s(command, sizeof(command), " notify");
 		m_bSeekFlg = false;
 		//notify:ˆ—‚ªI—¹‚µ‚½‚Æ‚«‚ÉhWnd‚ÉMM_MCINOTIFYÒ¯¾°¼Ş‚ğÎß½Ä‚·‚é.
 	}
-	if (mciSendString(command, NULL, 0, m_hWnd) == 0){
+	if (mciSendString(command, NULL, 0, m_hWnd) == 0) {
 		return true;
 	}
 	return false;
@@ -72,7 +72,7 @@ bool clsSound::Stop()
 
 	strcat_s(command, sizeof(command), m_sAlias);//´²Ø±½‚ğŒ‹‡.
 
-	if (mciSendString(command, NULL, 0, m_hWnd) == 0){
+	if (mciSendString(command, NULL, 0, m_hWnd) == 0) {
 		return true;
 	}
 	return false;
@@ -90,7 +90,7 @@ bool clsSound::GetStatus(char *sStatus)
 	strcat_s(command, sizeof(command), m_sAlias);//´²Ø±½‚ğŒ‹‡.
 	strcat_s(command, sizeof(command), " mode");
 
-	if (mciSendString(command, sStatus, STR_BUFF_MAX, m_hWnd) == 0){
+	if (mciSendString(command, sStatus, STR_BUFF_MAX, m_hWnd) == 0) {
 		return true;
 	}
 	return false;
@@ -102,9 +102,9 @@ bool clsSound::IsStopped()
 	char sStatus[STR_BUFF_MAX] = "";
 
 	//ó‘Ô‚Ìæ“¾.
-	if (GetStatus(sStatus)){
+	if (GetStatus(sStatus)) {
 		//•¶š—ñ”äŠr.
-		if (strcmp(sStatus, "stopped") == 0){
+		if (strcmp(sStatus, "stopped") == 0) {
 			return true;
 		}
 	}
@@ -117,9 +117,9 @@ bool clsSound::IsPlaying()
 	char sStatus[STR_BUFF_MAX] = "";
 
 	//ó‘Ô‚Ìæ“¾.
-	if (GetStatus(sStatus)){
+	if (GetStatus(sStatus)) {
 		//•¶š—ñ”äŠr.
-		if (strcmp(sStatus, "playing") == 0){
+		if (strcmp(sStatus, "playing") == 0) {
 			return true;
 		}
 	}
@@ -137,7 +137,7 @@ bool clsSound::SeekToStart()
 		strcat_s(command, sizeof(command), m_sAlias);//´²Ø±½‚ğŒ‹‡.
 		strcat_s(command, sizeof(command), " to start");
 
-		if (mciSendString(command, NULL, 0, m_hWnd) == 0){
+		if (mciSendString(command, NULL, 0, m_hWnd) == 0) {
 			m_bSeekFlg = true;
 			return true;
 		}
@@ -150,8 +150,8 @@ bool clsSound::SeekToStart()
 bool clsSound::SetVolume(int iVolume)
 {
 	//”ÍˆÍ“à‚ÉŠÛ‚ß‚é.
-	if (iVolume < 0)		{ iVolume = 0; }
-	if (iVolume > 1000)	{ iVolume = 1000; }
+	if (iVolume < 0) { iVolume = 0; }
+	if (iVolume > 1000) { iVolume = 1000; }
 
 	//‰¹—Ê‚ğ•¶š—ñ‚É•ÏŠ·.
 	char sVolume[STR_BUFF_MAX] = "";
@@ -164,7 +164,7 @@ bool clsSound::SetVolume(int iVolume)
 	strcat_s(command, sizeof(command), " volume to ");
 	strcat_s(command, sizeof(command), sVolume);//‰¹—Ê‚ğŒ‹‡.
 
-	if (mciSendString(command, NULL, 0, m_hWnd) == 0){
+	if (mciSendString(command, NULL, 0, m_hWnd) == 0) {
 		return true;
 	}
 	return false;

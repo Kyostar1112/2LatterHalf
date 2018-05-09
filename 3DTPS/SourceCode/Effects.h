@@ -79,38 +79,38 @@ public:
 	void SetProjectionMatrix(D3DXMATRIX& mProj);
 
 	//Ä¶ŠÖ”.
-	::Effekseer::Handle Play(enEfcType enType, D3DXVECTOR3 vPos){
+	::Effekseer::Handle Play(enEfcType enType, D3DXVECTOR3 vPos) {
 		return m_pManager->Play(
 			m_pEffect[enType], vPos.x, vPos.y, vPos.z);
 	}
 	//ˆêŽž’âŽ~.
-	void Paused(::Effekseer::Handle handle, bool bFlag){
+	void Paused(::Effekseer::Handle handle, bool bFlag) {
 		m_pManager->SetPaused(handle, bFlag);//bFlag:true ˆêŽž’âŽ~.
 	}
 	//’âŽ~.
-	void Stop(::Effekseer::Handle handle){
+	void Stop(::Effekseer::Handle handle) {
 		m_pManager->StopEffect(handle);
 	}
 	//‘S‚Ä’âŽ~.
-	void StopAll(::Effekseer::Handle handle){
+	void StopAll(::Effekseer::Handle handle) {
 		m_pManager->StopAllEffects();
 	}
 	//»²½Þ‚ðŽw’è‚·‚é.
-	void SetScale(::Effekseer::Handle handle, D3DXVECTOR3 vScale){
+	void SetScale(::Effekseer::Handle handle, D3DXVECTOR3 vScale) {
 		m_pManager->SetScale(handle, vScale.x, vScale.y, vScale.z);
 	}
 	//‰ñ“]‚ðŽw’è‚·‚é.
-	void SetRotation(::Effekseer::Handle handle, D3DXVECTOR3 vRot){
+	void SetRotation(::Effekseer::Handle handle, D3DXVECTOR3 vRot) {
 		m_pManager->SetRotation(handle, vRot.x, vRot.y, vRot.z);
 	}
 	void SetRotation(::Effekseer::Handle handle,
-		D3DXVECTOR3 vAxis, float fAngle){
+		D3DXVECTOR3 vAxis, float fAngle) {
 		m_pManager->SetRotation(handle,
 			::Effekseer::Vector3D(vAxis.x, vAxis.y, vAxis.z),
 			fAngle);
 	}
 	//ˆÊ’u‚ðŽw’è‚·‚é.
-	void SetLocation(::Effekseer::Handle handle, D3DXVECTOR3 vPos){
+	void SetLocation(::Effekseer::Handle handle, D3DXVECTOR3 vPos) {
 		m_pManager->SetLocation(handle,
 			::Effekseer::Vector3D(vPos.x, vPos.y, vPos.z));
 	}

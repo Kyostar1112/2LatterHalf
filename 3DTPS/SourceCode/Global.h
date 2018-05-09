@@ -15,7 +15,6 @@
 #include <D3D10.h>
 #include <memory>
 #include <vector>
-#include <vector>
 
 #include "MyMacro.h"
 

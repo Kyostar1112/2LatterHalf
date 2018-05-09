@@ -3,13 +3,17 @@
 const float PI = 3.141592f;
 namespace ConstantEnemy
 {
-	const float SpawnLength = 20.0f;
-	const int   ExpImg = 3;//爆発画像の数.
+	const float fSpawnLength = 30.0f;	//敵が出てくる距離.
+	const int   iExpImg = 3;			//爆発画像の数.
+	const int	iAttakInterval = 180.0f;//攻撃間隔.
 }
+
+namespace CE = ConstantEnemy;
 
 clsEnemy::clsEnemy()
 {
-	for (size_t i = 0; i < ConstantEnemy::ExpImg; i++)
+	m_vsmpExplosion.reserve(CE::iExpImg);
+	for (size_t i = 0; i < CE::iExpImg; i++)
 	{
 		m_vsmpExplosion.push_back(make_unique<clsExplosion>());
 		m_vsmpExplosion[i]->Create();
@@ -20,26 +24,45 @@ clsEnemy::~clsEnemy()
 {
 }
 
-void clsEnemy::EnemySpawn()
+void clsEnemy::Loop()
 {
-	m_bArrival = false;
-	m_bAttakFlg = false;
+	//アニメーション速度加算は先に.
+	m_dAnimTime += m_dAnimSpeed;
 
+	switch (m_EnemyState)
+	{
+	case clsEnemy::State::Move:
+		Move();
+		break;
+	case clsEnemy::State::ChangeAttack:
+		ChangeAttack();
+		break;
+	case clsEnemy::State::InitAttack:
+		InitAttack();
+		break;
+	case clsEnemy::State::Attak:
+		Attack();
+		break;
+	case clsEnemy::State::IdleAttak:
+		IdleAttack();
+		break;
+	default:
+		break;
+	}
+	UpdatePos();
+}
+
+void clsEnemy::Spawn()
+{
 	ChangeAnimSet(02);
 	m_iAttakInterval = 180.0f;
 	float fZ, fX;
 
-	random_device rd;
+	float fDeg = RandamAmong(0.0f, 360.0f);//角度.
 
-	mt19937 mt(rd());
+	m_fLen = CE::fSpawnLength;//長さ.
 
-	uniform_int_distribution<int> rdDeg(0.0f, 360.0f);
-
-	float fDeg = static_cast<float>(rdDeg(mt));//角度.
-
-	m_fLen = ConstantEnemy::SpawnLength;//長さ.
-
-	float rad = fDeg * PI / 180.0;
+	float rad = fDeg * PI / 180.0f;
 
 	fX = m_fLen*cosf(rad);
 	fZ = m_fLen*sinf(rad);
@@ -54,12 +77,14 @@ void clsEnemy::EnemySpawn()
 	SetPosition(vTmp);
 
 	m_bEnableFlg = true;
+
+	//移動状態に変更.
+	m_EnemyState = State::Move;
 }
 
-void clsEnemy::EnemyMove()
-{
-	int AnimNum = 5;
 
+void clsEnemy::Move()
+{
 	D3DXVECTOR3 vTargtPos = m_vSpawnPos;
 	D3DXVECTOR3 vTmpPos = { 0.0f, 0.0f, 0.0f };	//ターゲットと自分の変化量.
 	float TargetRot = 0.0f;
@@ -73,59 +98,72 @@ void clsEnemy::EnemyMove()
 
 		m_enDir = enDirection_Foward;
 
-		UpdatePos();
-
-#if 0
-		if (m_fLen > 5.0f)
-		{
-			m_fLen -= 0.05f;
-		}
-
-#endif // 0
-
-		//SetPositionX(m_fLen*cosf(TargetRot));
-		//SetPositionZ(m_fLen*sinf(TargetRot));
-
 		SetRotationY(TargetRot);
 	}
-	else if (!m_bArrival)
+	else
 	{
-		//アニメーション切り替え.
-		m_iAnimNo = AnimNum;
-		ChangeAnimSet(m_iAnimNo);
-		m_dAnimTime = 0;
-		m_bArrival = true;
-	}
-
-	m_dAnimTime += m_dAnimSpeed;
-
-	if (m_iAnimNo == AnimNum)
-	{
-		if (m_dAnimTime >= GetAnimPeriod(AnimNum))
-		{
-			m_dAnimTime = 0.0f;
-			m_bAttakFlg = true;
-			m_dAnimSpeed = 0;
-			//ChangeAnimSet(0);
-			////アニメーション切り替え.
-			//m_iAnimNo = 4;
-			//ChangeAnimSet(m_iAnimNo);
-		}
-		if (m_iAttakInterval < 0)
-		{
-			m_iAttakInterval = 180.0f;
-		}
-
-		if (m_iAttakInterval >= 180)
-		{
-			m_dAnimTime = 0.0f;
-			m_dAnimSpeed = 0.01f;
-		}
-		m_iAttakInterval--;
+		//攻撃準備状態に変更.
+		ChangeAnimSet(03);
+		m_dAnimTime = 0.0f;
+		m_EnemyState = State::ChangeAttack;
 	}
 }
 
-void clsEnemy::ShotHit()
+void clsEnemy::ChangeAttack()
+{
+	//待機状態へ.
+	if ( m_dAnimTime + m_dAnimSpeed >= GetAnimPeriod(03))
+	{
+		//攻撃待機状態に変更.
+		m_EnemyState = State::InitAttack;
+		m_dAnimSpeed = 0.0f;
+	}
+}
+
+void clsEnemy::InitAttack()
+{
+	//アニメーション切り替え.
+	ChangeAnimSet(05);
+	m_dAnimTime = 0;
+	m_dAnimSpeed = 0.01f;
+	//攻撃状態に変更.
+	m_EnemyState = State::Attak;
+}
+
+void clsEnemy::Attack()
+{
+	//攻撃のモーション中か？.
+	if ( m_dAnimTime + m_dAnimSpeed >= GetAnimPeriod(05) )
+	{
+		m_bAttakFlg = true;
+		ChangeAnimSet(06);
+		m_dAnimTime = 0;
+		//攻撃待機状態に変更.
+		m_EnemyState = State::IdleAttak;
+		m_iAttakInterval = 180.0f;
+	}
+
+}
+
+void clsEnemy::IdleAttack()
+{
+	//攻撃のモーション中か？.
+	if (m_dAnimTime + m_dAnimSpeed >= GetAnimPeriod(06))
+	{
+		m_dAnimSpeed = 0.0f;
+		ChangeAnimSet(00);
+	}
+
+	if (m_iAttakInterval < 0)
+	{
+		//攻撃待機状態に変更.
+		m_EnemyState = State::InitAttack;
+	}
+
+	m_iAttakInterval--;
+}
+
+void clsEnemy::Damage()
 {
 	for (size_t i = 0; i < m_vsmpExplosion.size(); i++)
 	{
@@ -136,6 +174,7 @@ void clsEnemy::ShotHit()
 		}
 	}
 }
+
 void clsEnemy::ExpRender()	//爆発の表示処理.
 {
 	for (size_t i = 0; i < m_vsmpExplosion.size(); i++)
@@ -146,3 +185,4 @@ void clsEnemy::ExpRender()	//爆発の表示処理.
 		}
 	}
 }
+

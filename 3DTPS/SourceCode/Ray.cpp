@@ -57,17 +57,17 @@ HRESULT clsRay::InitShader()
 	//HLSLからﾊﾞｰﾃｯｸｽｼｪｰﾀﾞのﾌﾞﾛﾌﾞを作成.
 	if (FAILED(
 		D3DX11CompileFromFile(
-		SHADER_NAME,	//ｼｪｰﾀﾞﾌｧｲﾙ名(HLSLﾌｧｲﾙ)
-		NULL,			//ﾏｸﾛ定義の配列へのﾎﾟｲﾝﾀ(未使用)
-		NULL,			//ｲﾝｸﾙｰﾄﾞﾌｧｲﾙを扱うｲﾝﾀｰﾌｪｲｽへのﾎﾟｲﾝﾀ(未使用)
-		"VS",			//ｼｪｰﾀﾞｴﾝﾄﾘｰﾎﾟｲﾝﾄ関数の名前.
-		"vs_5_0",		//ｼｪｰﾀﾞのﾓﾃﾞﾙを指定する文字列(ﾌﾟﾛﾌｧｲﾙ)
-		uCompileFlag,	//ｼｪｰﾀﾞｺﾝﾊﾟｲﾙﾌﾗｸﾞ.
-		0,				//ｴﾌｪｸﾄｺﾝﾊﾟｲﾙﾌﾗｸﾞ(未使用)
-		NULL,			//ｽﾚｯﾄﾞﾎﾟﾝﾌﾟｲﾝﾀｰﾌｪｲｽへのﾎﾟｲﾝﾀ(未使用)
-		&pCompiledShader,//ﾌﾞﾛﾌﾞを格納するﾒﾓﾘへのﾎﾟｲﾝﾀ.
-		&pErrors,		//ｴﾗｰと警告一覧を格納するﾒﾓﾘへのﾎﾟｲﾝﾀ.
-		NULL)))		//戻り値へのﾎﾟｲﾝﾀ(未使用)
+			SHADER_NAME,	//ｼｪｰﾀﾞﾌｧｲﾙ名(HLSLﾌｧｲﾙ)
+			NULL,			//ﾏｸﾛ定義の配列へのﾎﾟｲﾝﾀ(未使用)
+			NULL,			//ｲﾝｸﾙｰﾄﾞﾌｧｲﾙを扱うｲﾝﾀｰﾌｪｲｽへのﾎﾟｲﾝﾀ(未使用)
+			"VS",			//ｼｪｰﾀﾞｴﾝﾄﾘｰﾎﾟｲﾝﾄ関数の名前.
+			"vs_5_0",		//ｼｪｰﾀﾞのﾓﾃﾞﾙを指定する文字列(ﾌﾟﾛﾌｧｲﾙ)
+			uCompileFlag,	//ｼｪｰﾀﾞｺﾝﾊﾟｲﾙﾌﾗｸﾞ.
+			0,				//ｴﾌｪｸﾄｺﾝﾊﾟｲﾙﾌﾗｸﾞ(未使用)
+			NULL,			//ｽﾚｯﾄﾞﾎﾟﾝﾌﾟｲﾝﾀｰﾌｪｲｽへのﾎﾟｲﾝﾀ(未使用)
+			&pCompiledShader,//ﾌﾞﾛﾌﾞを格納するﾒﾓﾘへのﾎﾟｲﾝﾀ.
+			&pErrors,		//ｴﾗｰと警告一覧を格納するﾒﾓﾘへのﾎﾟｲﾝﾀ.
+			NULL)))		//戻り値へのﾎﾟｲﾝﾀ(未使用)
 	{
 		MessageBox(NULL, "hlsl読込失敗", "ｴﾗｰ", MB_OK);
 		return E_FAIL;
@@ -77,10 +77,10 @@ HRESULT clsRay::InitShader()
 	//上記で作成したﾌﾞﾛﾌﾞから「ﾊﾞｰﾃｯｸｽｼｪｰﾀﾞ」を作成.
 	if (FAILED(
 		m_pDevice11->CreateVertexShader(
-		pCompiledShader->GetBufferPointer(),
-		pCompiledShader->GetBufferSize(),
-		NULL,
-		&m_pVertexShader)))//(out)ﾊﾞｰﾃｯｸｽｼｪｰﾀﾞ.
+			pCompiledShader->GetBufferPointer(),
+			pCompiledShader->GetBufferSize(),
+			NULL,
+			&m_pVertexShader)))//(out)ﾊﾞｰﾃｯｸｽｼｪｰﾀﾞ.
 	{
 		MessageBox(NULL, "vs作成失敗", "ｴﾗｰ", MB_OK);
 		return E_FAIL;
@@ -104,11 +104,11 @@ HRESULT clsRay::InitShader()
 	//頂点ｲﾝﾌﾟｯﾄﾚｲｱｳﾄの作成.
 	if (FAILED(
 		m_pDevice11->CreateInputLayout(
-		layout,
-		numElements,
-		pCompiledShader->GetBufferPointer(),
-		pCompiledShader->GetBufferSize(),
-		&m_pVertexLayout)))//(out)頂点ｲﾝﾌﾟｯﾄﾚｲｱｳﾄ.
+			layout,
+			numElements,
+			pCompiledShader->GetBufferPointer(),
+			pCompiledShader->GetBufferSize(),
+			&m_pVertexLayout)))//(out)頂点ｲﾝﾌﾟｯﾄﾚｲｱｳﾄ.
 	{
 		MessageBox(NULL, "頂点ｲﾝﾌﾟｯﾄﾚｲｱｳﾄ作成失敗", "ｴﾗｰ", MB_OK);
 		return E_FAIL;
@@ -118,17 +118,17 @@ HRESULT clsRay::InitShader()
 	//HLSLからﾋﾟｸｾﾙｼｪｰﾀﾞのﾌﾞﾛﾌﾞを作成.
 	if (FAILED(
 		D3DX11CompileFromFile(
-		SHADER_NAME,	//ｼｪｰﾀﾞﾌｧｲﾙ名(HLSLﾌｧｲﾙ)
-		NULL,
-		NULL,
-		"PS",			//ｼｪｰﾀﾞｴﾝﾄﾘｰﾎﾟｲﾝﾄ関数の名前.
-		"ps_5_0",		//ｼｪｰﾀﾞのﾓﾃﾞﾙを指定する文字列(ﾌﾟﾛﾌｧｲﾙ)
-		uCompileFlag,	//ｼｪｰﾀﾞｺﾝﾊﾟｲﾙﾌﾗｸﾞ.
-		0,
-		NULL,
-		&pCompiledShader,//ﾌﾞﾛﾌﾞを格納するﾒﾓﾘへのﾎﾟｲﾝﾀ.
-		&pErrors,
-		NULL)))
+			SHADER_NAME,	//ｼｪｰﾀﾞﾌｧｲﾙ名(HLSLﾌｧｲﾙ)
+			NULL,
+			NULL,
+			"PS",			//ｼｪｰﾀﾞｴﾝﾄﾘｰﾎﾟｲﾝﾄ関数の名前.
+			"ps_5_0",		//ｼｪｰﾀﾞのﾓﾃﾞﾙを指定する文字列(ﾌﾟﾛﾌｧｲﾙ)
+			uCompileFlag,	//ｼｪｰﾀﾞｺﾝﾊﾟｲﾙﾌﾗｸﾞ.
+			0,
+			NULL,
+			&pCompiledShader,//ﾌﾞﾛﾌﾞを格納するﾒﾓﾘへのﾎﾟｲﾝﾀ.
+			&pErrors,
+			NULL)))
 	{
 		MessageBox(NULL, "hlsl(ps)読込失敗", "ｴﾗｰ", MB_OK);
 		return E_FAIL;
@@ -138,10 +138,10 @@ HRESULT clsRay::InitShader()
 	//上記で作成したﾌﾞﾛﾌﾞから「ﾋﾟｸｾﾙｼｪｰﾀﾞ」を作成.
 	if (FAILED(
 		m_pDevice11->CreatePixelShader(
-		pCompiledShader->GetBufferPointer(),
-		pCompiledShader->GetBufferSize(),
-		NULL,
-		&m_pPixelShader)))//(out)ﾋﾟｸｾﾙｼｪｰﾀﾞ.
+			pCompiledShader->GetBufferPointer(),
+			pCompiledShader->GetBufferSize(),
+			NULL,
+			&m_pPixelShader)))//(out)ﾋﾟｸｾﾙｼｪｰﾀﾞ.
 	{
 		MessageBox(NULL, "ps作成失敗", "ｴﾗｰ", MB_OK);
 		return E_FAIL;
@@ -162,9 +162,9 @@ HRESULT clsRay::InitShader()
 	//ｺﾝｽﾀﾝﾄﾊﾞｯﾌｧ作成.
 	if (FAILED(
 		m_pDevice11->CreateBuffer(
-		&cb,
-		NULL,
-		&m_pConstantBuffer)))
+			&cb,
+			NULL,
+			&m_pConstantBuffer)))
 	{
 		MessageBox(NULL, "ｺﾝｽﾀﾝﾄﾊﾞｯﾌｧ作成失敗", "ｴﾗｰ", MB_OK);
 		return E_FAIL;
@@ -189,7 +189,7 @@ HRESULT clsRay::InitLine()
 	InitData.pSysMem = m_Ray.vPoint; //ﾚｲの座標をｾｯﾄ.
 	if (FAILED(
 		m_pDevice11->CreateBuffer(
-		&bd, &InitData, &m_pVertexBuffer)))
+			&bd, &InitData, &m_pVertexBuffer)))
 	{
 		ERR_MSG("頂点ﾊﾞｯﾌｧ作成失敗", "Error");
 		return E_FAIL;
@@ -225,8 +225,8 @@ void clsRay::Render(D3DXMATRIX& mView, D3DXMATRIX& mProj)
 	//ﾊﾞｯﾌｧ内のﾃﾞｰﾀの書き方開始時にmap.
 	if (SUCCEEDED(
 		m_pDeviceContext11->Map(
-		m_pConstantBuffer, 0,
-		D3D11_MAP_WRITE_DISCARD, 0, &pData)))
+			m_pConstantBuffer, 0,
+			D3D11_MAP_WRITE_DISCARD, 0, &pData)))
 	{
 		//ﾜｰﾙﾄﾞ,ｶﾒﾗ,ﾌﾟﾛｼﾞｪｸｼｮﾝ行列を渡す.
 		D3DXMATRIX m = mWorld * mView * mProj;

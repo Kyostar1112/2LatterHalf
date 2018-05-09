@@ -7,7 +7,7 @@ clsResultScene::clsResultScene()
 clsResultScene::~clsResultScene()
 {
 }
-namespace ResultScene{
+namespace ResultScene {
 	int ciRank = 3;
 	int ciScoredigit = 4;
 }

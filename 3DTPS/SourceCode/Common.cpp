@@ -41,7 +41,7 @@ void clsCommon::SetBlend(bool flg)
 	//ÌŞÚİÄŞ½Ã°Äì¬.
 	if (FAILED(
 		m_pDevice11->CreateBlendState(
-		&blendDesc, &m_pBlendState)))
+			&blendDesc, &m_pBlendState)))
 	{
 		MessageBox(NULL, "ÌŞÚİÄŞ½Ã°Äì¬¸”s", "clsCommon::SetBlend", MB_OK);
 	}

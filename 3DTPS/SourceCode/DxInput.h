@@ -29,7 +29,7 @@
 
 //—ñ‹“‘ÌéŒ¾.
 //·°î•ñ.
-enum enPKey{
+enum enPKey {
 	enPKey_Up,
 	enPKey_Down,
 	enPKey_Left,

@@ -48,7 +48,7 @@ HRESULT clsEffects::Create(
 	//ï`âÊóp≤›Ω¿›ΩÇÃê∂ê¨.
 	m_pRender
 		= ::EffekseerRendererDX11::Renderer::Create(
-		pDevice, pContext, g_RenderSpriteMax);
+			pDevice, pContext, g_RenderSpriteMax);
 
 	//¥Ã™∏ƒä«óùóp≤›Ω¿›ΩÇÃê∂ê¨.
 	m_pManager
@@ -94,7 +94,7 @@ HRESULT clsEffects::Destroy()
 	m_pRender->Destory();
 
 	//XAudio2ÇÃâï˙.
-	if (m_pXA2Master != NULL){
+	if (m_pXA2Master != NULL) {
 		m_pXA2Master->DestroyVoice();
 		m_pXA2Master = NULL;
 	}
@@ -117,12 +117,12 @@ HRESULT clsEffects::LoadData()
 	//}
 
 	//¥Ã™∏ƒÇÃì«çû.
-	for (int i = 0; i < enEfcType_Max; i++){
+	for (int i = 0; i < enEfcType_Max; i++) {
 		m_pEffect[i]
 			= ::Effekseer::Effect::Create(
-			m_pManager,
-			(const EFK_CHAR*)g_strFileNameList[i]);
-		if (m_pEffect[i] == NULL){
+				m_pManager,
+				(const EFK_CHAR*)g_strFileNameList[i]);
+		if (m_pEffect[i] == NULL) {
 			char strMsg[128];
 			wsprintf(strMsg, "clsEffects::LoadData()\n%ls",
 				g_strFileNameList[i]);
@@ -138,7 +138,7 @@ HRESULT clsEffects::LoadData()
 HRESULT clsEffects::ReleaseData()
 {
 	//¥Ã™∏ƒÇÃîjä¸.
-	for (int i = 0; i < enEfcType_Max; i++){
+	for (int i = 0; i < enEfcType_Max; i++) {
 		ES_SAFE_RELEASE(m_pEffect[i]);
 	}
 
@@ -224,8 +224,8 @@ D3DXVECTOR3 clsEffects::Vector3EfkToDx(
 	::Effekseer::Matrix44 OutMatEfk;
 
 #if 1
-	for (int i = 0; i < 4; i++){
-		for (int j = 0; j < 4; j++){
+	for (int i = 0; i < 4; i++) {
+		for (int j = 0; j < 4; j++) {
 			OutMatEfk.Values[i][j] = pSrcMatDx->m[i][j];
 		}
 	}
@@ -261,8 +261,8 @@ D3DXMATRIX clsEffects::MatrixEfkToDx(
 	D3DXMATRIX OutMatDx;
 
 #if 1
-	for (int i = 0; i < 4; i++){
-		for (int j = 0; j < 4; j++){
+	for (int i = 0; i < 4; i++) {
+		for (int j = 0; j < 4; j++) {
 			OutMatDx.m[i][j] = pSrcMatEfk->Values[i][j];
 		}
 	}

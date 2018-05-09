@@ -15,6 +15,8 @@
 #include "DxInput.h"	//ｺﾝﾄﾛｰﾗｸﾗｽ.
 #include "Ray.h"		//ﾚｲ表示ｸﾗｽ.
 
+#include <thread>
+
 //シーンクラス達.
 #include "TitleScene.h"
 #include "StageScene.h"
@@ -116,7 +118,7 @@ private:
 	//キャラクタクラス.
 	int	m_iAnimModelArrayMax;
 
-	clsResource*	m_pResource;//リソースクラス.
+	clsResource*				m_pResource;//リソースクラス.
 
 	//今現在のシーン.
 	SceneMode m_enScene;
