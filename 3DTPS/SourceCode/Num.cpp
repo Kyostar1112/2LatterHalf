@@ -10,7 +10,7 @@ clsNum::~clsNum()
 //‰æ‘œ‚É‚µ‚½‚¢”šAŒ…”‚æ‚±‚¹.
 void clsNum::Create(int Keta)
 {
-	for (size_t i = 0; i < Keta; i++)
+	for (int i = 0; i < Keta; i++)
 	{
 		m_vsmpNum.push_back(make_unique<clsSprite2D>());
 		m_vsmpNum[i]->Create(Resource->GetSpriteRenderSet().pDevice11,
@@ -25,7 +25,7 @@ void clsNum::Create(int Keta)
 }
 void clsNum::Init()
 {
-	for (size_t i = 0; i < m_vsmpNum.size(); i++)
+	for (UINT i = 0; i < m_vsmpNum.size(); i++)
 	{
 		int j = m_vsmpNum.size();
 		m_vsmpNum[i]->SetPos((m_vsmpNum[i]->GetSs().Disp.w - 60.0f)*(j - i - 1), 0.0f);
@@ -34,9 +34,9 @@ void clsNum::Init()
 
 void clsNum::Render(int Num)
 {
-	for (size_t i = 0; i < m_vsmpNum.size(); i++)
+	for (UINT i = 0; i < m_vsmpNum.size(); i++)
 	{
-		int tmp = pow(10, i);
+		int tmp = static_cast<int>(pow(10, i));
 		m_viDispNum[i] = 9 - Num / tmp;
 		m_vsmpNum[i]->SetPatarnV(m_viDispNum[i]);
 		m_vsmpNum[i]->Render();
@@ -45,7 +45,7 @@ void clsNum::Render(int Num)
 
 void clsNum::Release()
 {
-	for (size_t i = 0; i < m_vsmpNum.size(); i++)
+	for (UINT i = 0; i < m_vsmpNum.size(); i++)
 	{
 		m_vsmpNum[i].reset();
 	}

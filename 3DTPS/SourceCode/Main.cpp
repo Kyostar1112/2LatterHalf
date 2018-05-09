@@ -716,9 +716,6 @@ HRESULT clsMain::InitSphere(clsDX9Mesh* pMesh, float fScale)
 //メッシュ読込関数（まとめた）
 HRESULT clsMain::MeshRead()
 {
-	//リソースクラス.
-	m_pResource = clsResource::GetInstance();
-	m_pResource->Init(m_hWnd, m_pDevice, m_pDeviceContext);
 
 	m_bLoadFlg = false;
 
@@ -740,96 +737,99 @@ HRESULT clsMain::MeshRead()
 	m_smpLoadCircle->SetPatarnV(0.0f);
 	m_smpLoadCircle->SetAlpha(1.0f);
 
-
 	thread th1([this] {
-		while (true)
+		//リソースクラス.
+		m_pResource = clsResource::GetInstance();
+		m_pResource->Init(m_hWnd, m_pDevice, m_pDeviceContext);
+
+		m_pResource->CreateStaticModel(
+			"Data\\teststage\\test_stage_X.X",
+			clsResource::enStaticModel_Plane);
+		m_pResource->CreateStaticModel(
+			"Data\\Player\\Ziki.X",
+			clsResource::enStaticModel_Player);
+		m_pResource->CreateStaticModel(
+			"Data\\Player\\Ziki.X",
+			clsResource::enStaticModel_Shot);
+		m_pResource->CreateStaticModel(
+			"Data\\Collision\\Sphere.X",
+			clsResource::enStaticModel_Sphere);
+		m_pResource->CreateSkinModel(
+			"Data\\EXTINGER\\extinger.X",
+			clsResource::enSkinModel_Boss);
+
+		Resource->m_smpFile = make_unique<clsFile>();
+		Resource->m_smpFile->Init("Data\\Txt\\ScoreRank.csv");
+		Resource->m_smpFile->Read();
+		for (int i = 0; i < Resource->m_smpFile->GetDataArrayNumMax(); i++)
 		{
-			//画面のクリア.
-			float ClearColor[4] = { 0.0f, 0.0f, 0.0f, 1.0f };//クリア色(RGBA順:255の比率で出す)
-															 //カラーバックバッファ.
-			m_pDeviceContext->ClearRenderTargetView(m_pBackBuffer_TexRTV, ClearColor);
-			//デプスステンシルバックバッファ.
-			m_pDeviceContext->ClearDepthStencilView(m_pBackBuffer_DSTexDSV, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
-
-			SetDepth(false);
-
-			m_smpLoadString->Render();
-
-			m_smpLoadString->Flashing(0.0005f);
-			m_smpLoadCircle->Render();
-
-			SetDepth(true);
-
-			//レンダリングされたイメージを表示.
-			m_pSwapChain->Present(0, 0);
-
-			if (m_bLoadFlg)
-			{
-				break;
-			}
-
+			Resource->m_viScore.push_back(Resource->m_smpFile->GetDataArray(i));
 		}
+
+		m_bTitleFlg = true;
+		m_smpTitleScene = make_unique<clsTitleScene>();
+		m_smpStageScene = make_unique<clsStageScene>();
+		m_smpOverScene = make_unique<clsOverScene>();
+		m_smpClearScene = make_unique<clsClearScene>();
+		m_smpResultScene = make_unique<clsResultScene>();
+		m_pResource->SetModelRender(m_mView, m_mProj, m_vLight, m_Camera.vEye);
+		m_pResource->SetSpriteRender(m_hWnd, m_pDevice, m_pDeviceContext);
+
+		m_smpTitleScene->Create();
+		m_smpStageScene->Create();
+		m_smpOverScene->Create();
+		m_smpClearScene->Create();
+		m_smpResultScene->Create();
+
+		m_smpTitleScene->Init();
+		m_smpStageScene->Init();
+		m_smpOverScene->Init();
+		m_smpResultScene->Init();
+		m_smpClearScene->Init();
+
+		m_smpSeClick = make_unique<clsSound>();
+		m_smpSeClick->Open("Data\\Sound\\BGM\\Click.mp3", "ClickSe00", Resource->GetSpriteRenderSet().hWnd);
+		m_smpSeClick->SetVolume(100);
+
+		m_smpClearScene->MusicStop();
+		m_smpTitleScene->MusicStop();
+		m_smpStageScene->MusicStop();
+		m_smpResultScene->MusicStop();
+		m_smpOverScene->MusicStop();
+
+		m_bLoadFlg = true;
+
 	});
 
 	th1.detach();
 
-	m_pResource->CreateStaticModel(
-		"Data\\teststage\\test_stage_X.X",
-		clsResource::enStaticModel_Plane);
-	m_pResource->CreateStaticModel(
-		"Data\\Player\\Ziki.X",
-		clsResource::enStaticModel_Player);
-	m_pResource->CreateStaticModel(
-		"Data\\Player\\Ziki.X",
-		clsResource::enStaticModel_Shot);
-	m_pResource->CreateStaticModel(
-		"Data\\Collision\\Sphere.X",
-		clsResource::enStaticModel_Sphere);
-	m_pResource->CreateSkinModel(
-		"Data\\EXTINGER\\extinger.X",
-		clsResource::enSkinModel_Boss);
-
-	Resource->m_smpFile = make_unique<clsFile>();
-	Resource->m_smpFile->Init("Data\\Txt\\ScoreRank.csv");
-	Resource->m_smpFile->Read();
-	for (int i = 0; i < Resource->m_smpFile->GetDataArrayNumMax(); i++)
+	while (true)
 	{
-		Resource->m_viScore.push_back(Resource->m_smpFile->GetDataArray(i));
+		//画面のクリア.
+		float ClearColor[4] = { 0.0f, 0.0f, 0.0f, 1.0f };//クリア色(RGBA順:255の比率で出す)
+														 //カラーバックバッファ.
+		m_pDeviceContext->ClearRenderTargetView(m_pBackBuffer_TexRTV, ClearColor);
+		//デプスステンシルバックバッファ.
+		m_pDeviceContext->ClearDepthStencilView(m_pBackBuffer_DSTexDSV, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
+
+		SetDepth(false);
+
+		m_smpLoadString->Render();
+
+		m_smpLoadString->Flashing(0.0005f);
+		m_smpLoadCircle->Render();
+
+		SetDepth(true);
+
+		//レンダリングされたイメージを表示.
+		m_pSwapChain->Present(0, 0);
+
+		if (m_bLoadFlg)
+		{
+			break;
+		}
+
 	}
-
-	m_bTitleFlg = true;
-	m_smpTitleScene = make_unique<clsTitleScene>();
-	m_smpStageScene = make_unique<clsStageScene>();
-	m_smpOverScene = make_unique<clsOverScene>();
-	m_smpClearScene = make_unique<clsClearScene>();
-	m_smpResultScene = make_unique<clsResultScene>();
-	m_pResource->SetModelRender(m_mView, m_mProj, m_vLight, m_Camera.vEye);
-	m_pResource->SetSpriteRender(m_hWnd, m_pDevice, m_pDeviceContext);
-
-	m_smpTitleScene->Create();
-	m_smpStageScene->Create();
-	m_smpOverScene->Create();
-	m_smpClearScene->Create();
-	m_smpResultScene->Create();
-
-	m_smpTitleScene->Init();
-	m_smpStageScene->Init();
-	m_smpOverScene->Init();
-	m_smpResultScene->Init();
-	m_smpClearScene->Init();
-
-	m_smpSeClick = make_unique<clsSound>();
-	m_smpSeClick->Open("Data\\Sound\\BGM\\Click.mp3", "ClickSe00", Resource->GetSpriteRenderSet().hWnd);
-	m_smpSeClick->SetVolume(100);
-
-	m_smpClearScene->MusicStop();
-	m_smpTitleScene->MusicStop();
-	m_smpStageScene->MusicStop();
-	m_smpResultScene->MusicStop();
-	m_smpOverScene->MusicStop();
-
-	m_bLoadFlg = true;
-
 	return S_OK;
 }
 
@@ -1154,7 +1154,7 @@ void clsMain::dirOverGuard(float* fYaw)
 {
 	if (*fYaw > D3DX_PI * 2.0f) {
 		//１周以上している.
-		*fYaw -= D3DX_PI * 2.0f;	//2π(360°)分を引く.
+		*fYaw -= static_cast<float>(D3DX_PI * 2.0f);	//2π(360°)分を引く.
 	}
 
 	//再帰関数.

@@ -3,9 +3,9 @@
 const float PI = 3.141592f;
 namespace ConstantEnemy
 {
-	const float fSpawnLength = 30.0f;	//“G‚ªo‚Ä‚­‚é‹——£.
-	const int   iExpImg = 3;			//”š”­‰æ‘œ‚Ì”.
-	const int	iAttakInterval = 180.0f;//UŒ‚ŠÔŠu.
+	const float fSpawnLength	= 30.0f;//“G‚ªo‚Ä‚­‚é‹——£.
+	const int   iExpImg			= 3;	//”š”­‰æ‘œ‚Ì”.
+	const int	iAttakInterval	= 180;	//UŒ‚ŠÔŠu.
 }
 
 namespace CE = ConstantEnemy;
@@ -55,7 +55,7 @@ void clsEnemy::Loop()
 void clsEnemy::Spawn()
 {
 	ChangeAnimSet(02);
-	m_iAttakInterval = 180.0f;
+	m_iAttakInterval = CE::iAttakInterval;
 	float fZ, fX;
 
 	float fDeg = RandamAmong(0.0f, 360.0f);//Šp“x.
@@ -153,7 +153,7 @@ void clsEnemy::IdleAttack()
 
 	if (m_iAttakInterval < 0)
 	{
-		m_iAttakInterval = 180.0f;
+		m_iAttakInterval = CE::iAttakInterval;
 		//UŒ‚‘Ò‹@ó‘Ô‚É•ÏX.
 		m_EnemyState = State::InitAttack;
 	}

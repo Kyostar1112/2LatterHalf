@@ -323,7 +323,7 @@ void clsDebugText::Render(char* text, int x, int y)
 	SetBlend(true);
 
 	//文字数分ループ.
-	for (int i = 0; i < strlen(text); i++)
+	for (UINT i = 0; i < strlen(text); i++)
 	{
 		char font = text[i];
 		int index = font - 32;	//フォントインデックス作成.
@@ -331,7 +331,7 @@ void clsDebugText::Render(char* text, int x, int y)
 		//フォントレンダリング.
 		RenderFont(index, x, y);
 
-		x += m_fKerning[index];
+		x += static_cast<int>(m_fKerning[index]);
 	}
 
 	SetBlend(false);

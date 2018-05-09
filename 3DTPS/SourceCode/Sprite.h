@@ -6,7 +6,7 @@
 
 #include "Common.h"//ã§í ÉNÉâÉX.
 
-#include "Resource.h".
+#include "Resource.h"
 
 //======================================
 //	ç\ë¢ëÃ.
