@@ -601,7 +601,7 @@ void D3DXPARSER::ChangeAnimSet(int index, LPD3DXANIMATIONCONTROLLER pAC)
 	pTmpAC->SetTrackEnable(index, true);
 }
 
-// アニメーションｾｯﾄの切り替え(開始フレーム指定可能版)
+// アニメーションセットの切り替え(開始フレーム指定可能版)
 //　第２引数に開始したいフレームを指定する.
 //	完全停止したい場合は、前後でアニメーション速度も0.0fに指定してやる必要がある.
 void D3DXPARSER::ChangeAnimSet_StartPos(int index, double dStartFramePos, LPD3DXANIMATIONCONTROLLER pAC)
@@ -957,7 +957,7 @@ HRESULT	clsD3DXSKINMESH::InitShader()
 HRESULT clsD3DXSKINMESH::ReadSkinInfo(MYMESHCONTAINER* pContainer, MY_SKINVERTEX* pvVB, SKIN_PARTS_MESH* pParts)
 {
 	// Xファイルから抽出すべき情報は、
-	// 「頂点ごとのﾎﾞｰﾝｲﾝﾃﾞｯｸｽ」「頂点ごとのボーンウェイト」.
+	// 「頂点ごとのボーンインデックス」「頂点ごとのボーンウェイト」.
 	// 「バインド行列」「ポーズ行列」の4項目.
 
 	int i, k, m, n;	// 各種ループ変数.
@@ -1096,7 +1096,7 @@ void clsD3DXSKINMESH::Render(
 	m_vLight = vLight;
 	m_vEye = vEye;
 
-	// ｱﾆﾒ進行.
+	// アニメ進行.
 	if (pAC != NULL) {
 		pAC->AdvanceTime(m_dAnimSpeed, NULL);
 	}
@@ -1137,10 +1137,10 @@ HRESULT clsD3DXSKINMESH::CreateAppMeshFromD3DXMesh(LPD3DXFRAME p)
 {
 	MYFRAME* pFrame = (MYFRAME*)p;
 
-	//	LPD3DXMESH pD3DXMesh = pFrame->pMeshContainer->MeshData.pMesh;//D3DXﾒｯｼｭ(ここから・・・)
+	//	LPD3DXMESH pD3DXMesh = pFrame->pMeshContainer->MeshData.pMesh;//D3DXメッシュ(ここから・・・)
 	MYMESHCONTAINER* pContainer = (MYMESHCONTAINER*)pFrame->pMeshContainer;
 
-	// ｱﾌﾟﾘﾒｯｼｭ(・・・ここにメッシュデータをコピーする)
+	// アプリメッシュ(・・・ここにメッシュデータをコピーする)
 	SKIN_PARTS_MESH* pAppMesh = new SKIN_PARTS_MESH;
 	pAppMesh->bTex = false;
 
@@ -1241,7 +1241,7 @@ HRESULT clsD3DXSKINMESH::CreateAppMeshFromD3DXMesh(LPD3DXFRAME p)
 		// さらにインデックスの個数を調べる.
 		int iCount = 0;
 		int* pIndex = new int[pAppMesh->dwNumFace * 3];
-		// とりあえず、メッシュ内のポリゴン数でﾒﾓﾘ確保.
+		// とりあえず、メッシュ内のポリゴン数でメモリ確保.
 		// (ここのぽりごんぐるーぷは必ずこれ以下になる)
 
 		for (DWORD k = 0; k < pAppMesh->dwNumFace; k++)
@@ -1556,7 +1556,7 @@ HRESULT clsD3DXSKINMESH::DestroyAppMeshFromD3DXMesh(LPD3DXFRAME p)
 {
 	MYFRAME* pFrame = (MYFRAME*)p;
 
-	//	LPD3DXMESH pD3DXMesh = pFrame->pMeshContainer->MeshData.pMesh;//D3DXﾒｯｼｭ(ここから・・・)
+	//	LPD3DXMESH pD3DXMesh = pFrame->pMeshContainer->MeshData.pMesh;//D3DXメッシュ(ここから・・・)
 	MYMESHCONTAINER* pContainer = (MYMESHCONTAINER*)pFrame->pMeshContainer;
 
 	// インデックスバッファ解放.

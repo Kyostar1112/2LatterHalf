@@ -1,15 +1,15 @@
 #ifndef _SPRITE_2D_H_
 #define _SPRITE_2D_H_
 
-//警告についてのｺｰﾄﾞ分析を無効にする.4005:再定義.
+//警告についてのコード分析を無効にする.4005:再定義.
 #pragma warning( disable:4005 )
 
 using namespace std;
 
 //============================================================
-//	ｲﾝｸﾙｰﾄﾞ.
+//	インクルード.
 //============================================================
-#include "Common.h"//共通ｸﾗｽ.
+#include "Common.h"//共通クラス.
 #include <memory>
 #include <string>
 #include <d3dx9tex.h>
@@ -18,30 +18,30 @@ using namespace std;
 //============================================================
 //	構造体.
 //============================================================
-//ｺﾝｽﾀﾝﾄﾊﾞｯﾌｧのｱﾌﾟﾘ側の定義(Sprite2D.hlsl).
-//ｼｪｰﾀﾞ内のｺﾝｽﾀﾝﾄﾊﾞｯﾌｧと一致している必要あり.
+//コンスタントバッファのアプリ側の定義(Sprite2D.hlsl).
+//シェーダ内のコンスタントバッファと一致している必要あり.
 struct SPRITE2D_CONSTANT_BUFFER
 {
-	ALIGN16 D3DXMATRIX	mW;				//ﾜｰﾙﾄﾞ行列.
-	ALIGN16 float		fViewPortWidth;	//ﾋﾞｭｰﾎﾟｰﾄ幅.
-	ALIGN16 float		fViewPortHeight;//ﾋﾞｭｰﾎﾟｰﾄ高さ.
-	ALIGN16 float		fAlpha;			//ｱﾙﾌｧ値(透過).
+	ALIGN16 D3DXMATRIX	mW;				//ワールド行列.
+	ALIGN16 float		fViewPortWidth;	//ビューポート幅.
+	ALIGN16 float		fViewPortHeight;//ビューポート高さ.
+	ALIGN16 float		fAlpha;			//アルファ値(透過).
 	ALIGN16 D3DXVECTOR2 vUV;			//UV座標.
 };
 //頂点の構造体.
 struct Sprite2DVertex
 {
 	D3DXVECTOR3	vPos;	//位置.
-	D3DXVECTOR2	vTex;	//ﾃｸｽﾁｬ座標.
+	D3DXVECTOR2	vTex;	//テクスチャ座標.
 };
-//////ｽﾌﾟﾗｲﾄ構造体.
+//////スプライト構造体.
 //struct SPRITE_STATE
 //{
 //	WHSIZE_FLOAT	Disp;	//表示幅高さ.
 //	WHSIZE_FLOAT	Base;	//元画像高さ.
 //	WHSIZE_FLOAT	Stride;	//一コマあたりの高さ.
 //};//m_SState.
-//ｽﾌﾟﾗｲﾄ構造体.
+//スプライト構造体.
 struct SPRITE_STATE
 {
 	WHSIZE_FLOAT	Disp;	//表示幅高さ.
@@ -58,14 +58,14 @@ enum en_BlackMode
 };
 
 //============================================================
-//	ｽﾌﾟﾗｲﾄ2Dｸﾗｽ.
+//	スプライト2Dクラス.
 //============================================================
 class clsSprite2D
 	: public clsCommon
 {
 public:
-	clsSprite2D();	//ｺﾝｽﾄﾗｸﾀ.
-	virtual ~clsSprite2D();	//ﾃﾞｽﾄﾗｸﾀ.
+	clsSprite2D();	//コンストラクタ.
+	virtual ~clsSprite2D();	//デストラクタ.
 
 	//初期化.
 	HRESULT Create(ID3D11Device* pDevice11,
@@ -241,7 +241,7 @@ public:
 	//点滅用.
 	void Flashing(float ChaAmo, float AlphaMax = 1.0f, float AlphaMin = 0.0f);
 
-	//描画(ﾚﾝﾀﾞﾘﾝｸﾞ)(※DX9MESH内とMain内で2つ存在するので注意).
+	//描画(レンダリング)(※DX9MESH内とMain内で2つ存在するので注意).
 	virtual void Render();
 	en_BlackMode m_BlackMode;
 
@@ -249,11 +249,11 @@ public:
 
 protected:
 
-	//ｼｪｰﾀﾞ作成.
+	//シェーダ作成.
 	HRESULT InitShader();
-	////ﾓﾃﾞﾙ作成.
+	////モデル作成.
 	virtual HRESULT InitModel(SPRITE_STATE ss);
-	//ﾃｸｽﾁｬ作成.
+	//テクスチャ作成.
 	HRESULT CreateTexture(LPSTR fileName,
 		ID3D11ShaderResourceView** pTex);
 
@@ -265,26 +265,26 @@ protected:
 
 	D3DXVECTOR3		m_vPos;	//位置.
 
-	int				m_AnimCount;//UVｽｸﾛｰﾙ.
+	int				m_AnimCount;//UVスクロール.
 
-	bool			m_bDispFlg;//表示ﾌﾗｸﾞ.
+	bool			m_bDispFlg;//表示フラグ.
 
-	float			m_fAlpha;	//ｱﾙﾌｧ値.
+	float			m_fAlpha;	//アルファ値.
 
-	SPRITE_STATE	m_SState;	//ｽﾌﾟﾗｲﾄ情報.
-	POINTFLOAT		m_fPatternNo;//ﾏｽ目番号.
+	SPRITE_STATE	m_SState;	//スプライト情報.
+	POINTFLOAT		m_fPatternNo;//マス目番号.
 
-	//↓ﾓﾃﾞﾙの種類ごとに用意.
-	ID3D11VertexShader*		m_pVertexShader;	//頂点ｼｪｰﾀﾞ.
-	ID3D11InputLayout*		m_pVertexLayout;	//頂点ﾚｲｱｳﾄ.
-	ID3D11PixelShader*		m_pPixelShader;		//ﾋﾟｸｾﾙｼｪｰﾀﾞ.
-	ID3D11Buffer*			m_pConstantBuffer;	//ｺﾝｽﾀﾝﾄﾊﾞｯﾌｧ.
-	ID3D11ShaderResourceView*	m_pTexture;		//ﾃｸｽﾁｬ.
+	//↓モデルの種類ごとに用意.
+	ID3D11VertexShader*		m_pVertexShader;	//頂点シェーダ.
+	ID3D11InputLayout*		m_pVertexLayout;	//頂点レイアウト.
+	ID3D11PixelShader*		m_pPixelShader;		//ピクセルシェーダ.
+	ID3D11Buffer*			m_pConstantBuffer;	//コンスタントバッファ.
+	ID3D11ShaderResourceView*	m_pTexture;		//テクスチャ.
 
-	//↓ﾓﾃﾞﾙごとに用意.
-	ID3D11Buffer*			m_pVertexBuffer;	//頂点ﾊﾞｯﾌｧ.
+	//↓モデルごとに用意.
+	ID3D11Buffer*			m_pVertexBuffer;	//頂点バッファ.
 
-	ID3D11SamplerState*		m_pSampleLinear;//ﾃｸｽﾁｬのｻﾝﾌﾟﾗｰ:/ﾃｸｽﾁｬに各種ﾌｨﾙﾀをかける.
+	ID3D11SamplerState*		m_pSampleLinear;//テクスチャのサンプラー:/テクスチャに各種フィルタをかける.
 };
 
 #endif//#define _SPRITE_2D_H_

@@ -3,27 +3,27 @@
 #include "MyMacro.h"
 #include <stdio.h>
 
-//ｸﾞﾛｰﾊﾞﾙ変数.
+//グローバル変数.
 
 //定数.
 
 clsMain*	g_pClsMain = NULL;
 
 //======================================
-//	ﾒｲﾝ関数.
+//	メイン関数.
 //======================================
 INT WINAPI WinMain(
-	HINSTANCE hInstance,	//ｲﾝｽﾀﾝ番号(ｳｨﾝﾄﾞｳの番号)
+	HINSTANCE hInstance,	//インスタン番号(ウィンドウの番号)
 	HINSTANCE hPrevInstance,
 	PSTR lpCmdLine,
 	INT nCmdShow)
 {
-	//g_pClsMain = make_unique<clsMain>();	//初期化&ｸﾗｽの宣言.
-	g_pClsMain = new clsMain;	//初期化&ｸﾗｽの宣言.
+	//g_pClsMain = make_unique<clsMain>();	//初期化&クラスの宣言.
+	g_pClsMain = new clsMain;	//初期化&クラスの宣言.
 
-	//ｸﾗｽが存在してるかﾁｪｯｸ.
+	//クラスが存在してるかチェック.
 	if (g_pClsMain != NULL) {
-		//ｳｨﾝﾄﾞｳ作成成功.
+		//ウィンドウ作成成功.
 		if (SUCCEEDED(
 			g_pClsMain->InitWindow(
 				hInstance,
@@ -34,7 +34,7 @@ INT WINAPI WinMain(
 			//Dx11用の初期化.
 			if (SUCCEEDED(g_pClsMain->InitD3D()))
 			{
-				//ﾒｯｾｰｼﾞﾙｰﾌﾟ.
+				//メッセージループ.
 				g_pClsMain->Loop();
 			}
 		}
@@ -47,21 +47,21 @@ INT WINAPI WinMain(
 }
 
 //======================================
-//	ｳｨﾝﾄﾞｳﾌﾟﾛｼｰｼﾞｬ.
+//	ウィンドウプロシージャ.
 //======================================
 LRESULT CALLBACK WndProc(
 	HWND hWnd, UINT uMsg,
 	WPARAM wParam, LPARAM lParam)
 {
-	//ﾌﾟﾛｼｰｼﾞｬ.
+	//プロシージャ.
 	return g_pClsMain->MsgProc(hWnd, uMsg, wParam, lParam);
 }
 
 /*************************************************
-*	ﾒｲﾝｸﾗｽ.
+*	メインクラス.
 **/
 //======================================
-//	ｺﾝｽﾄﾗｸﾀ.
+//	コンストラクタ.
 //======================================
 clsMain::clsMain()
 {
@@ -69,20 +69,20 @@ clsMain::clsMain()
 
 	m_hWnd = NULL;
 
-	m_pDevice = NULL;	//ﾃﾞﾊﾞｲｽｵﾌﾞｼﾞｪｸﾄ.
-	m_pDeviceContext = NULL;	//ﾃﾞﾊﾞｲｽｺﾝﾃｷｽﾄ.
-	m_pSwapChain = NULL;	//ｽﾜｯﾌﾟﾁｪｰﾝ.
+	m_pDevice = NULL;	//デバイスオブジェクト.
+	m_pDeviceContext = NULL;	//デバイスコンテキスト.
+	m_pSwapChain = NULL;	//スワップチェーン.
 
-	m_pBackBuffer_TexRTV = NULL;//ﾚﾝﾀﾞｰﾀｰｹﾞｯﾄﾋﾞｭｰ.
-	m_pBackBuffer_DSTex = NULL;//ﾊﾞｯｸﾊﾞｯﾌｧ.
-	m_pBackBuffer_DSTexDSV = NULL;//ﾃﾞﾌﾟｽｽﾃﾝｼﾙﾋﾞｭｰ.
+	m_pBackBuffer_TexRTV = NULL;//レンダーターゲットビュー.
+	m_pBackBuffer_DSTex = NULL;//バックバッファ.
+	m_pBackBuffer_DSTexDSV = NULL;//デプスステンシルビュー.
 
-	//ｶﾒﾗ(視点)位置.
+	//カメラ(視点)位置.
 	m_Camera.vEye = D3DXVECTOR3(0.0f, 2.0f, -3.0f);
 	//注視位置.
 	m_Camera.vLook = D3DXVECTOR3(0.0f, 0.0f, 10.0f);
 
-	//ﾗｲﾄ方向.
+	//ライト方向.
 	m_vLight = D3DXVECTOR3(0.0f, 0.5f, -1.0f);
 
 	m_enScene = Title;
@@ -95,22 +95,22 @@ clsMain::clsMain()
 }
 
 //======================================
-//	ﾃﾞｽﾄﾗｸﾀ.
+//	デストラクタ.
 //======================================
 clsMain::~clsMain()
 {
 }
 
 //======================================
-//	ｳｨﾝﾄﾞｳ初期化関数.
+//	ウィンドウ初期化関数.
 //======================================
 HRESULT clsMain::InitWindow(
-	HINSTANCE hInstance,	//ｲﾝｽﾀﾝｽ.
-	INT x, INT y,			//ｳｨﾝﾄﾞｳのx,y座標.
-	INT width, INT height,	//ｳｨﾝﾄﾞｳの幅,高さ.
-	LPSTR WindowName)		//ｳｨﾝﾄﾞｳ名.
+	HINSTANCE hInstance,	//インスタンス.
+	INT x, INT y,			//ウィンドウのx,y座標.
+	INT width, INT height,	//ウィンドウの幅,高さ.
+	LPSTR WindowName)		//ウィンドウ名.
 {
-	//ｳｨﾝﾄﾞｳの定義.
+	//ウィンドウの定義.
 	WNDCLASSEX wc;
 	ZeroMemory(&wc, sizeof(wc));//初期化(0設定)
 
@@ -124,32 +124,32 @@ HRESULT clsMain::InitWindow(
 	wc.lpszClassName = APR_NAME;
 	wc.hIconSm = LoadIcon(NULL, IDI_APPLICATION);
 
-	//ｳｨﾝﾄﾞｳｸﾗｽをWindowsに登録.
+	//ウィンドウクラスをWindowsに登録.
 	if (!RegisterClassEx(&wc)) {
 		MessageBox(NULL,
-			"ｳｨﾝﾄﾞｳｸﾗｽの登録に失敗", "ｴﾗｰ", MB_OK);
+			"ウィンドウクラスの登録に失敗", "エラー", MB_OK);
 		return E_FAIL;
 	}
 
-	//ｳｨﾝﾄﾞｳの作成.
+	//ウィンドウの作成.
 	m_hWnd = CreateWindow(
-		APR_NAME,	//ｱﾌﾟﾘ名.
-		WindowName,	//ｳｨﾝﾄﾞｳﾀｲﾄﾙ.
-		WS_OVERLAPPEDWINDOW,//ｳｨﾝﾄﾞｳ種別(普通)
+		APR_NAME,	//アプリ名.
+		WindowName,	//ウィンドウタイトル.
+		WS_OVERLAPPEDWINDOW,//ウィンドウ種別(普通)
 		0, 0,			//表示位置x,y座標.
-		width, height,	//ｳｨﾝﾄﾞｳの幅,高さ.
-		NULL,			//親ｳｨﾝﾄﾞｳﾊﾝﾄﾞﾙ.
-		NULL,			//ﾒﾆｭｰ設定.
-		hInstance,		//ｲﾝｽﾀﾝｽ番号.
-		NULL);			//ｳｨﾝﾄﾞｳ作成時に発生するｲﾍﾞﾝﾄに渡すﾃﾞｰﾀ.
+		width, height,	//ウィンドウの幅,高さ.
+		NULL,			//親ウィンドウハンドル.
+		NULL,			//メニュー設定.
+		hInstance,		//インスタンス番号.
+		NULL);			//ウィンドウ作成時に発生するイベントに渡すデータ.
 
 	if (!m_hWnd) {
 		MessageBox(NULL,
-			"ｳｨﾝﾄﾞｳ作成に失敗", "ｴﾗｰ", MB_OK);
+			"ウィンドウ作成に失敗", "エラー", MB_OK);
 		return E_FAIL;
 	}
 
-	//ｳｨﾝﾄﾞｳの表示.
+	//ウィンドウの表示.
 	ShowWindow(m_hWnd, SW_SHOW);
 	UpdateWindow(m_hWnd);
 
@@ -157,28 +157,28 @@ HRESULT clsMain::InitWindow(
 }
 
 //======================================
-//	ｳｨﾝﾄﾞｳ関数(ﾒｯｾｰｼﾞ毎の処理)
+//	ウィンドウ関数(メッセージ毎の処理)
 //======================================
 LRESULT clsMain::MsgProc(
 	HWND hWnd, UINT uMsg,
 	WPARAM wParam, LPARAM lParam)
 {
 	switch (uMsg) {
-	case WM_DESTROY://ｳｨﾝﾄﾞｳが破棄された時.
-		//ｱﾌﾟﾘｹｰｼｮﾝの終了をWindowsに通知する.
+	case WM_DESTROY://ウィンドウが破棄された時.
+		//アプリケーションの終了をWindowsに通知する.
 		PostQuitMessage(0);
 		break;
 
-	case WM_KEYDOWN://ｷｰﾎﾞｰﾄﾞが押されたとき.
+	case WM_KEYDOWN://キーボードが押されたとき.
 
-		//ｷｰ別の処理.
+		//キー別の処理.
 		switch ((char)wParam) {
-		case VK_ESCAPE:	//ESCｷｰ.
+		case VK_ESCAPE:	//ESCキー.
 			if (MessageBox(NULL,
 				"ゲームを終了しますか？", "警告",
 				MB_YESNO) == IDYES)
 			{
-				//ｳｨﾝﾄﾞｳを破棄する.
+				//ウィンドウを破棄する.
 				DestroyWindow(hWnd);
 			}
 			break;
@@ -186,24 +186,24 @@ LRESULT clsMain::MsgProc(
 		break;
 	}
 
-	//ﾒｲﾝに返す情報.
+	//メインに返す情報.
 	return DefWindowProc(hWnd, uMsg, wParam, lParam);
 }
 
 //================================================
-//	ﾒｯｾｰｼﾞﾙｰﾌﾟとｱﾌﾟﾘｹｰｼｮﾝ処理の入り口.
+//	メッセージループとアプリケーション処理の入り口.
 //================================================
 void clsMain::Loop()
 {
 	//=== DirectInput初期化処理 ===//
-	//DxInputｵﾌﾞｼﾞｪｸﾄの作成.
+	//DxInputオブジェクトの作成.
 	m_smpDxInput = make_unique<clsDxInput>();
 	m_smpDxInput->initDI(m_hWnd);
 
-	//ﾒｯｼｭ読込まとめたもの.
+	//メッシュ読込まとめたもの.
 	MeshRead();
 
-	//ﾃﾞﾊﾞｯｸﾞﾃｷｽﾄの初期化.
+	//デバッグテキストの初期化.
 	m_smpText = make_unique<clsDebugText>();
 	D3DXVECTOR4 vColor(1.0f, 1.0f, 1.0f, 1.0f);
 	if (FAILED(m_smpText->Init(
@@ -212,21 +212,21 @@ void clsMain::Loop()
 		vColor)))			//文字色.
 	{
 		MessageBox(NULL,
-			"ﾃﾞﾊﾞｯｸﾞﾃｷｽﾄ作成失敗", "error", MB_OK);
+			"デバッグテキスト作成失敗", "error", MB_OK);
 	}
 
 	//-------------------------------------
-	//	ﾌﾚｰﾑﾚｰﾄ調節準備.
+	//	フレームレート調節準備.
 	//-------------------------------------
-	float fRate = 0.0f;	//ﾚｰﾄ.
+	float fRate = 0.0f;	//レート.
 	float fFPS = 60.0f;//FPS値.
 	DWORD sync_old = timeGetTime();//過去時間.
 	DWORD sync_now;					//現在時間.
 
-	//時間処理の為、最小単位を1ﾐﾘ秒に変更.
+	//時間処理の為、最小単位を1ミリ秒に変更.
 	timeBeginPeriod(1);
 
-	//ﾒｯｾｰｼﾞﾙｰﾌﾟ.
+	//メッセージループ.
 	MSG msg = { 0 };
 	ZeroMemory(&msg, sizeof(msg));
 
@@ -246,20 +246,20 @@ void clsMain::Loop()
 		{
 			sync_old = sync_now;//現在時間に置き換え.
 
-			//ｱﾌﾟﾘｹｰｼｮﾝの処理はここから飛ぶ.
+			//アプリケーションの処理はここから飛ぶ.
 			AppMain();
 		}
 	}
-	//ｱﾌﾟﾘｹｰｼｮﾝの終了.
+	//アプリケーションの終了.
 	timeEndPeriod(1);	//解除.
 }
 
 //================================================
-//	ｱﾌﾟﾘｹｰｼｮﾝﾒｲﾝ処理.
+//	アプリケーションメイン処理.
 //================================================
 void clsMain::AppMain()
 {
-	//ｺﾝﾄﾛｰﾗ入力情報更新.
+	//コントローラ入力情報更新.
 	m_smpDxInput->UpdateInputState();
 	float fBlackSpeed = 0.01f;
 	if (m_smpSeClick->IsPlaying())
@@ -359,29 +359,29 @@ void clsMain::AppMain()
 
 	SceneChange();
 
-	//ﾚﾝﾀﾞﾘﾝｸﾞ.
+	//レンダリング.
 	Render();
 }
 
 //================================================
-//	ｼｰﾝ(場面)を画面にﾚﾝﾀﾞﾘﾝｸﾞ(描画)
+//	シーン(場面)を画面にレンダリング(描画)
 //================================================
 void clsMain::Render()
 {
-	//画面のｸﾘｱ.
-	float ClearColor[4] = { 0.0f, 0.0f, 0.5f, 1.0f };//ｸﾘｱ色(RGBA順)
-	//ｶﾗｰﾊﾞｯｸﾊﾞｯﾌｧ.
+	//画面のクリア.
+	float ClearColor[4] = { 0.0f, 0.0f, 0.5f, 1.0f };//クリア色(RGBA順)
+	//カラーバックバッファ.
 	m_pDeviceContext->ClearRenderTargetView(
 		m_pBackBuffer_TexRTV, ClearColor);
-	//ﾃﾞﾌﾟｽｽﾃﾝｼﾙﾊﾞｯｸﾊﾞｯﾌｧ.
+	//デプスステンシルバックバッファ.
 	m_pDeviceContext->ClearDepthStencilView(
 		m_pBackBuffer_DSTexDSV,
 		D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL,
 		1.0f, 0);
 
-	//ｶﾒﾗ関数.
+	//カメラ関数.
 	Camera();
-	//ﾌﾟﾛｼﾞｪｸｼｮﾝ関数.
+	//プロジェクション関数.
 	Proj();
 
 	m_pResource->SetModelRender(m_mView, m_mProj, m_vLight, m_Camera.vEye);
@@ -430,8 +430,8 @@ void clsMain::Render()
 	}
 
 #ifdef _DEBUG
-	//ﾃﾞﾊﾞｯｸﾞﾃｷｽﾄ.
-	if (m_smpText != NULL)//NULLﾁｪｯｸ.
+	//デバッグテキスト.
+	if (m_smpText != NULL)//NULLチェック.
 	{
 		char strDbgTxt[256];
 		float DbgY = 10.0f;
@@ -463,7 +463,7 @@ void clsMain::Render()
 	}
 #endif//#ifdef _DEBUG
 
-	//ﾚﾝﾀﾞﾘﾝｸﾞされたｲﾒｰｼﾞを表示.
+	//レンダリングされたイメージを表示.
 	m_pSwapChain->Present(0, 0);
 }
 
@@ -473,53 +473,53 @@ void clsMain::Render()
 HRESULT clsMain::InitD3D()
 {
 	//-------------------------------------
-	//	ﾃﾞﾊﾞｲｽとｽﾜｯﾌﾟﾁｪｰﾝ関係.
+	//	デバイスとスワップチェーン関係.
 	//-------------------------------------
 
-	//ｽﾜｯﾌﾟﾁｪｰﾝ構造体.
+	//スワップチェーン構造体.
 	DXGI_SWAP_CHAIN_DESC sd;
 	ZeroMemory(&sd, sizeof(sd));
-	sd.BufferCount = 1;	//ﾊﾞｯｸﾊﾞｯﾌｧの数.
-	sd.BufferDesc.Width = WND_W;//ﾊﾞｯｸﾊﾞｯﾌｧの幅.
-	sd.BufferDesc.Height = WND_H;//ﾊﾞｯｸﾊﾞｯﾌｧの高さ.
+	sd.BufferCount = 1;	//バックバッファの数.
+	sd.BufferDesc.Width = WND_W;//バックバッファの幅.
+	sd.BufferDesc.Height = WND_H;//バックバッファの高さ.
 	sd.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
-	//ﾌｫｰﾏｯﾄ(32ﾋﾞｯﾄｶﾗｰ)
+	//フォーマット(32ビットカラー)
 	sd.BufferDesc.RefreshRate.Numerator = 60;
-	//ﾘﾌﾚｯｼｭﾚｰﾄ(分母) ※FPS:60
+	//リフレッシュレート(分母) ※FPS:60
 	sd.BufferDesc.RefreshRate.Denominator = 1;
-	//ﾘﾌﾚｯｼｭﾚｰﾄ(分子)
+	//リフレッシュレート(分子)
 	sd.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
 	//使い方(表示先)
-	sd.OutputWindow = m_hWnd;	//ｳｨﾝﾄﾞｳﾊﾝﾄﾞﾙ.
-	sd.SampleDesc.Count = 1;	//ﾏﾙﾁｻﾝﾌﾟﾙの数.
-	sd.SampleDesc.Quality = 0;	//ﾏﾙﾁｻﾝﾌﾟﾙのｸｵﾘﾃｨ.
-	sd.Windowed = TRUE;	//ｳｨﾝﾄﾞｳﾓｰﾄﾞ(ﾌﾙｽｸ時はFALSE)
+	sd.OutputWindow = m_hWnd;	//ウィンドウハンドル.
+	sd.SampleDesc.Count = 1;	//マルチサンプルの数.
+	sd.SampleDesc.Quality = 0;	//マルチサンプルのクオリティ.
+	sd.Windowed = TRUE;	//ウィンドウモード(フルスク時はFALSE)
 
-	//作成を試みる機能ﾚﾍﾞﾙの優先を指定.
-	//	(GPUがｻﾎﾟｰﾄする機能ｾｯﾄの定義)
+	//作成を試みる機能レベルの優先を指定.
+	//	(GPUがサポートする機能セットの定義)
 	//	D3D_FEATURE_LEVEL列挙体の配列.
-	//	D3D_FEATURE_LEVEL_10_1:Direct3D 10.1のGPUﾚﾍﾞﾙ.
+	//	D3D_FEATURE_LEVEL_10_1:Direct3D 10.1のGPUレベル.
 	D3D_FEATURE_LEVEL pFeatureLevels = D3D_FEATURE_LEVEL_11_0;
 	D3D_FEATURE_LEVEL* pFeatureLevel = NULL;//配列の要素数.
 
-	//ﾃﾞﾊﾞｲｽとｽﾜｯﾌﾟﾁｪｰﾝの作成.
-	//	ﾊｰﾄﾞｳｪｱ(GPU)ﾃﾞﾊﾞｲｽで作成.
+	//デバイスとスワップチェーンの作成.
+	//	ハードウェア(GPU)デバイスで作成.
 	if (FAILED(
 		D3D11CreateDeviceAndSwapChain(
-			NULL,			//ﾋﾞﾃﾞｵｱﾀﾞﾌﾟﾀへのﾎﾟｲﾝﾀ.
-			D3D_DRIVER_TYPE_HARDWARE,//作成するﾃﾞﾊﾞｲｽの種類.
-			NULL,			//ｿﾌﾄｳｪｱ ﾗｽﾀﾗｲｻﾞｰを実装するDLLのﾊﾝﾄﾞﾙ.
-			0,				//有効にするﾗﾝﾀｲﾑﾚｲﾔｰ.
-			&pFeatureLevels,//作成を試みる機能ﾚﾍﾞﾙの順序を指定する配列へのﾎﾟｲﾝﾀ.
+			NULL,			//ビデオアダプタへのポインタ.
+			D3D_DRIVER_TYPE_HARDWARE,//作成するデバイスの種類.
+			NULL,			//ソフトウェア ラスタライザーを実装するDLLのハンドル.
+			0,				//有効にするランタイムレイヤー.
+			&pFeatureLevels,//作成を試みる機能レベルの順序を指定する配列へのポインタ.
 			1,				//↑の要素数.
-			D3D11_SDK_VERSION,//SDKのﾊﾞｰｼﾞｮﾝ.
-			&sd,			//ｽﾜｯﾌﾟﾁｪｰﾝの初期化ﾊﾟﾗﾒｰﾀのﾎﾟｲﾝﾀ.
-			&m_pSwapChain,	//(out)ﾚﾝﾀﾞﾘﾝｸﾞに使用するｽﾜｯﾌﾟﾁｪｰﾝ.
-			&m_pDevice,		//(out)作成されたﾃﾞﾊﾞｲｽ.
-			pFeatureLevel,	//機能ﾚﾍﾞﾙの配列にある最初の要素を表すﾎﾟｲﾝﾀ.
-			&m_pDeviceContext)))//(out)ﾃﾞﾊﾞｲｽ ｺﾝﾃｷｽﾄ.
+			D3D11_SDK_VERSION,//SDKのバージョン.
+			&sd,			//スワップチェーンの初期化パラメータのポインタ.
+			&m_pSwapChain,	//(out)レンダリングに使用するスワップチェーン.
+			&m_pDevice,		//(out)作成されたデバイス.
+			pFeatureLevel,	//機能レベルの配列にある最初の要素を表すポインタ.
+			&m_pDeviceContext)))//(out)デバイス コンテキスト.
 	{
-		//WARPﾃﾞﾊﾞｲｽの作成.
+		//WARPデバイスの作成.
 		//	D3D_FEATURE_LEVEL_9_1 ～ D3D_FEATURE_LEVEL_10_1
 		if (FAILED(
 			D3D11CreateDeviceAndSwapChain(
@@ -529,8 +529,8 @@ HRESULT clsMain::InitD3D()
 				&m_pDevice, pFeatureLevel,
 				&m_pDeviceContext)))
 		{
-			//ﾘﾌｧﾚﾝｽﾃﾞﾊﾞｲｽの作成.
-			//	DirectX SDKがｲﾝｽﾄｰﾙされていないと使えない.
+			//リファレンスデバイスの作成.
+			//	DirectX SDKがインストールされていないと使えない.
 			if (FAILED(
 				D3D11CreateDeviceAndSwapChain(
 					NULL, D3D_DRIVER_TYPE_REFERENCE,
@@ -540,72 +540,72 @@ HRESULT clsMain::InitD3D()
 					&m_pDeviceContext)))
 			{
 				MessageBox(NULL,
-					"ﾃﾞﾊﾞｲｽとｽﾜｯﾌﾟﾁｪｰﾝの作成に失敗",
+					"デバイスとスワップチェーンの作成に失敗",
 					"error(main.cpp)", MB_OK);
 				return E_FAIL;
 			}
 		}
 	}
 
-	//各種ﾃｸｽﾁｬ-と、それに付帯する各種ﾋﾞｭｰ(画面)を作成.
+	//各種テクスチャ-と、それに付帯する各種ビュー(画面)を作成.
 
 	//-----------------------------------------------
-	//	ﾊﾞｯｸﾊﾞｯﾌｧ準備:ｶﾗｰﾊﾞｯﾌｧ設定.
+	//	バックバッファ準備:カラーバッファ設定.
 	//-----------------------------------------------
 
-	//ﾊﾞｯｸﾊﾞｯﾌｧﾃｸｽﾁｬ-を取得(既にあるので作成ではない)
+	//バックバッファテクスチャ-を取得(既にあるので作成ではない)
 	ID3D11Texture2D *pBackBuffer_Tex;
 	m_pSwapChain->GetBuffer(
 		0,
 		__uuidof(ID3D11Texture2D),	//__uuidof:式に関連付けされたGUIDを取得.
 		//         Texture2Dの唯一の物として扱う.
-		(LPVOID*)&pBackBuffer_Tex);	//(out)ﾊﾞｯｸﾊﾞｯﾌｧﾃｸｽﾁｬ-.
+		(LPVOID*)&pBackBuffer_Tex);	//(out)バックバッファテクスチャ-.
 
-	//そのﾃｸｽﾁｬに対しﾚﾝﾀﾞｰﾀｰｹﾞｯﾄﾋﾞｭｰ(RTV)を作成.
+	//そのテクスチャに対しレンダーターゲットビュー(RTV)を作成.
 	m_pDevice->CreateRenderTargetView(
 		pBackBuffer_Tex,
 		NULL,
 		&m_pBackBuffer_TexRTV);//(out)RTV.
-	//ﾊﾞｯｸﾊﾞｯﾌｧﾃｸｽﾁｬ-を解放.
+	//バックバッファテクスチャ-を解放.
 	SAFE_RELEASE(pBackBuffer_Tex);
 
 	//-----------------------------------------------
-	//	ﾊﾞｯｸﾊﾞｯﾌｧ準備:ﾃﾞﾌﾟｽ(深度)ｽﾃﾝｼﾙ関係.
+	//	バックバッファ準備:デプス(深度)ステンシル関係.
 	//-----------------------------------------------
 
-	//ﾃﾞﾌﾟｽ(深さor深度)ｽﾃﾝｼﾙﾋﾞｭｰ用のﾃｸｽﾁｬ-を作成.
+	//デプス(深さor深度)ステンシルビュー用のテクスチャ-を作成.
 	D3D11_TEXTURE2D_DESC descDepth;
 
 	descDepth.Width = WND_W;//幅.
 	descDepth.Height = WND_H;//高さ.
-	descDepth.MipLevels = 1;//ﾐｯﾌﾟﾏｯﾌﾟﾚﾍﾞﾙ:1.
+	descDepth.MipLevels = 1;//ミップマップレベル:1.
 	descDepth.ArraySize = 1;//配列数:1.
-	descDepth.Format = DXGI_FORMAT_D32_FLOAT;//32ﾋﾞｯﾄﾌｫｰﾏｯﾄ.
-	descDepth.SampleDesc.Count = 1;//ﾏﾙﾁｻﾝﾌﾟﾙの数.
-	descDepth.SampleDesc.Quality = 0;//ﾏﾙﾁｻﾝﾌﾟﾙのｸｵﾘﾃｨ.
-	descDepth.Usage = D3D11_USAGE_DEFAULT;//使用方法:ﾃﾞﾌｫﾙﾄ.
-	descDepth.BindFlags = D3D11_BIND_DEPTH_STENCIL;//深度(ｽﾃﾝｼﾙとして使用)
-	descDepth.CPUAccessFlags = 0;//CPUからはｱｸｾｽしない.
+	descDepth.Format = DXGI_FORMAT_D32_FLOAT;//32ビットフォーマット.
+	descDepth.SampleDesc.Count = 1;//マルチサンプルの数.
+	descDepth.SampleDesc.Quality = 0;//マルチサンプルのクオリティ.
+	descDepth.Usage = D3D11_USAGE_DEFAULT;//使用方法:デフォルト.
+	descDepth.BindFlags = D3D11_BIND_DEPTH_STENCIL;//深度(ステンシルとして使用)
+	descDepth.CPUAccessFlags = 0;//CPUからはアクセスしない.
 	descDepth.MiscFlags = 0;//その他の設定なし.
 
 	m_pDevice->CreateTexture2D(
 		&descDepth,
 		NULL,
-		&m_pBackBuffer_DSTex);//(out)ﾃﾞﾌﾟｽｽﾃﾝｼﾙ用ﾃｸｽﾁｬ.
+		&m_pBackBuffer_DSTex);//(out)デプスステンシル用テクスチャ.
 
-	//そのﾃｸｽﾁｬに対しﾃﾞﾌﾟｽｽﾃﾝｼﾙﾋﾞｭｰ(DSV)を作成.
+	//そのテクスチャに対しデプスステンシルビュー(DSV)を作成.
 	m_pDevice->CreateDepthStencilView(
 		m_pBackBuffer_DSTex,
 		NULL,
 		&m_pBackBuffer_DSTexDSV);//(out)DSV.
 
-	//ﾚﾝﾀﾞｰﾀｰｹﾞｯﾄﾋﾞｭｰとﾃﾞﾌﾟｽｽﾃﾝｼﾙﾋﾞｭｰをﾊﾟｲﾌﾟﾗｲﾝにｾｯﾄ.
+	//レンダーターゲットビューとデプスステンシルビューをパイプラインにセット.
 	m_pDeviceContext->OMSetRenderTargets(
 		1,
 		&m_pBackBuffer_TexRTV,
 		m_pBackBuffer_DSTexDSV);
 
-	//深度ﾃｽﾄ(Zﾃｽﾄ)を有効にする.
+	//深度テスト(Zテスト)を有効にする.
 	D3D11_DEPTH_STENCIL_DESC	depthStencilDesc;
 	ZeroMemory(&depthStencilDesc,
 		sizeof(D3D11_DEPTH_STENCIL_DESC));
@@ -618,7 +618,7 @@ HRESULT clsMain::InitD3D()
 			m_pDepthStencilState, 1);
 	}
 
-	//ﾋﾞｭｰﾎﾟｰﾄの設定.
+	//ビューポートの設定.
 	D3D11_VIEWPORT vp;
 	vp.Width = WND_W;	//幅.
 	vp.Height = WND_H;	//高さ.
@@ -628,19 +628,19 @@ HRESULT clsMain::InitD3D()
 	vp.TopLeftY = 0.0f;		//左上位置y.
 	m_pDeviceContext->RSSetViewports(1, &vp);
 
-	//ﾗｽﾀﾗｲｽﾞ(面の塗りつぶし方)設定.
+	//ラスタライズ(面の塗りつぶし方)設定.
 	D3D11_RASTERIZER_DESC rdc;
 	ZeroMemory(&rdc, sizeof(rdc));
-	rdc.FillMode = D3D11_FILL_SOLID;//塗りつぶし(ｿﾘｯﾄﾞ)
+	rdc.FillMode = D3D11_FILL_SOLID;//塗りつぶし(ソリッド)
 	rdc.CullMode = D3D11_CULL_NONE;
-	//D3D11_CULL_NONE :ｶﾘﾝｸﾞを切る(正背面を描画する)
+	//D3D11_CULL_NONE :カリングを切る(正背面を描画する)
 	//D3D11_CULL_BACK :背面を描画しない.
 	//D3D11_CULL_FRONT:正面を描画しない.
 	rdc.FrontCounterClockwise = FALSE;
-	//ﾎﾟﾘｺﾞﾝの表裏を決定するﾌﾗｸﾞ.
+	//ポリゴンの表裏を決定するフラグ.
 	//TRUE :左回りなら前向き.右回りなら後ろ向き.
 	//FALSE:↑の逆になる.
-	rdc.DepthClipEnable = FALSE;	//距離についてのｸﾘｯﾋﾟﾝｸﾞ有効.
+	rdc.DepthClipEnable = FALSE;	//距離についてのクリッピング有効.
 
 	ID3D11RasterizerState* pIr = NULL;
 	m_pDevice->CreateRasterizerState(&rdc, &pIr);
@@ -661,7 +661,7 @@ void clsMain::DestroyD3D()
 	SAFE_RELEASE(m_smpOverScene);
 	SAFE_RELEASE(m_smpClearScene);
 
-	//Direct3Dｵﾌﾞｼﾞｪｸﾄを解放.
+	//Direct3Dオブジェクトを解放.
 	SAFE_RELEASE(m_pBackBuffer_DSTexDSV);
 	SAFE_RELEASE(m_pBackBuffer_DSTex);
 	SAFE_RELEASE(m_pBackBuffer_TexRTV);
@@ -671,28 +671,28 @@ void clsMain::DestroyD3D()
 }
 
 #if 0
-//ｽﾌｨｱ作成.
+//スフィア作成.
 HRESULT clsMain::InitSphere(clsDX9Mesh* pMesh, float fScale)
 {
-	LPDIRECT3DVERTEXBUFFER9 pVB = NULL;	//頂点ﾊﾞｯﾌｧ.
+	LPDIRECT3DVERTEXBUFFER9 pVB = NULL;	//頂点バッファ.
 	void*		pVertices = NULL;	//頂点
 	D3DXVECTOR3 vCenter;		//中心.
 	float		fRadius;			//半径.
 
-	//頂点ﾊﾞｯﾌｧを取得.
+	//頂点バッファを取得.
 	if (FAILED(pMesh->m_pMesh->GetVertexBuffer(&pVB)))
 	{
 		return E_FAIL;
 	}
 
-	//ﾒｯｼｭの頂点ﾊﾞｯﾌｧをﾛｯｸする.
+	//メッシュの頂点バッファをロックする.
 	if (FAILED(pVB->Lock(0, 0, &pVertices, 0)))
 	{
 		SAFE_RELEASE(pVB);
 		return E_FAIL;
 	}
 
-	//ﾒｯｼｭの外接円の中心と半径を計算する.
+	//メッシュの外接円の中心と半径を計算する.
 	D3DXComputeBoundingSphere(
 		(D3DXVECTOR3*)pVertices,
 		pMesh->m_pMesh->GetNumVertices(),//頂点の数.
@@ -700,7 +700,7 @@ HRESULT clsMain::InitSphere(clsDX9Mesh* pMesh, float fScale)
 		&vCenter,	//(out)中心座標.
 		&fRadius);	//(out)半径.
 
-	//ｱﾝﾛｯｸ.
+	//アンロック.
 	pVB->Unlock();
 	SAFE_RELEASE(pVB);
 
@@ -713,7 +713,7 @@ HRESULT clsMain::InitSphere(clsDX9Mesh* pMesh, float fScale)
 
 #endif // 0
 
-//ﾒｯｼｭ読込関数（まとめた）
+//メッシュ読込関数（まとめた）
 HRESULT clsMain::MeshRead()
 {
 	//リソースクラス.
@@ -804,7 +804,7 @@ HRESULT clsMain::MeshRead()
 	//}
 #if 0
 
-	//ｽｷﾝﾒｯｼｭｸﾗｽに必要な情報を渡して初期化.
+	//スキンメッシュクラスに必要な情報を渡して初期化.
 	CD3DXSKINMESH_INIT si;
 	si.hWnd = m_hWnd;
 	si.pDevice = m_pDevice;
@@ -814,7 +814,7 @@ HRESULT clsMain::MeshRead()
 	m_pAnimModel->Init(&si);
 	m_pAnimModel->CreateFromX("Data\\EXTINGER\\extinger.X");
 	//m_pAnimModel->m_vPos.y = 0.0f;	//地面との表示位置調整.
-	// ﾗｼﾞｱﾝ = ( 度数 × 円周率 ) ÷ 180.
+	// ラジアン = ( 度数 × 円周率 ) ÷ 180.
 
 	m_iAnimModelArrayMax = 10;
 	for (int i = 0; i < m_iAnimModelArrayMax; i++)
@@ -843,10 +843,10 @@ HRESULT clsMain::MeshRead()
 	return S_OK;
 }
 
-//深度ﾃｽﾄ(Zﾃｽﾄ) ON/OFF切替.
+//深度テスト(Zテスト) ON/OFF切替.
 void clsMain::SetDepth(bool bFlg)
 {
-	//深度ﾃｽﾄ(Zﾃｽﾄ)を有効にする.
+	//深度テスト(Zテスト)を有効にする.
 	D3D11_DEPTH_STENCIL_DESC	depthStencilDesc;
 	ZeroMemory(&depthStencilDesc,
 		sizeof(D3D11_DEPTH_STENCIL_DESC));
@@ -859,7 +859,7 @@ void clsMain::SetDepth(bool bFlg)
 		m_pDepthStencilState, 1);
 }
 
-//ﾚｲとﾒｯｼｭの当たり判定.
+//レイとメッシュの当たり判定.
 bool clsMain::Intersect(
 	clsGameObject* pAttacker,	//基準の物体.
 	clsCharacter*  pTarget,		//対象の物体.
@@ -871,20 +871,20 @@ bool clsMain::Intersect(
 	//回転行列を計算.
 	D3DXMatrixRotationY(&matRot, pAttacker->GetRotationY());
 
-	//軸ﾍﾞｸﾄﾙを用意.
+	//軸ベクトルを用意.
 	D3DXVECTOR3 vecAxisZ;
-	//Z軸ﾍﾞｸﾄﾙそのものを現在の回転状態により変換する.
+	//Z軸ベクトルそのものを現在の回転状態により変換する.
 	D3DXVec3TransformCoord(
 		&vecAxisZ, &pAttacker->m_vAxis, &matRot);
 
 	D3DXVECTOR3 vecStart, vecEnd, vecDistance;
-	//ﾚｲの開始終了位置をAttackerと合わせる.
+	//レイの開始終了位置をAttackerと合わせる.
 	vecStart = vecEnd = pAttacker->m_vRay;
 	//Attackerの座標に回転座標を合成する.
 	vecEnd += vecAxisZ * 1.0f;
 
 	//対象が動いている物体でも、対象のworld行列の、
-	//逆行列を用いれば、正しくﾚｲが当たる.
+	//逆行列を用いれば、正しくレイが当たる.
 	D3DXMATRIX matWorld;
 	D3DXMatrixTranslation(
 		&matWorld,
@@ -902,29 +902,29 @@ bool clsMain::Intersect(
 	//距離を求める.
 	vecDistance = vecEnd - vecStart;
 
-	BOOL bHit = false;	//命中ﾌﾗｸﾞ.
+	BOOL bHit = false;	//命中フラグ.
 
-	DWORD dwIndex = 0;		//ｲﾝﾃﾞｯｸｽ番号.
+	DWORD dwIndex = 0;		//インデックス番号.
 	D3DXVECTOR3 vVertex[3];	//頂点座標.
-	FLOAT U = 0, V = 0;			//(out)重心ﾋｯﾄ座標.
+	FLOAT U = 0, V = 0;			//(out)重心ヒット座標.
 
-	//ﾒｯｼｭとﾚｲの交差を調べる.
+	//メッシュとレイの交差を調べる.
 	D3DXIntersect(
-		pTarget->GetMesh(),	//対象ﾒｯｼｭ.
+		pTarget->GetMesh(),	//対象メッシュ.
 		&vecStart,			//開始位置.
-		&vecDistance,		//ﾚｲの距離.
+		&vecDistance,		//レイの距離.
 		&bHit,				//(out)判定結果.
-		&dwIndex,	//(out)bHitがTrue時、ﾚｲの始点に.
-		//最も近くの面のｲﾝﾃﾞｯｸｽ値へのﾎﾟｲﾝﾀ.
-		&U, &V,				//(out)重心ﾋｯﾄ座標.
-		pfDistance,			//ﾀｰｹﾞｯﾄとの距離.
+		&dwIndex,	//(out)bHitがTrue時、レイの始点に.
+		//最も近くの面のインデックス値へのポインタ.
+		&U, &V,				//(out)重心ヒット座標.
+		pfDistance,			//ターゲットとの距離.
 		NULL, NULL);
 	if (bHit) {
 		//命中したとき.
 		FindVerticesOnPoly(
 			pTarget->GetMeshForRay(), dwIndex, vVertex);
 		//重心座標から交差点を算出.
-		//ﾛｰｶﾙ交点pは、v0 + U*(v1-v0) + V*(v2-v0)で求まる.
+		//ローカル交点pは、v0 + U*(v1-v0) + V*(v2-v0)で求まる.
 		*pvIntersect =
 			vVertex[0]
 			+ U * (vVertex[1] - vVertex[0])
@@ -935,13 +935,13 @@ bool clsMain::Intersect(
 	return false;//外れている.
 }
 
-//交差位置のﾎﾟﾘｺﾞﾝの頂点を見つける.
-//※頂点座標はﾛｰｶﾙ座標.
+//交差位置のポリゴンの頂点を見つける.
+//※頂点座標はローカル座標.
 HRESULT clsMain::FindVerticesOnPoly(
 	LPD3DXMESH pTarget, DWORD dwPolyIndex,
 	D3DXVECTOR3* pVecVertices)
 {
-	//頂点ごとのﾊﾞｲﾄ数を取得.
+	//頂点ごとのバイト数を取得.
 	DWORD dwStride = pTarget->GetNumBytesPerVertex();
 	//頂点数を取得.
 	DWORD dwVertexAmt = pTarget->GetNumVertices();
@@ -950,41 +950,41 @@ HRESULT clsMain::FindVerticesOnPoly(
 
 	WORD* pwPoly = NULL;
 
-	//ｲﾝﾃﾞｯｸｽﾊﾞｯﾌｧをﾛｯｸ(読込ﾓｰﾄﾞ)
+	//インデックスバッファをロック(読込モード)
 	pTarget->LockIndexBuffer(
 		D3DLOCK_READONLY, (VOID**)&pwPoly);
-	BYTE* pbVertices = NULL;//頂点(ﾊﾞｲﾄ型)
+	BYTE* pbVertices = NULL;//頂点(バイト型)
 	FLOAT* pfVertices = NULL;//頂点(float型)
-	LPDIRECT3DVERTEXBUFFER9 VB = NULL;//頂点ﾊﾞｯﾌｧ.
+	LPDIRECT3DVERTEXBUFFER9 VB = NULL;//頂点バッファ.
 	pTarget->GetVertexBuffer(&VB);//頂点情報の取得.
 
-	//頂点ﾊﾞｯﾌｧのﾛｯｸ.
+	//頂点バッファのロック.
 	if (SUCCEEDED(
 		VB->Lock(0, 0, (VOID**)&pbVertices, 0)))
 	{
-		//ﾎﾟﾘｺﾞﾝの頂点の１つ目を取得.
+		//ポリゴンの頂点の１つ目を取得.
 		pfVertices
 			= (FLOAT*)&pbVertices[dwStride*pwPoly[dwPolyIndex * 3]];
 		pVecVertices[0].x = pfVertices[0];
 		pVecVertices[0].y = pfVertices[1];
 		pVecVertices[0].z = pfVertices[2];
 
-		//ﾎﾟﾘｺﾞﾝの頂点の２つ目を取得.
+		//ポリゴンの頂点の２つ目を取得.
 		pfVertices
 			= (FLOAT*)&pbVertices[dwStride*pwPoly[dwPolyIndex * 3 + 1]];
 		pVecVertices[1].x = pfVertices[0];
 		pVecVertices[1].y = pfVertices[1];
 		pVecVertices[1].z = pfVertices[2];
 
-		//ﾎﾟﾘｺﾞﾝの頂点の３つ目を取得.
+		//ポリゴンの頂点の３つ目を取得.
 		pfVertices
 			= (FLOAT*)&pbVertices[dwStride*pwPoly[dwPolyIndex * 3 + 2]];
 		pVecVertices[2].x = pfVertices[0];
 		pVecVertices[2].y = pfVertices[1];
 		pVecVertices[2].z = pfVertices[2];
 
-		pTarget->UnlockIndexBuffer();	//ﾛｯｸ解除.
-		VB->Unlock();	//ﾛｯｸ解除.
+		pTarget->UnlockIndexBuffer();	//ロック解除.
+		VB->Unlock();	//ロック解除.
 	}
 	VB->Release();
 
@@ -999,19 +999,19 @@ void clsMain::WallJudge(clsGameObject* pAttacker, clsCharacter* pWall)
 	float		fDis, fYaw;		//距離と回転.
 
 	pAttacker->m_vRay = pAttacker->GetPosition();
-	pAttacker->m_vRay.y = 1.0f;	//ﾚｲのy位置.
+	pAttacker->m_vRay.y = 1.0f;	//レイのy位置.
 
-	//ﾚｲの向きにより当たる壁までの距離を求める.
-	//軸ﾍﾞｸﾄﾙ前.
+	//レイの向きにより当たる壁までの距離を求める.
+	//軸ベクトル前.
 	pAttacker->m_vAxis = D3DXVECTOR3(0.0f, 0.0f, 1.0f);
 	Intersect(pAttacker, pWall, &fDistance[0], &vIntersect[0]);
-	//軸ﾍﾞｸﾄﾙ後ろ.
+	//軸ベクトル後ろ.
 	pAttacker->m_vAxis = D3DXVECTOR3(0.0f, 0.0f, -1.0f);
 	Intersect(pAttacker, pWall, &fDistance[1], &vIntersect[1]);
-	//軸ﾍﾞｸﾄﾙ右.
+	//軸ベクトル右.
 	pAttacker->m_vAxis = D3DXVECTOR3(1.0f, 0.0f, 0.0f);
 	Intersect(pAttacker, pWall, &fDistance[2], &vIntersect[2]);
-	//軸ﾍﾞｸﾄﾙ左.
+	//軸ベクトル左.
 	pAttacker->m_vAxis = D3DXVECTOR3(-1.0f, 0.0f, 0.0f);
 	Intersect(pAttacker, pWall, &fDistance[3], &vIntersect[3]);
 
@@ -1173,10 +1173,10 @@ void clsMain::dirOverGuard(float* fYaw)
 	}
 }
 
-//ｶﾒﾗ関数.
+//カメラ関数.
 void clsMain::Camera()
 {
-	//軸ﾍﾞｸﾄﾙを用意.
+	//軸ベクトルを用意.
 	D3DXVECTOR3 vecAxisZ(0.0f, 0.0f, 1.0f);
 	switch (m_enScene)
 	{
@@ -1186,29 +1186,29 @@ void clsMain::Camera()
 		break;
 	case Stage:
 		//===============================================
-		//ｶﾒﾗ追従処理 ここから.
+		//カメラ追従処理 ここから.
 		//===============================================
-		//ｶﾒﾗ位置(自機の背中から)の設定.
+		//カメラ位置(自機の背中から)の設定.
 		m_Camera.vEye = m_Camera.vLook
-			= m_smpStageScene->m_smpPlayer->GetPosition();//自機の位置をｺﾋﾟｰ.
-		m_Camera.fYaw = m_smpStageScene->m_smpPlayer->GetRotationY();//回転値をｺﾋﾟｰ.
+			= m_smpStageScene->m_smpPlayer->GetPosition();//自機の位置をコピー.
+		m_Camera.fYaw = m_smpStageScene->m_smpPlayer->GetRotationY();//回転値をコピー.
 
 		//Y軸回転行列の作成.
 		D3DXMatrixRotationY(
 			&m_Camera.mRot, m_Camera.fYaw);
 
-		//Z軸ﾍﾞｸﾄﾙそのものを回転状態により変換する.
+		//Z軸ベクトルそのものを回転状態により変換する.
 		D3DXVec3TransformCoord(
 			&vecAxisZ, &vecAxisZ, &m_Camera.mRot);
 
 		m_Camera.vEye -= vecAxisZ/* * 4.0f*/;	//自機の背中側.
 		m_Camera.vLook += vecAxisZ/* * 2.0f*/;	//自機の前側.
 
-		m_Camera.vEye.y += 1.0f;	//ｶﾒﾗ位置(高さ)調整.
+		m_Camera.vEye.y += 1.0f;	//カメラ位置(高さ)調整.
 		m_Camera.vLook.y += 1.0f;	//注視位置(高さ)調整.
 
 		//===============================================
-		//ｶﾒﾗ追従処理 ここまで.
+		//カメラ追従処理 ここまで.
 		//===============================================
 		break;
 	case Over:
@@ -1216,23 +1216,23 @@ void clsMain::Camera()
 	case Clear:
 		break;
 	}
-	//ﾋﾞｭｰ(ｶﾒﾗ)変換.
+	//ビュー(カメラ)変換.
 	D3DXVECTOR3 vUpVec(0.0f, 1.0f, 0.0f);//上方位置.
 	D3DXMatrixLookAtLH(
-		&m_mView,	//(out)ﾋﾞｭｰ計算結果.
+		&m_mView,	//(out)ビュー計算結果.
 		&m_Camera.vEye, &m_Camera.vLook, &vUpVec);
 }
 
-//ﾌﾟﾛｼﾞｪｸｼｮﾝ関数.
+//プロジェクション関数.
 void clsMain::Proj()
 {
-	//ﾌﾟﾛｼﾞｪｸｼｮﾝ(射影行列)変換.
+	//プロジェクション(射影行列)変換.
 	D3DXMatrixPerspectiveFovLH(
-		&m_mProj,	//(out)ﾌﾟﾛｼﾞｪｸｼｮﾝ計算結果.
-		D3DX_PI / 4.0, //y方向の視野(ﾗｼﾞｱﾝ指定)数値を大きくしたら視野が狭くなる.
-		(FLOAT)WND_W / (FLOAT)WND_H,//ｱｽﾍﾟｸﾄ比(幅÷高さ)
-		0.1f,		//近いﾋﾞｭｰ平面のz値.
-		100.0f);	//遠いﾋﾞｭｰ平面のz値.
+		&m_mProj,	//(out)プロジェクション計算結果.
+		D3DX_PI / 4.0, //y方向の視野(ラジアン指定)数値を大きくしたら視野が狭くなる.
+		(FLOAT)WND_W / (FLOAT)WND_H,//アスペクト比(幅÷高さ)
+		0.1f,		//近いビュー平面のz値.
+		100.0f);	//遠いビュー平面のz値.
 }
 void clsMain::SceneChange()
 {

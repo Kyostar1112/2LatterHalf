@@ -1,7 +1,7 @@
 #ifndef _C_CHARACTER_H_
 #define _C_CHARACTER_H_
 
-//ｲﾝｸﾙｰﾄﾞﾌｧｲﾙ.
+//インクルードファイル.
 #include "DX9Mesh.h"
 #include "GameObject.h"
 
@@ -48,7 +48,7 @@ public:
 
 	enDirection		m_enDir;	//方向.
 	float			m_fSpd;
-	SPHERE			m_Sphere;	//ｽﾌｨｱ構造体.
+	SPHERE			m_Sphere;	//スフィア構造体.
 
 private:
 

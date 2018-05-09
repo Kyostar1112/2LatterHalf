@@ -34,14 +34,14 @@ void clsCharacter::DetachModel()
 void clsDX9Mesh::UpdatePos()
 {
 	//============================================
-	//ｷｬﾗｸﾀ移動処理(ﾗｼﾞｺﾝ)
+	//キャラクタ移動処理(ラジコン)
 	D3DXMATRIX mYaw;
 	D3DXMatrixRotationY(&mYaw, m_fYaw);//Y軸回転.
 
-	//Z軸ﾍﾞｸﾄﾙを用意.
+	//Z軸ベクトルを用意.
 	D3DXVECTOR3	vecAxisZ(0.0f, 0.0f, 1.0f);
 
-	//Z軸ﾍﾞｸﾄﾙそのものを回転状態により変換する.
+	//Z軸ベクトルそのものを回転状態により変換する.
 	D3DXVec3TransformCoord(
 		&vecAxisZ,	//(out)
 		&vecAxisZ,
@@ -94,14 +94,14 @@ void clsCharacter::Update()
 //============================================================
 void clsCharacter::UpdatePos()
 {
-	//ｷｬﾗｸﾀ移動処理(ﾗｼﾞｺﾝ)
+	//キャラクタ移動処理(ラジコン)
 	D3DXMATRIX mYaw;
 	D3DXMatrixRotationY(&mYaw, m_vRot.y);
 
-	//Z軸ﾍﾞｸﾄﾙを用意.
+	//Z軸ベクトルを用意.
 	D3DXVECTOR3	vecAxisZ(0.0f, 0.0f, 1.0f);
 
-	//Z軸ﾍﾞｸﾄﾙそのものを回転状態により変換する.
+	//Z軸ベクトルそのものを回転状態により変換する.
 	D3DXVec3TransformCoord(
 		&vecAxisZ,	//(out)
 		&vecAxisZ,

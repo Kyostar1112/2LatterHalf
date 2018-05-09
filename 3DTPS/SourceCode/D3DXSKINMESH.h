@@ -21,7 +21,7 @@
 
 // 最大ボーン数.
 #define MAX_BONES		255
-// 最大ｱﾆﾒｰｼｮﾝｾｯﾄ数.
+// 最大アニメーションセット数.
 #define MAX_ANIM_SET	100
 
 // マクロ.
@@ -189,7 +189,7 @@ public:
 	MY_HIERARCHY* m_pHierarchy;
 	LPD3DXFRAME m_pFrameRoot;
 
-	LPD3DXANIMATIONCONTROLLER m_pAnimController;//ﾃﾞﾌｫﾙﾄで一つ.
+	LPD3DXANIMATIONCONTROLLER m_pAnimController;//デフォルトで一つ.
 	LPD3DXANIMATIONSET m_pAnimSet[MAX_ANIM_SET];
 
 	HRESULT LoadMeshFromX(LPDIRECT3DDEVICE9, LPSTR);

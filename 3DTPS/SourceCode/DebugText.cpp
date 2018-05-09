@@ -1,9 +1,9 @@
 #include "DebugText.h"
 
-//ｼｪｰﾀﾞﾌｧｲﾙ名(ﾊﾟｽも含む).
+//シェーダファイル名(パスも含む).
 const char SHADER_NAME[] = "Shader\\DebugText.hlsl";
 
-//ｺﾝｽﾄﾗｸﾀ.
+//コンストラクタ.
 clsDebugText::clsDebugText()
 {
 	ZeroMemory(this, sizeof(clsDebugText));//初期化.
@@ -11,7 +11,7 @@ clsDebugText::clsDebugText()
 	m_fScale = 1.0f;
 }
 
-//ﾃﾞｽﾄﾗｸﾀ.
+//デストラクタ.
 clsDebugText::~clsDebugText()
 {
 }
@@ -30,18 +30,18 @@ HRESULT clsDebugText::Init(
 	for (int i = 0; i < 95; i++) {
 		m_fKerning[i] = 10.0f;
 	}
-	//ﾃﾞﾊﾞｲｽｺﾝﾃｷｽﾄをｺﾋﾟｰ.
+	//デバイスコンテキストをコピー.
 	m_pDeviceContext11 = pContext;
 	m_pDeviceContext11->GetDevice(&m_pDevice11);
 
-	//windowｻｲｽﾞ.
+	//windowサイズ.
 	m_dwWindowWidth = dwWidth;
 	m_dwWindowHeight = dwHeight;
 
-	//ﾌｫﾝﾄ毎にｸｱｯﾄﾞ(矩形)作成
+	//フォント毎にクアッド(矩形)作成
 	float left = 0.0f, top = 0.0f, right = 0.0f, bottom = 0.0f;
 	int cnt = 0;
-	//2重ﾙｰﾌﾟで1文字ずつ指定する.
+	//2重ループで1文字ずつ指定する.
 	for (int k = 0; k < 10; k++)
 	{
 		for (int i = 0; i < 10; i++)
@@ -76,7 +76,7 @@ HRESULT clsDebugText::Init(
 				&bd, &InitData, &m_pVertexBuffer[cnt])))
 			{
 				MessageBox(NULL,
-					"頂点ﾊﾞｯﾌｧ作成失敗(DebugText:Init)",
+					"頂点バッファ作成失敗(DebugText:Init)",
 					"error", MB_OK);
 				return E_FAIL;
 			}
@@ -84,10 +84,10 @@ HRESULT clsDebugText::Init(
 		}
 	}
 
-	//ﾃｸｽﾁｬ用ｻﾝﾌﾟﾗ-作成.
+	//テクスチャ用サンプラ-作成.
 	D3D11_SAMPLER_DESC SamDesc;
 	ZeroMemory(&SamDesc, sizeof(D3D11_SAMPLER_DESC));
-	//ﾃｸｽﾁｬﾌｨﾙﾀと貼り付け方の指定.
+	//テクスチャフィルタと貼り付け方の指定.
 	SamDesc.Filter = D3D11_FILTER_MIN_MAG_MIP_POINT;
 	SamDesc.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
 	SamDesc.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
@@ -96,12 +96,12 @@ HRESULT clsDebugText::Init(
 		&SamDesc, &m_pSampleLinear)))
 	{
 		MessageBox(NULL,
-			"ｻﾝﾌﾟﾗ作成失敗(DebugText:Init)",
+			"サンプラ作成失敗(DebugText:Init)",
 			"", MB_OK);
 		return E_FAIL;
 	}
 
-	//ﾌｫﾝﾄのﾃｸｽﾁｬ作成.
+	//フォントのテクスチャ作成.
 	if (FAILED(
 		D3DX11CreateShaderResourceViewFromFile(
 			m_pDevice11,
@@ -110,13 +110,13 @@ HRESULT clsDebugText::Init(
 			&m_pAsciiTexture, NULL)))
 	{
 		MessageBox(NULL,
-			"ﾌｫﾝﾄﾃｸｽﾁｬ作成失敗(DebugText:Init)",
+			"フォントテクスチャ作成失敗(DebugText:Init)",
 			"error", MB_OK);
 		return E_FAIL;
 	}
 
 	//=====================================
-	//	hlslﾌｧｲﾙ読込.
+	//	hlslファイル読込.
 	//=====================================
 	ID3DBlob *pCompileShader = NULL;
 	ID3DBlob *pErrors = NULL;
@@ -140,12 +140,12 @@ HRESULT clsDebugText::Init(
 	{
 		SAFE_RELEASE(pCompileShader);
 		MessageBox(NULL,
-			"ﾊﾞｰﾃｯｸｽｼｪｰﾀﾞ作成失敗",
+			"バーテックスシェーダ作成失敗",
 			"DebugText:Init", MB_OK);
 		return E_FAIL;
 	}
 
-	//頂点ｲﾝﾌﾟｯﾄﾚｲｱｳﾄを定義.
+	//頂点インプットレイアウトを定義.
 	D3D11_INPUT_ELEMENT_DESC layout[] =
 	{
 		{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT,
@@ -155,7 +155,7 @@ HRESULT clsDebugText::Init(
 	};
 	UINT numElements = sizeof(layout) / sizeof(layout[0]);
 
-	//頂点ｲﾝﾌﾟｯﾄﾚｲｱｳﾄ作成.
+	//頂点インプットレイアウト作成.
 	if (FAILED(
 		m_pDevice11->CreateInputLayout(
 			layout, numElements,
@@ -164,12 +164,12 @@ HRESULT clsDebugText::Init(
 			&m_pVertexLayout)))
 	{
 		MessageBox(NULL,
-			"頂点ｲﾝﾌﾟｯﾄﾚｲｱｳﾄ作成失敗",
+			"頂点インプットレイアウト作成失敗",
 			"DebugText:Init", MB_OK);
 		return E_FAIL;
 	}
 
-	//ﾋﾟｸｾﾙｼｪｰﾀﾞ作成.
+	//ピクセルシェーダ作成.
 	if (FAILED(D3DX11CompileFromFile(
 		SHADER_NAME, NULL, NULL,
 		"PS", "ps_5_0", 0, 0,
@@ -190,13 +190,13 @@ HRESULT clsDebugText::Init(
 	{
 		SAFE_RELEASE(pCompileShader);
 		MessageBox(NULL,
-			"ﾋﾟｸｾﾙｼｪｰﾀﾞ作成失敗",
+			"ピクセルシェーダ作成失敗",
 			"DebugText:Init", MB_OK);
 		return E_FAIL;
 	}
 	SAFE_RELEASE(pCompileShader);
 
-	//ｺﾝｽﾀﾝﾄﾊﾞｯﾌｧ作成.
+	//コンスタントバッファ作成.
 	D3D11_BUFFER_DESC cb;
 	cb.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
 	cb.ByteWidth = sizeof(TEXT_CONSTANT_BUFFER);
@@ -209,7 +209,7 @@ HRESULT clsDebugText::Init(
 		&cb, NULL, &m_pConstantBuffer)))
 	{
 		MessageBox(NULL,
-			"ｺﾝｽﾀﾝﾄﾊﾞｯﾌｧ作成",
+			"コンスタントバッファ作成",
 			"DebugText:Init", MB_OK);
 		return E_FAIL;
 	}
@@ -217,60 +217,60 @@ HRESULT clsDebugText::Init(
 	return S_OK;
 }
 
-//透過(ｱﾙﾌｧﾌﾞﾚﾝﾄﾞ)設定の切り替え.
+//透過(アルファブレンド)設定の切り替え.
 void clsDebugText::SetBlend(bool flg)
 {
-	//ｱﾙﾌｧﾌﾞﾚﾝﾄﾞ用ﾌﾞﾚﾝﾄﾞｽﾃｰﾄ構造体.
-	//pngﾌｧｲﾙ内にｱﾙﾌｧ情報があるので、
-	//透過するようにﾌﾞﾚﾝﾄﾞｽﾃｰﾄを設定する.
+	//アルファブレンド用ブレンドステート構造体.
+	//pngファイル内にアルファ情報があるので、
+	//透過するようにブレンドステートを設定する.
 	D3D11_BLEND_DESC blendDesc;
 	ZeroMemory(&blendDesc, sizeof(D3D11_BLEND_DESC));//初期化.
 
 	blendDesc.IndependentBlendEnable
-		= false;//false:RenderTarget[0]のﾒﾝﾊﾞｰのみが使用する.
+		= false;//false:RenderTarget[0]のメンバーのみが使用する.
 	//true :RenderTarget[0～7]が使用できる.
-	//      (ﾚﾝﾀﾞｰﾀｰｹﾞｯﾄ毎に独立したﾌﾞﾚﾝﾄﾞ処理)
+	//      (レンダーターゲット毎に独立したブレンド処理)
 	blendDesc.AlphaToCoverageEnable
-		= false;//true :ｱﾙﾌｧﾄｩｶﾊﾞﾚｯｼﾞを使用する.
+		= false;//true :アルファトゥカバレッジを使用する.
 	blendDesc.RenderTarget[0].BlendEnable
-		= flg;	//true :ｱﾙﾌｧﾌﾞﾚﾝﾄﾞを使用する.
+		= flg;	//true :アルファブレンドを使用する.
 	blendDesc.RenderTarget[0].SrcBlend	//元素材に対する設定.
-		= D3D11_BLEND_SRC_ALPHA;		//	ｱﾙﾌｧﾌﾞﾚﾝﾄﾞを指定.
+		= D3D11_BLEND_SRC_ALPHA;		//	アルファブレンドを指定.
 	blendDesc.RenderTarget[0].DestBlend	//重ねる素材に対する設定.
-		= D3D11_BLEND_INV_SRC_ALPHA;	//	ｱﾙﾌｧﾌﾞﾚﾝﾄﾞの反転を指定.
+		= D3D11_BLEND_INV_SRC_ALPHA;	//	アルファブレンドの反転を指定.
 
-	blendDesc.RenderTarget[0].BlendOp	//ﾌﾞﾚﾝﾄﾞｵﾌﾟｼｮﾝ.
+	blendDesc.RenderTarget[0].BlendOp	//ブレンドオプション.
 		= D3D11_BLEND_OP_ADD;			//	ADD:加算合成.
 
-	blendDesc.RenderTarget[0].SrcBlendAlpha	//元素材のｱﾙﾌｧに対する設定.
+	blendDesc.RenderTarget[0].SrcBlendAlpha	//元素材のアルファに対する設定.
 		= D3D11_BLEND_ONE;					//	そのまま使用.
-	blendDesc.RenderTarget[0].DestBlendAlpha//重ねる素材のｱﾙﾌｧに対する設定.
+	blendDesc.RenderTarget[0].DestBlendAlpha//重ねる素材のアルファに対する設定.
 		= D3D11_BLEND_ZERO;					//	何もしない.
 
-	blendDesc.RenderTarget[0].BlendOpAlpha	//ｱﾙﾌｧのﾌﾞﾚﾝﾄﾞｵﾌﾟｼｮﾝ.
+	blendDesc.RenderTarget[0].BlendOpAlpha	//アルファのブレンドオプション.
 		= D3D11_BLEND_OP_ADD;				//	ADD:加算合成.
 
-	blendDesc.RenderTarget[0].RenderTargetWriteMask	//ﾋﾟｸｾﾙ毎の書き込みﾏｽｸ.
-		= D3D11_COLOR_WRITE_ENABLE_ALL;				//	全ての成分(RGBA)へのﾃﾞｰﾀの格納を許可する.
+	blendDesc.RenderTarget[0].RenderTargetWriteMask	//ピクセル毎の書き込みマスク.
+		= D3D11_COLOR_WRITE_ENABLE_ALL;				//	全ての成分(RGBA)へのデータの格納を許可する.
 
-	//ﾌﾞﾚﾝﾄﾞｽﾃｰﾄ作成.
+	//ブレンドステート作成.
 	if (FAILED(
 		m_pDevice11->CreateBlendState(
 			&blendDesc, &m_pBlendState)))
 	{
-		MessageBox(NULL, "ﾌﾞﾚﾝﾄﾞｽﾃｰﾄ作成失敗", "ｴﾗｰ", MB_OK);
+		MessageBox(NULL, "ブレンドステート作成失敗", "エラー", MB_OK);
 	}
 
-	//ﾌﾞﾚﾝﾄﾞｽﾃｰﾄの設定.
-	UINT mask = 0xffffffff;	//ﾏｽｸ値.
+	//ブレンドステートの設定.
+	UINT mask = 0xffffffff;	//マスク値.
 	m_pDeviceContext11->OMSetBlendState(
 		m_pBlendState, NULL, mask);
 }
 
-//ﾚﾝﾀﾞﾘﾝｸﾞ関数.
+//レンダリング関数.
 void clsDebugText::Render(char* text, int x, int y)
 {
-	//ﾋﾞｭｰﾄﾗﾝｽﾌｫｰﾑ.
+	//ビュートランスフォーム.
 	D3DXVECTOR3 vEye(0.0f, 0.0f, -1.0f);
 	D3DXVECTOR3 vLook(0.0f, 0.0f, 0.0f);
 	D3DXVECTOR3 vUp(0.0f, 1.0f, 0.0f);
@@ -278,7 +278,7 @@ void clsDebugText::Render(char* text, int x, int y)
 		&m_mView, &vEye, &vLook, &vUp);
 
 #if 0
-	//ﾌﾟﾛｼﾞｪｸｼｮﾝﾄﾗﾝｽﾌｫｰﾑ(固定)
+	//プロジェクショントランスフォーム(固定)
 	D3DMATRIX mOtho = {
 		2.0f / (float)(m_dwWindowWidth), 0.0f, 0.0f, 0.0f,
 		0.0f, -2.0f / (float)(m_dwWindowHeight), 0.0f, 0.0f,
@@ -295,26 +295,26 @@ void clsDebugText::Render(char* text, int x, int y)
 #endif
 	m_mProj = mOtho;
 
-	//ﾌﾟﾘﾐﾃｨﾌﾞ・ﾄﾎﾟﾛｼﾞｰ.
+	//プリミティブ・トポロジー.
 	m_pDeviceContext11->IASetPrimitiveTopology(
 		D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
-	//頂点ｲﾝﾌﾟｯﾄﾚｲｱｳﾄをｾｯﾄ.
+	//頂点インプットレイアウトをセット.
 	m_pDeviceContext11->IASetInputLayout(
 		m_pVertexLayout);
 
-	//使用するｼｪｰﾀﾞの登録.
+	//使用するシェーダの登録.
 	m_pDeviceContext11->VSSetShader(
 		m_pVertexShader, NULL, 0);
 	m_pDeviceContext11->PSSetShader(
 		m_pPixelShader, NULL, 0);
 
-	//このｺﾝｽﾀﾝﾄﾊﾞｯﾌｧを使うｼｪｰﾀﾞの登録.
+	//このコンスタントバッファを使うシェーダの登録.
 	m_pDeviceContext11->VSSetConstantBuffers(
 		0, 1, &m_pConstantBuffer);
 	m_pDeviceContext11->PSSetConstantBuffers(
 		0, 1, &m_pConstantBuffer);
 
-	//ﾃｸｽﾁｬをｼｪｰﾀﾞに渡す.
+	//テクスチャをシェーダに渡す.
 	m_pDeviceContext11->PSSetSamplers(
 		0, 1, &m_pSampleLinear);
 	m_pDeviceContext11->PSSetShaderResources(
@@ -322,13 +322,13 @@ void clsDebugText::Render(char* text, int x, int y)
 
 	SetBlend(true);
 
-	//文字数分ﾙｰﾌﾟ.
+	//文字数分ループ.
 	for (int i = 0; i < strlen(text); i++)
 	{
 		char font = text[i];
-		int index = font - 32;	//ﾌｫﾝﾄｲﾝﾃﾞｯｸｽ作成.
+		int index = font - 32;	//フォントインデックス作成.
 
-		//ﾌｫﾝﾄﾚﾝﾀﾞﾘﾝｸﾞ.
+		//フォントレンダリング.
 		RenderFont(index, x, y);
 
 		x += m_fKerning[index];
@@ -337,29 +337,29 @@ void clsDebugText::Render(char* text, int x, int y)
 	SetBlend(false);
 }
 
-//ﾌｫﾝﾄﾚﾝﾀﾞﾘﾝｸﾞ関数.
+//フォントレンダリング関数.
 void clsDebugText::RenderFont(
 	int FontIndex, int x, int y)
 {
-	//ﾜｰﾙﾄﾞ変換.
+	//ワールド変換.
 	D3DXMATRIX mWorld;
 	D3DXMatrixIdentity(&mWorld);
 	D3DXMatrixTranslation(
 		&mWorld, (float)x, (float)y,
 		-100.0f);	//Z(-100)で手前表示可能.
 
-	//ｼｪｰﾀﾞのｺﾝｽﾀﾝﾄﾊﾞｯﾌｧに各種ﾃﾞｰﾀを渡す.
+	//シェーダのコンスタントバッファに各種データを渡す.
 	D3D11_MAPPED_SUBRESOURCE	pData;
 	TEXT_CONSTANT_BUFFER		cb;
 	if (SUCCEEDED(m_pDeviceContext11->Map(
 		m_pConstantBuffer, 0,
 		D3D11_MAP_WRITE_DISCARD, 0, &pData)))
 	{
-		//ﾜｰﾙﾄﾞ,ﾋﾞｭｰ,ﾌﾟﾛｼﾞｪｸｼｮﾝの合成行列を渡す.
+		//ワールド,ビュー,プロジェクションの合成行列を渡す.
 		D3DXMATRIX m = mWorld * m_mView * m_mProj;
 		D3DXMatrixTranspose(&m, &m);
 		cb.mWVP = m;
-		//ｶﾗｰを渡す.
+		//カラーを渡す.
 		cb.vColor = m_vColor;
 		//透明度を渡す.
 		cb.fAlpha.x = m_fAlpha;
@@ -369,7 +369,7 @@ void clsDebugText::RenderFont(
 		m_pDeviceContext11->Unmap(
 			m_pConstantBuffer, 0);
 	}
-	//ﾊﾞｰﾃｯｸｽﾊﾞｯﾌｧをｾｯﾄ.
+	//バーテックスバッファをセット.
 	UINT stride = sizeof(TextVertex);
 	UINT offset = 0;
 	m_pDeviceContext11->IASetVertexBuffers(

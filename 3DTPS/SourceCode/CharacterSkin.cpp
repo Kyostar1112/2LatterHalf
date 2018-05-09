@@ -50,7 +50,7 @@ void clsCharacterSkin::DetachModel()
 	}
 }
 
-//ﾚﾝﾀﾞﾘﾝｸﾞ関数.
+//レンダリング関数.
 void clsCharacterSkin::Render(D3DXMATRIX& mView, D3DXMATRIX& mProj,
 	D3DXVECTOR3& vLight, D3DXVECTOR3& vEye)
 {
@@ -86,14 +86,14 @@ void clsCharacterSkin::Update()
 //============================================================
 void clsCharacterSkin::UpdatePos()
 {
-	//ｷｬﾗｸﾀ移動処理(ﾗｼﾞｺﾝ)
+	//キャラクタ移動処理(ラジコン)
 	D3DXMATRIX mYaw;
 	D3DXMatrixRotationY(&mYaw, m_vRot.y);
 
-	//Z軸ﾍﾞｸﾄﾙを用意.
+	//Z軸ベクトルを用意.
 	D3DXVECTOR3	vecAxisZ(0.0f, 0.0f, 1.0f);
 
-	//Z軸ﾍﾞｸﾄﾙそのものを回転状態により変換する.
+	//Z軸ベクトルそのものを回転状態により変換する.
 	D3DXVec3TransformCoord(
 		&vecAxisZ,	//(out)
 		&vecAxisZ,

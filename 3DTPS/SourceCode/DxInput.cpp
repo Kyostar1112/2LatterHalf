@@ -48,14 +48,14 @@ BOOL CALLBACK EnumObjectsCallBack(const DIDEVICEOBJECTINSTANCE *pdidoi, VOID *pC
 	return DIENUM_CONTINUE;
 }
 
-//ｺﾝｽﾄﾗｸﾀ.
+//コンストラクタ.
 clsDxInput::clsDxInput()
 	: m_pDI(NULL)
 	, m_pPad(NULL)
 {
 }
 
-//ﾃﾞｽﾄﾗｸﾀ.
+//デストラクタ.
 clsDxInput::~clsDxInput()
 {
 }
@@ -82,23 +82,23 @@ bool clsDxInput::initDI(HWND hWnd)
 		DI8DEVCLASS_GAMECTRL,	// 全てのゲームコントローラ
 		EnumJoysticksCallBack,	// コントローラの列挙関数
 		NULL,					// コールバック関数からの値
-		DIEDFL_ATTACHEDONLY);	// 繋がっているﾓﾉのみ
+		DIEDFL_ATTACHEDONLY);	// 繋がっているモノのみ
 	if (hRlt != DI_OK) {
-		MessageBox(NULL, "ｺﾝﾄﾛｰﾗの確認に失敗", "エラー", MB_OK);
+		MessageBox(NULL, "コントローラの確認に失敗", "エラー", MB_OK);
 	}
 
 	m_pPad = pPad2;
 
 	// コントローラの接続確認
 	if (pPad2 == NULL) {
-		//MessageBox( NULL, "ｺﾝﾄﾛｰﾗが接続されていません", "エラー", MB_OK );
+		//MessageBox( NULL, "コントローラが接続されていません", "エラー", MB_OK );
 	}
 	else {
 		// コントローラ構造体のデータフォーマットを作成
 		hRlt = pPad2->SetDataFormat(
 			&c_dfDIJoystick2);	//固定
 		if (hRlt != DI_OK) {
-			MessageBox(NULL, "ﾃﾞｰﾀﾌｫｰﾏｯﾄの作成失敗", "エラー", MB_OK);
+			MessageBox(NULL, "データフォーマットの作成失敗", "エラー", MB_OK);
 		}
 		// (他のデバイスとの)協調レベルの設定
 		hRlt = pPad2->SetCooperativeLevel(
@@ -106,7 +106,7 @@ bool clsDxInput::initDI(HWND hWnd)
 			DISCL_EXCLUSIVE |	// 排他アクセス
 			DISCL_FOREGROUND);	// フォアグラウンドアクセス権
 		if (hRlt != DI_OK) {
-			MessageBox(NULL, "協調ﾚﾍﾞﾙの設定失敗", "エラー", MB_OK);
+			MessageBox(NULL, "協調レベルの設定失敗", "エラー", MB_OK);
 		}
 		// 使用可能なオブジェクト(ボタンなど)の列挙
 		hRlt = pPad2->EnumObjects(
@@ -114,7 +114,7 @@ bool clsDxInput::initDI(HWND hWnd)
 			(VOID*)hWnd,			// コールバック関数に送る情報
 			DIDFT_ALL);			// 全てのオブジェクト
 		if (hRlt != DI_OK) {
-			MessageBox(NULL, "ｵﾌﾞｼﾞｪｸﾄの列挙に失敗", "エラー", MB_OK);
+			MessageBox(NULL, "オブジェクトの列挙に失敗", "エラー", MB_OK);
 		}
 	}
 
@@ -125,21 +125,21 @@ bool clsDxInput::initDI(HWND hWnd)
 HRESULT clsDxInput::UpdateInputState()
 {
 	HRESULT hRslt;	//関数復帰値.
-	DIJOYSTATE2 js;	//ｼﾞｮｲｽﾃｨｯｸ情報構造体.
+	DIJOYSTATE2 js;	//ジョイスティック情報構造体.
 
 	//入力情報の初期化.
 	InitInputState();
 
-	//ｼﾞｮｲｽﾃｨｯｸの接続確認.
+	//ジョイスティックの接続確認.
 	if (m_pPad == NULL) {
 		return E_FAIL;
 	}
 
-	//ｼﾞｮｲｽﾃｨｯｸが変更されているかを確認.
+	//ジョイスティックが変更されているかを確認.
 	hRslt = m_pPad->Poll();
-	if (hRslt != DI_OK && hRslt != DI_NOEFFECT)//DI_NOEFFECT:確認不要なﾃﾞﾊﾞｲｽ.
+	if (hRslt != DI_OK && hRslt != DI_NOEFFECT)//DI_NOEFFECT:確認不要なデバイス.
 	{
-		//ｺﾝﾄﾛｰﾗへのｱｸｾｽ権を取得する.
+		//コントローラへのアクセス権を取得する.
 		hRslt = m_pPad->Acquire();
 		while (hRslt == DIERR_INPUTLOST) {
 			hRslt = m_pPad->Acquire();
@@ -147,33 +147,33 @@ HRESULT clsDxInput::UpdateInputState()
 		return S_OK;
 	}
 
-	//ｺﾝﾄﾛｰﾗから直接ﾃﾞｰﾀを取得する.
+	//コントローラから直接データを取得する.
 	hRslt = m_pPad->GetDeviceState(
-		sizeof(DIJOYSTATE2),	//取得するｻｲｽﾞ.
-		&js);					//(out)取得ﾃﾞｰﾀ.
+		sizeof(DIJOYSTATE2),	//取得するサイズ.
+		&js);					//(out)取得データ.
 	if (hRslt != DI_OK) {
 		return hRslt;
 	}
 
-	//左ｱﾅﾛｸﾞｽﾃｨｯｸ(ｽﾃｨｯｸの傾き具合(遊び)の値を500,-500として考える)
+	//左アナログスティック(スティックの傾き具合(遊び)の値を500,-500として考える)
 	if (js.lX > 500) {
-		//右ｷｰ.
+		//右キー.
 		AddInputState(enPKey_Right);
 	}
 	else if (js.lX < -500) {
-		//左ｷｰ.
+		//左キー.
 		AddInputState(enPKey_Left);
 	}
 	if (js.lY > 500) {
-		//上ｷｰ.
+		//上キー.
 		AddInputState(enPKey_Down);
 	}
 	else if (js.lY < -500) {
-		//下ｷｰ.
+		//下キー.
 		AddInputState(enPKey_Up);
 	}
 
-	//十字ｷｰ.
+	//十字キー.
 	//switch( js.rgdwPOV[0] ){
 	//case 4500:	//右上.
 	//	AddInputState( enPKey_Up );
@@ -207,13 +207,13 @@ HRESULT clsDxInput::UpdateInputState()
 	//	break;
 	//}
 
-	//ﾎﾞﾀﾝ(列挙体が増えても対応が楽な書き方)
-	//※ﾙｰﾌﾟ開始位置をﾁｪｯｸ対象のﾎﾞﾀﾝに設定する.
+	//ボタン(列挙体が増えても対応が楽な書き方)
+	//※ループ開始位置をチェック対象のボタンに設定する.
 	for (int iKey = enPKey_00; iKey < enPKey_Max; iKey++)
 	{
-		//ｺﾝﾄﾛｰﾗのﾎﾞﾀﾝの配列開始番号が0からなので開始位置をずらす.
+		//コントローラのボタンの配列開始番号が0からなので開始位置をずらす.
 		if (js.rgbButtons[iKey - enPKey_00] & 0x80) {
-			//ﾙｰﾌﾟ変数を列挙体型にｷｬｽﾄして渡す.
+			//ループ変数を列挙体型にキャストして渡す.
 			AddInputState((enPKey)iKey);
 		}
 	}
@@ -224,7 +224,7 @@ HRESULT clsDxInput::UpdateInputState()
 //入力情報を追加する関数.
 void clsDxInput::AddInputState(enPKey enKey)
 {
-	// << ｼﾌﾄ演算子:左にｼﾌﾄ.
+	// << シフト演算子:左にシフト.
 	m_uInputState |= 1 << enKey;
 }
 
@@ -234,11 +234,11 @@ void clsDxInput::InitInputState()
 	m_uInputState = 0;
 }
 
-//入力ﾁｪｯｸする関数.
+//入力チェックする関数.
 //※UpdateInputState()関数で入力情報が更新されていることが前提.
 bool clsDxInput::IsPressKey(enPKey enKey)
 {
-	// >> ｼﾌﾄ演算子:右にｼﾌﾄ.
+	// >> シフト演算子:右にシフト.
 	if ((m_uInputState >> enKey) & 1) {
 		return true;
 	}

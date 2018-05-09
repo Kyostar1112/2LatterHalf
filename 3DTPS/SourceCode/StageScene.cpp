@@ -368,7 +368,7 @@ void clsStageScene::ModelRender2() {
 		}
 	}
 
-	//ｽｷﾝﾒｯｼｭの表示.
+	//スキンメッシュの表示.
 	for (int i = 0; i < m_vsmpEnemy.size(); i++)
 	{
 		if (m_vsmpEnemy[i]->GetEnableFlg())
@@ -544,7 +544,7 @@ bool clsStageScene::Collision(
 	float Length = D3DXVec3Length(&vLength);
 
 	//２物体間の距離が、２物体の半径を足したもより.
-	//小さいということは、ｽﾌｨｱ同士が重なっている.
+	//小さいということは、スフィア同士が重なっている.
 	//（衝突している）ということ.
 	if (Length <=
 		pAttacker->m_Sphere.fRadius + pTarget->m_Sphere.fRadius)
@@ -567,7 +567,7 @@ bool clsStageScene::Collision(
 	float Length = D3DXVec3Length(&vLength);
 
 	//２物体間の距離が、２物体の半径を足したもより.
-	//小さいということは、ｽﾌｨｱ同士が重なっている.
+	//小さいということは、スフィア同士が重なっている.
 	//（衝突している）ということ.
 	if (Length <=
 		pAttacker->m_Sphere.fRadius + pTarget->m_Sphere.fRadius)
@@ -581,22 +581,22 @@ void clsStageScene::Ray(clsEnemy* Enemy)
 {
 	FLOAT		fDistance;	//距離.
 	D3DXVECTOR3 vIntersect;	//交差座標.
-	//現在位置をｺﾋﾟｰ.
+	//現在位置をコピー.
 	Enemy->m_vRay = Enemy->GetPosition();
-	//ﾚｲの高さを自機の位置より上にする.
+	//レイの高さを自機の位置より上にする.
 	Enemy->m_vRay.y
 		= Enemy->GetPositionY() + 1.0f;
-	//軸ﾍﾞｸﾄﾙは垂直で下向き.
+	//軸ベクトルは垂直で下向き.
 	Enemy->m_vAxis
 		= D3DXVECTOR3(0.0f, -1.0f, 0.0f);
 
 	Intersect(
 		Enemy, m_smpGround.get(), &fDistance, &vIntersect);
 
-	//交点の座標からy座標を自機のy座標としてｾｯﾄ.
+	//交点の座標からy座標を自機のy座標としてセット.
 	Enemy->SetPositionY(vIntersect.y + 0.03f);
 }
-//ﾚｲとﾒｯｼｭの当たり判定.
+//レイとメッシュの当たり判定.
 bool clsStageScene::Intersect(
 	clsGameObject* pAttacker,	//基準の物体.
 	clsCharacter*  pTarget,		//対象の物体.
@@ -608,20 +608,20 @@ bool clsStageScene::Intersect(
 	//回転行列を計算.
 	D3DXMatrixRotationY(&matRot, pAttacker->GetRotationY());
 
-	//軸ﾍﾞｸﾄﾙを用意.
+	//軸ベクトルを用意.
 	D3DXVECTOR3 vecAxisZ;
-	//Z軸ﾍﾞｸﾄﾙそのものを現在の回転状態により変換する.
+	//Z軸ベクトルそのものを現在の回転状態により変換する.
 	D3DXVec3TransformCoord(
 		&vecAxisZ, &pAttacker->m_vAxis, &matRot);
 
 	D3DXVECTOR3 vecStart, vecEnd, vecDistance;
-	//ﾚｲの開始終了位置をAttackerと合わせる.
+	//レイの開始終了位置をAttackerと合わせる.
 	vecStart = vecEnd = pAttacker->m_vRay;
 	//Attackerの座標に回転座標を合成する.
 	vecEnd += vecAxisZ * 1.0f;
 
 	//対象が動いている物体でも、対象のworld行列の、
-	//逆行列を用いれば、正しくﾚｲが当たる.
+	//逆行列を用いれば、正しくレイが当たる.
 	D3DXMATRIX matWorld;
 	D3DXMatrixTranslation(
 		&matWorld,
@@ -639,29 +639,29 @@ bool clsStageScene::Intersect(
 	//距離を求める.
 	vecDistance = vecEnd - vecStart;
 
-	BOOL bHit = false;	//命中ﾌﾗｸﾞ.
+	BOOL bHit = false;	//命中フラグ.
 
-	DWORD dwIndex = 0;		//ｲﾝﾃﾞｯｸｽ番号.
+	DWORD dwIndex = 0;		//インデックス番号.
 	D3DXVECTOR3 vVertex[3];	//頂点座標.
-	FLOAT U = 0, V = 0;			//(out)重心ﾋｯﾄ座標.
+	FLOAT U = 0, V = 0;			//(out)重心ヒット座標.
 
-	//ﾒｯｼｭとﾚｲの交差を調べる.
+	//メッシュとレイの交差を調べる.
 	D3DXIntersect(
-		pTarget->GetMesh(),	//対象ﾒｯｼｭ.
+		pTarget->GetMesh(),	//対象メッシュ.
 		&vecStart,			//開始位置.
-		&vecDistance,		//ﾚｲの距離.
+		&vecDistance,		//レイの距離.
 		&bHit,				//(out)判定結果.
-		&dwIndex,	//(out)bHitがTrue時、ﾚｲの始点に.
-		//最も近くの面のｲﾝﾃﾞｯｸｽ値へのﾎﾟｲﾝﾀ.
-		&U, &V,				//(out)重心ﾋｯﾄ座標.
-		pfDistance,			//ﾀｰｹﾞｯﾄとの距離.
+		&dwIndex,	//(out)bHitがTrue時、レイの始点に.
+		//最も近くの面のインデックス値へのポインタ.
+		&U, &V,				//(out)重心ヒット座標.
+		pfDistance,			//ターゲットとの距離.
 		NULL, NULL);
 	if (bHit) {
 		//命中したとき.
 		FindVerticesOnPoly(
 			pTarget->GetMeshForRay(), dwIndex, vVertex);
 		//重心座標から交差点を算出.
-		//ﾛｰｶﾙ交点pは、v0 + U*(v1-v0) + V*(v2-v0)で求まる.
+		//ローカル交点pは、v0 + U*(v1-v0) + V*(v2-v0)で求まる.
 		*pvIntersect =
 			vVertex[0]
 			+ U * (vVertex[1] - vVertex[0])
@@ -672,13 +672,13 @@ bool clsStageScene::Intersect(
 	return false;//外れている.
 }
 
-//交差位置のﾎﾟﾘｺﾞﾝの頂点を見つける.
-//※頂点座標はﾛｰｶﾙ座標.
+//交差位置のポリゴンの頂点を見つける.
+//※頂点座標はローカル座標.
 HRESULT clsStageScene::FindVerticesOnPoly(
 	LPD3DXMESH pTarget, DWORD dwPolyIndex,
 	D3DXVECTOR3* pVecVertices)
 {
-	//頂点ごとのﾊﾞｲﾄ数を取得.
+	//頂点ごとのバイト数を取得.
 	DWORD dwStride = pTarget->GetNumBytesPerVertex();
 	//頂点数を取得.
 	DWORD dwVertexAmt = pTarget->GetNumVertices();
@@ -687,69 +687,69 @@ HRESULT clsStageScene::FindVerticesOnPoly(
 
 	WORD* pwPoly = NULL;
 
-	//ｲﾝﾃﾞｯｸｽﾊﾞｯﾌｧをﾛｯｸ(読込ﾓｰﾄﾞ)
+	//インデックスバッファをロック(読込モード)
 	pTarget->LockIndexBuffer(
 		D3DLOCK_READONLY, (VOID**)&pwPoly);
-	BYTE* pbVertices = NULL;//頂点(ﾊﾞｲﾄ型)
+	BYTE* pbVertices = NULL;//頂点(バイト型)
 	FLOAT* pfVertices = NULL;//頂点(float型)
-	LPDIRECT3DVERTEXBUFFER9 VB = NULL;//頂点ﾊﾞｯﾌｧ.
+	LPDIRECT3DVERTEXBUFFER9 VB = NULL;//頂点バッファ.
 	pTarget->GetVertexBuffer(&VB);//頂点情報の取得.
 
-	//頂点ﾊﾞｯﾌｧのﾛｯｸ.
+	//頂点バッファのロック.
 	if (SUCCEEDED(
 		VB->Lock(0, 0, (VOID**)&pbVertices, 0)))
 	{
-		//ﾎﾟﾘｺﾞﾝの頂点の１つ目を取得.
+		//ポリゴンの頂点の１つ目を取得.
 		pfVertices
 			= (FLOAT*)&pbVertices[dwStride*pwPoly[dwPolyIndex * 3]];
 		pVecVertices[0].x = pfVertices[0];
 		pVecVertices[0].y = pfVertices[1];
 		pVecVertices[0].z = pfVertices[2];
 
-		//ﾎﾟﾘｺﾞﾝの頂点の２つ目を取得.
+		//ポリゴンの頂点の２つ目を取得.
 		pfVertices
 			= (FLOAT*)&pbVertices[dwStride*pwPoly[dwPolyIndex * 3 + 1]];
 		pVecVertices[1].x = pfVertices[0];
 		pVecVertices[1].y = pfVertices[1];
 		pVecVertices[1].z = pfVertices[2];
 
-		//ﾎﾟﾘｺﾞﾝの頂点の３つ目を取得.
+		//ポリゴンの頂点の３つ目を取得.
 		pfVertices
 			= (FLOAT*)&pbVertices[dwStride*pwPoly[dwPolyIndex * 3 + 2]];
 		pVecVertices[2].x = pfVertices[0];
 		pVecVertices[2].y = pfVertices[1];
 		pVecVertices[2].z = pfVertices[2];
 
-		pTarget->UnlockIndexBuffer();	//ﾛｯｸ解除.
-		VB->Unlock();	//ﾛｯｸ解除.
+		pTarget->UnlockIndexBuffer();	//ロック解除.
+		VB->Unlock();	//ロック解除.
 	}
 	VB->Release();
 
 	return S_OK;
 }
 
-//ｽﾌｨｱ作成.
+//スフィア作成.
 HRESULT clsStageScene::InitSphere(clsDX9Mesh* pMesh, float fScale)
 {
-	LPDIRECT3DVERTEXBUFFER9 pVB = NULL;	//頂点ﾊﾞｯﾌｧ.
+	LPDIRECT3DVERTEXBUFFER9 pVB = NULL;	//頂点バッファ.
 	void*		pVertices = NULL;	//頂点
 	D3DXVECTOR3 vCenter;		//中心.
 	float		fRadius;			//半径.
 
-	//頂点ﾊﾞｯﾌｧを取得.
+	//頂点バッファを取得.
 	if (FAILED(pMesh->m_pMesh->GetVertexBuffer(&pVB)))
 	{
 		return E_FAIL;
 	}
 
-	//ﾒｯｼｭの頂点ﾊﾞｯﾌｧをﾛｯｸする.
+	//メッシュの頂点バッファをロックする.
 	if (FAILED(pVB->Lock(0, 0, &pVertices, 0)))
 	{
 		SAFE_RELEASE(pVB);
 		return E_FAIL;
 	}
 
-	//ﾒｯｼｭの外接円の中心と半径を計算する.
+	//メッシュの外接円の中心と半径を計算する.
 	D3DXComputeBoundingSphere(
 		(D3DXVECTOR3*)pVertices,
 		pMesh->m_pMesh->GetNumVertices(),//頂点の数.
@@ -757,7 +757,7 @@ HRESULT clsStageScene::InitSphere(clsDX9Mesh* pMesh, float fScale)
 		&vCenter,	//(out)中心座標.
 		&fRadius);	//(out)半径.
 
-	//ｱﾝﾛｯｸ.
+	//アンロック.
 	pVB->Unlock();
 	SAFE_RELEASE(pVB);
 

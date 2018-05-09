@@ -2,18 +2,18 @@
 //
 //	※[dinput.h]を読込む際にしなければいけないこと。
 //
-//		[ﾂｰﾙ]→[ｵﾌﾟｼｮﾝ]→[ﾌﾟﾛｼﾞｪｸﾄおよびｿﾘｭｰｼｮﾝ]→
-//			[全般]→[VC++ ﾃﾞｨﾚｸﾄﾘ]→[ﾃﾞｨﾚｸﾄﾘを表示するﾌﾟﾛｼﾞｪｸﾄ]→
-//				[ｲﾝｸﾙｰﾄﾞ ﾌｧｲﾙ]
+//		[ツール]→[オプション]→[プロジェクトおよびソリューション]→
+//			[全般]→[VC++ ディレクトリ]→[ディレクトリを表示するプロジェクト]→
+//				[インクルード ファイル]
 //					C:\Program Files\Microsoft DirectX SDK (June 2010)\Include
-//				[ﾗｲﾌﾞﾗﾘ ﾌｧｲﾙ]
+//				[ライブラリ ファイル]
 //					C:\Program Files\Microsoft DirectX SDK (June 2010)\Lib\x86
 //
-//		[ﾌﾟﾛｼﾞｪｸﾄ]→[○○のﾌﾟﾛﾊﾟﾃｨ]→[構成ﾌﾟﾛﾊﾟﾃｨ]→
-//			[ﾘﾝｶ]→[入力]→[追加の依存ﾌｧｲﾙ]
+//		[プロジェクト]→[○○のプロパティ]→[構成プロパティ]→
+//			[リンカ]→[入力]→[追加の依存ファイル]
 //					dxguid.lib dinput8.lib			←DirectInput で使用する必要最低限。
 //
-//		追加依存ﾌｧｲﾙは、下記の #pragma comment( lib, "○○.lib") で代用可能。
+//		追加依存ファイルは、下記の #pragma comment( lib, "○○.lib") で代用可能。
 //		他のプロジェクトにコードを移植することを考えるとこちらの方が楽でよい。
 //
 //========================================================================================
@@ -28,7 +28,7 @@
 #pragma comment( lib, "dinput8.lib" )	// コントローラ操作で使用.
 
 //列挙体宣言.
-//ｷｰ情報.
+//キー情報.
 enum enPKey {
 	enPKey_Up,
 	enPKey_Down,
@@ -47,7 +47,7 @@ enum enPKey {
 	enPKey_10,
 	enPKey_11,
 
-	enPKey_Max,	//ｷｰ最大数.
+	enPKey_Max,	//キー最大数.
 };
 
 class clsDxInput
@@ -68,12 +68,12 @@ public:
 	//入力情報を初期化する関数.
 	void InitInputState();
 
-	//入力ﾁｪｯｸする関数.
+	//入力チェックする関数.
 	bool IsPressKey(enPKey enKey);
 
 private:
-	LPDIRECTINPUT8			m_pDI;//DxInputｵﾌﾞｼﾞｪｸﾄ.
-	LPDIRECTINPUTDEVICE8	m_pPad;//ﾃﾞﾊﾞｲｽ(ｺﾝﾄﾛｰﾗ)ｵﾌﾞｼﾞｪｸﾄ.
+	LPDIRECTINPUT8			m_pDI;//DxInputオブジェクト.
+	LPDIRECTINPUTDEVICE8	m_pPad;//デバイス(コントローラ)オブジェクト.
 
 	unsigned int			m_uInputState;//入力情報.
 };

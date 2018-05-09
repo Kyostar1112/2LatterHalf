@@ -1,10 +1,10 @@
 #ifndef _MY_MACRO_H_
 #define _MY_MACRO_H_
-//ｲﾝｸﾙｰﾄﾞ.
+//インクルード.
 #include <Windows.h>
 #include <random>
 
-//ｽﾌｨｱ構造体.
+//スフィア構造体.
 struct SPHERE
 {
 	D3DXVECTOR3 vCenter;	//中心.
@@ -22,10 +22,10 @@ enum enDirection
 
 //================================================
 //
-//	ﾏｸﾛ.
+//	マクロ.
 //
 //================================================
-//ｴﾗｰﾒｯｾｰｼﾞ.
+//エラーメッセージ.
 #define ERR_MSG(str,title)	{ MessageBox(NULL,str,title,MB_OK); }
 
 //解放.

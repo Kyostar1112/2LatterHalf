@@ -121,9 +121,9 @@ private:
 
 	unique_ptr<clsSprite2D>		m_smpTargetPoint;	//照準.
 
-	//ｽﾌｨｱ作成.
+	//スフィア作成.
 	HRESULT InitSphere(clsDX9Mesh* pMesh, float fScale = 0.7f);
-	//ｽﾌｨｱ作成.
+	//スフィア作成.
 	HRESULT InitSphere(D3DXVECTOR3 vPos, float fScale = 0.7f);
 
 	//当たり判定まとめ.
@@ -134,22 +134,22 @@ private:
 	bool Collision(clsCharacter* pAttacker, clsCharacter* pTarget);
 
 	void Ray(clsEnemy* Enemy);
-	//ﾚｲとﾒｯｼｭの当たり判定.
+	//レイとメッシュの当たり判定.
 	bool Intersect(
 		clsGameObject* pAttacker, clsCharacter* pTarget,
 		float* pfDistance, D3DXVECTOR3* pvIntersect);
-	//交差位置のﾎﾟﾘｺﾞﾝの頂点を見つける.
+	//交差位置のポリゴンの頂点を見つける.
 	HRESULT FindVerticesOnPoly(
 		LPD3DXMESH pTarget, DWORD dwPolyIndex,
 		D3DXVECTOR3* pVecVertices);
 
 #if 0
 
-	//ﾊﾞｳﾝﾃﾞｨﾝｸﾞﾎﾞｯｸｽ作成.
+	//バウンディングボックス作成.
 	HRESULT InitBBox(clsDX9Mesh* pMesh);
 	HRESULT InitBBox(clsD3DXSKINMESH* pMesh);
 
-	//衝突判定(ﾊﾞｳﾝﾃﾞｨﾝｸﾞﾎﾞｯｸｽ).
+	//衝突判定(バウンディングボックス).
 	bool BBoxCollision(clsDX9Mesh* pAttacker, clsDX9Mesh* pTarget);
 	bool BBoxCollision(clsD3DXSKINMESH* pAttacker, clsD3DXSKINMESH* pTarget);
 
