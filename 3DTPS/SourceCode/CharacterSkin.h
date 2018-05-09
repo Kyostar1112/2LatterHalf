@@ -29,7 +29,8 @@ public:
 	void ChangeAnimSet(int index, double dStartPos = 0.0f);
 	double GetAnimPeriod(int index)
 	{
-		return m_pSkinModel->GetAnimPeriod(index);
+		float fMotionAdjustment = 0.036f;//ƒŒƒ“ƒ_[‚ÌˆÊ’u‚É‡‚í‚¹‚é‚½‚ß‚É.
+		return m_pSkinModel->GetAnimPeriod(index)/* - fMotionAdjustment*/;
 	}
 
 	double m_dAnimSpeed;
