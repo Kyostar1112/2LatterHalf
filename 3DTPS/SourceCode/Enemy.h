@@ -15,12 +15,12 @@ public:
 
 	enum class State
 	{
-		Spawn = 0,		//“G¢Š«.
-		Move,			//“GˆÚ“®.
-		ChangeAttack,	//ˆÚ“®‚©‚çUŒ‚ƒ‚[ƒh‚Ö‚Ì•ÏX.
-		InitAttack,		//UŒ‚‚²‚Æ‚Ì‰Šú‰».
-		Attak,			//UŒ‚ˆ—.
-		IdleAttak,		//UŒ‚‚ÌƒCƒ“ƒ^[ƒoƒ‹.
+		Spawn = 0,		//æ•µå¬å–š.
+		Move,			//æ•µç§»å‹•.
+		ChangeAttack,	//ç§»å‹•ã‹ã‚‰æ”»æ’ƒãƒ¢ãƒ¼ãƒ‰ã¸ã®å¤‰æ›´.
+		InitAttack,		//æ”»æ’ƒã”ã¨ã®åˆæœŸåŒ–.
+		Attak,			//æ”»æ’ƒå‡¦ç†.
+		IdleAttak,		//æ”»æ’ƒã®ã‚¤ãƒ³ã‚¿ãƒ¼ãƒãƒ«.
 	};
 
 	bool GetEnableFlg()
@@ -42,12 +42,12 @@ public:
 
 	void Loop();
 
-	void Damage();		//UŒ‚‚ğ“–‚Ä‚ç‚ê‚½‚Ìˆ—.
-	void ExpRender();	//”š”­‚Ì•\¦ˆ—.
+	void Damage();		//æ”»æ’ƒã‚’å½“ã¦ã‚‰ã‚ŒãŸæ™‚ã®å‡¦ç†.
+	void ExpRender();	//çˆ†ç™ºã®è¡¨ç¤ºå‡¦ç†.
 
 	bool m_bAttakFlg;
 
-	//“G‚Ì”š”j—p.
+	//æ•µã®çˆ†ç ´ç”¨.
 	vector<unique_ptr<clsExplosion>> m_vsmpExplosion;
 
 private:
@@ -64,13 +64,13 @@ private:
 
 	State m_EnemyState;
 
-	float m_fLen;//’·‚³.
+	float m_fLen;//é•·ã•.
 
-	bool m_bEnableFlg;//true‚ª‚±‚Ìƒ‚ƒfƒ‹‚ğg—p‚µ‚Ä‚¢‚é.
+	bool m_bEnableFlg;//trueãŒã“ã®ãƒ¢ãƒ‡ãƒ«ã‚’ä½¿ç”¨ã—ã¦ã„ã‚‹.
 
-	int  m_iAttakInterval;//UŒ‚‚ÌŠÔŠu.
+	int  m_iAttakInterval;//æ”»æ’ƒã®é–“éš”.
 
-	D3DXVECTOR3 m_vSpawnPos;	//“G‚ğo‚·ˆ×‚ÌŒ³‚ÌˆÊ’u.
+	D3DXVECTOR3 m_vSpawnPos;	//æ•µã‚’å‡ºã™ç‚ºã®å…ƒã®ä½ç½®.
 };
 
 #endif  //#ifdef _C_ENEMY_H_

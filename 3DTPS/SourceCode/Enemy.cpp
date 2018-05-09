@@ -3,9 +3,9 @@
 const float PI = 3.141592f;
 namespace ConstantEnemy
 {
-	const float fSpawnLength = 30.0f;	//“G‚ªo‚Ä‚­‚é‹——£.
-	const int   iExpImg = 3;			//”š”­‰æ‘œ‚Ì”.
-	const int	iAttakInterval = 180.0f;//UŒ‚ŠÔŠu.
+	const float fSpawnLength = 30.0f;	//æ•µãŒå‡ºã¦ãã‚‹è·é›¢.
+	const int   iExpImg = 3;			//çˆ†ç™ºç”»åƒã®æ•°.
+	const int	iAttakInterval = 180.0f;//æ”»æ’ƒé–“éš”.
 }
 
 namespace CE = ConstantEnemy;
@@ -26,7 +26,7 @@ clsEnemy::~clsEnemy()
 
 void clsEnemy::Loop()
 {
-	//ƒAƒjƒ[ƒVƒ‡ƒ“‘¬“x‰ÁŽZ‚Íæ‚É.
+	//ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³é€Ÿåº¦åŠ ç®—ã¯å…ˆã«.
 	m_dAnimTime += m_dAnimSpeed;
 
 	switch (m_EnemyState)
@@ -58,9 +58,9 @@ void clsEnemy::Spawn()
 	m_iAttakInterval = 180.0f;
 	float fZ, fX;
 
-	float fDeg = RandamAmong(0.0f, 360.0f);//Šp“x.
+	float fDeg = RandamAmong(0.0f, 360.0f);//è§’åº¦.
 
-	m_fLen = CE::fSpawnLength;//’·‚³.
+	m_fLen = CE::fSpawnLength;//é•·ã•.
 
 	float rad = fDeg * PI / 180.0f;
 
@@ -78,23 +78,22 @@ void clsEnemy::Spawn()
 
 	m_bEnableFlg = true;
 
-	//ˆÚ“®ó‘Ô‚É•ÏX.
+	//ç§»å‹•çŠ¶æ…‹ã«å¤‰æ›´.
 	m_EnemyState = State::Move;
 }
-
 
 void clsEnemy::Move()
 {
 	D3DXVECTOR3 vTargtPos = m_vSpawnPos;
-	D3DXVECTOR3 vTmpPos = { 0.0f, 0.0f, 0.0f };	//ƒ^[ƒQƒbƒg‚ÆŽ©•ª‚Ì•Ï‰»—Ê.
+	D3DXVECTOR3 vTmpPos = { 0.0f, 0.0f, 0.0f };	//ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã¨è‡ªåˆ†ã®å¤‰åŒ–é‡.
 	float TargetRot = 0.0f;
 	vTmpPos = vTargtPos - GetPosition();
-	//’·‚³‚É•ÏŠ·‚·‚é.
+	//é•·ã•ã«å¤‰æ›ã™ã‚‹.
 	float Length = D3DXVec3Length(&vTmpPos);
 
 	if (Length > 5.0f)
 	{
-		TargetRot = atan2f(vTmpPos.x, vTmpPos.z);	//ƒ^[ƒQƒbƒg‚Ö‚ÌŠp“x.
+		TargetRot = atan2f(vTmpPos.x, vTmpPos.z);	//ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã¸ã®è§’åº¦.
 
 		m_enDir = enDirection_Foward;
 
@@ -102,7 +101,7 @@ void clsEnemy::Move()
 	}
 	else
 	{
-		//UŒ‚€”õó‘Ô‚É•ÏX.
+		//æ”»æ’ƒæº–å‚™çŠ¶æ…‹ã«å¤‰æ›´.
 		ChangeAnimSet(03);
 		m_dAnimTime = 0.0f;
 		m_EnemyState = State::ChangeAttack;
@@ -111,10 +110,10 @@ void clsEnemy::Move()
 
 void clsEnemy::ChangeAttack()
 {
-	//‘Ò‹@ó‘Ô‚Ö.
+	//å¾…æ©ŸçŠ¶æ…‹ã¸.
 	if ( m_dAnimTime + m_dAnimSpeed >= GetAnimPeriod(03))
 	{
-		//UŒ‚‘Ò‹@ó‘Ô‚É•ÏX.
+		//æ”»æ’ƒå¾…æ©ŸçŠ¶æ…‹ã«å¤‰æ›´.
 		m_EnemyState = State::InitAttack;
 		m_dAnimSpeed = 0.0f;
 	}
@@ -122,32 +121,30 @@ void clsEnemy::ChangeAttack()
 
 void clsEnemy::InitAttack()
 {
-	//ƒAƒjƒ[ƒVƒ‡ƒ“Ø‚è‘Ö‚¦.
+	//ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³åˆ‡ã‚Šæ›¿ãˆ.
 	ChangeAnimSet(05);
 	m_dAnimTime = 0;
 	m_dAnimSpeed = 0.01f;
-	//UŒ‚ó‘Ô‚É•ÏX.
+	//æ”»æ’ƒçŠ¶æ…‹ã«å¤‰æ›´.
 	m_EnemyState = State::Attak;
 }
 
 void clsEnemy::Attack()
 {
-	//UŒ‚‚Ìƒ‚[ƒVƒ‡ƒ“’†‚©H.
+	//æ”»æ’ƒã®ãƒ¢ãƒ¼ã‚·ãƒ§ãƒ³ä¸­ã‹ï¼Ÿ.
 	if ( m_dAnimTime + m_dAnimSpeed >= GetAnimPeriod(05) )
 	{
 		m_bAttakFlg = true;
 		ChangeAnimSet(06);
 		m_dAnimTime = 0;
-		//UŒ‚‘Ò‹@ó‘Ô‚É•ÏX.
+		//æ”»æ’ƒå¾…æ©ŸçŠ¶æ…‹ã«å¤‰æ›´.
 		m_EnemyState = State::IdleAttak;
-		m_iAttakInterval = 180.0f;
 	}
-
 }
 
 void clsEnemy::IdleAttack()
 {
-	//UŒ‚‚Ìƒ‚[ƒVƒ‡ƒ“’†‚©H.
+	//æ”»æ’ƒã®ãƒ¢ãƒ¼ã‚·ãƒ§ãƒ³ä¸­ã‹ï¼Ÿ.
 	if (m_dAnimTime + m_dAnimSpeed >= GetAnimPeriod(06))
 	{
 		m_dAnimSpeed = 0.0f;
@@ -156,11 +153,11 @@ void clsEnemy::IdleAttack()
 
 	if (m_iAttakInterval < 0)
 	{
-		//UŒ‚‘Ò‹@ó‘Ô‚É•ÏX.
+		//æ”»æ’ƒå¾…æ©ŸçŠ¶æ…‹ã«å¤‰æ›´.
 		m_EnemyState = State::InitAttack;
 	}
-
 	m_iAttakInterval--;
+	m_dAnimSpeed = 0.01f;
 }
 
 void clsEnemy::Damage()
@@ -175,7 +172,7 @@ void clsEnemy::Damage()
 	}
 }
 
-void clsEnemy::ExpRender()	//”š”­‚Ì•\Ž¦ˆ—.
+void clsEnemy::ExpRender()	//çˆ†ç™ºã®è¡¨ç¤ºå‡¦ç†.
 {
 	for (size_t i = 0; i < m_vsmpExplosion.size(); i++)
 	{
