@@ -3,13 +3,16 @@
 const float PI = 3.141592f;
 namespace ConstantEnemy
 {
-	const float SpawnLength = 30.0f;
-	const int   ExpImg = 3;//爆発画像の数.
+	const float fSpawnLength = 30.0f;
+	const int   iExpImg = 3;//爆発画像の数.
+	const int	iAttakInterval = 180.0f;
 }
+
+namespace CE = ConstantEnemy;
 
 clsEnemy::clsEnemy()
 {
-	for (size_t i = 0; i < ConstantEnemy::ExpImg; i++)
+	for (size_t i = 0; i < CE::iExpImg; i++)
 	{
 		m_vsmpExplosion.push_back(make_unique<clsExplosion>());
 		m_vsmpExplosion[i]->Create();
@@ -20,26 +23,38 @@ clsEnemy::~clsEnemy()
 {
 }
 
-void clsEnemy::EnemySpawn()
+void clsEnemy::Loop()
 {
-	m_bArrival = false;
-	m_bAttakFlg = false;
+	switch (m_EnemyState)
+	{
+	case clsEnemy::State::Spawn:
+		Spawn();
+		break;
+	case clsEnemy::State::Move:
+		Move();
+		break;
+	case clsEnemy::State::Attak:
+		Attack();
+		break;
+	case clsEnemy::State::Idle:
+		break;
+	default:
+		break;
+	}
+	UpdatePos();
+}
 
+void clsEnemy::Spawn()
+{
 	ChangeAnimSet(02);
 	m_iAttakInterval = 180.0f;
 	float fZ, fX;
 
-	random_device rd;
+	float fDeg = RandamAmong(0.0f, 360.0f);//角度.
 
-	mt19937 mt(rd());
+	m_fLen = CE::fSpawnLength;//長さ.
 
-	uniform_int_distribution<int> rdDeg(0.0f, 360.0f);
-
-	float fDeg = static_cast<float>(rdDeg(mt));//角度.
-
-	m_fLen = ConstantEnemy::SpawnLength;//長さ.
-
-	float rad = fDeg * PI / 180.0;
+	float rad = fDeg * PI / 180.0f;
 
 	fX = m_fLen*cosf(rad);
 	fZ = m_fLen*sinf(rad);
@@ -54,9 +69,13 @@ void clsEnemy::EnemySpawn()
 	SetPosition(vTmp);
 
 	m_bEnableFlg = true;
+
+	//移動状態に変更.
+	m_EnemyState = State::Move;
 }
 
-void clsEnemy::EnemyMove()
+
+void clsEnemy::Move()
 {
 	int AnimNum = 5;
 
@@ -73,44 +92,26 @@ void clsEnemy::EnemyMove()
 
 		m_enDir = enDirection_Foward;
 
-		UpdatePos();
-
 		SetRotationY(TargetRot);
 	}
-	else if (!m_bArrival)
+	else
 	{
-		//アニメーション切り替え.
-		m_iAnimNo = AnimNum;
-		ChangeAnimSet(m_iAnimNo);
-		m_dAnimTime = 0;
-		m_bArrival = true;
-	}
-
-	m_dAnimTime += m_dAnimSpeed;
-
-	if (m_iAnimNo == AnimNum)
-	{
-		if (m_dAnimTime >= GetAnimPeriod(AnimNum))
-		{
-			m_dAnimTime = 0.0f;
-			m_bAttakFlg = true;
-			m_dAnimSpeed = 0;
-		}
-		if (m_iAttakInterval < 0)
-		{
-			m_iAttakInterval = 180.0f;
-		}
-
-		if (m_iAttakInterval >= 180)
-		{
-			m_dAnimTime = 0.0f;
-			m_dAnimSpeed = 0.01f;
-		}
-		m_iAttakInterval--;
+		//攻撃状態に変更.
+		m_EnemyState = State::Attak;
 	}
 }
+void clsEnemy::Attack()
+{
+	ChangeAnimSet(06);
 
-void clsEnemy::ShotHit()
+	m_dAnimSpeed = 0.01f;
+}
+
+void clsEnemy::Idle()
+{
+}
+
+void clsEnemy::Damage()
 {
 	for (size_t i = 0; i < m_vsmpExplosion.size(); i++)
 	{
@@ -121,6 +122,7 @@ void clsEnemy::ShotHit()
 		}
 	}
 }
+
 void clsEnemy::ExpRender()	//爆発の表示処理.
 {
 	for (size_t i = 0; i < m_vsmpExplosion.size(); i++)
@@ -131,3 +133,4 @@ void clsEnemy::ExpRender()	//爆発の表示処理.
 		}
 	}
 }
+

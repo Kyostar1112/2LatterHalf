@@ -237,7 +237,7 @@ void clsStageScene::UpDate()
 		{
 			if (!m_vsmpEnemy[i]->GetEnableFlg())
 			{
-				m_vsmpEnemy[i]->EnemySpawn();
+				m_vsmpEnemy[i]->Spawn();
 				m_iEnemyIntervalCnt = ConstantStageScene::SPAWNCNT;
 				break;
 			}
@@ -259,7 +259,7 @@ void clsStageScene::UpDate()
 	{
 		if (m_vsmpEnemy[i]->GetEnableFlg())
 		{
-			m_vsmpEnemy[i]->EnemyMove();
+			m_vsmpEnemy[i]->Loop();
 		}
 	}
 	m_iPlayerinvincible--;
@@ -493,7 +493,7 @@ void clsStageScene::HitCheak()
 					}
 				}
 				m_iScore += 100;
-				m_vsmpEnemy[j]->ShotHit();
+				m_vsmpEnemy[j]->Damage();
 				m_vsmpEnemy[j]->SetPositionY(99.0f);
 				m_vsmpEnemy[j]->SetEnableFlg(false);
 			}

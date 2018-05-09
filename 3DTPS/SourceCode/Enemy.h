@@ -13,6 +13,14 @@ public:
 	clsEnemy();
 	~clsEnemy();
 
+	enum class State
+	{
+		Spawn = 0,
+		Move,
+		Attak,
+		Idle,
+	};
+
 	bool GetEnableFlg()
 	{
 		return m_bEnableFlg;
@@ -28,11 +36,11 @@ public:
 		m_vSpawnPos = SpawnPos;
 		m_fSpd = 0.5f;
 	}
-	void EnemySpawn();
+	void Spawn();
 
-	void EnemyMove();
+	void Loop();
 
-	void ShotHit();		//攻撃を当てられた時の処理.
+	void Damage();		//攻撃を当てられた時の処理.
 	void ExpRender();	//爆発の表示処理.
 
 	bool m_bAttakFlg;
@@ -40,11 +48,19 @@ public:
 	vector<unique_ptr<clsExplosion>> m_vsmpExplosion;
 
 private:
+
+	void Move();
+
+	void Attack();
+
+	void Idle();
+
+	State m_EnemyState;
+
 	float m_fLen;//長さ.
 
-	bool m_bEnableFlg;//trueが使用している.
+	bool m_bEnableFlg;//trueがこのモデルを使用している.
 
-	bool m_bArrival;
 	int  m_iAttakInterval;
 
 	D3DXVECTOR3 m_vSpawnPos;	//敵を出す為の元の位置.
