@@ -720,38 +720,74 @@ HRESULT clsMain::MeshRead()
 	m_pResource = clsResource::GetInstance();
 	m_pResource->Init(m_hWnd, m_pDevice, m_pDeviceContext);
 
+	m_bLoadFlg = false;
+
+	m_smpLoadString = make_unique<clsSprite2D>();
+	m_smpLoadString->Create(m_pDevice, m_pDeviceContext, "Data\\Load\\LoadBack.png");
+	m_smpLoadString->SetPos(D3DXVECTOR3(WND_W / 2 - m_smpLoadString->GetSs().Disp.w / 2,
+		WND_H / 2 - m_smpLoadString->GetSs().Disp.h / 2,
+		0.0f));
+	m_smpLoadString->SetPatarnU(0.0f);
+	m_smpLoadString->SetPatarnV(0.0f);
+	m_smpLoadString->SetAlpha(1.0f);
+
+	m_smpLoadCircle = make_unique<clsSprite2D>();
+	m_smpLoadCircle->Create(m_pDevice, m_pDeviceContext, "Data\\Load\\LoadIcon.png");
+	m_smpLoadCircle->SetPos(D3DXVECTOR3(m_smpLoadString->GetPos().x + m_smpLoadString->GetSs().Disp.w,
+		m_smpLoadString->GetPos().y,
+		0.0f));
+	m_smpLoadCircle->SetPatarnU(0.0f);
+	m_smpLoadCircle->SetPatarnV(0.0f);
+	m_smpLoadCircle->SetAlpha(1.0f);
+
+
 	thread th1([this] {
-		m_pResource->CreateStaticModel(
-			"Data\\teststage\\test_stage_X.X",
-			clsResource::enStaticModel_Plane);
+		while (true)
+		{
+			//画面のクリア.
+			float ClearColor[4] = { 0.0f, 0.0f, 0.0f, 1.0f };//クリア色(RGBA順:255の比率で出す)
+															 //カラーバックバッファ.
+			m_pDeviceContext->ClearRenderTargetView(m_pBackBuffer_TexRTV, ClearColor);
+			//デプスステンシルバックバッファ.
+			m_pDeviceContext->ClearDepthStencilView(m_pBackBuffer_DSTexDSV, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
+
+			SetDepth(false);
+
+			m_smpLoadString->Render();
+
+			m_smpLoadString->Flashing(0.0005f);
+			m_smpLoadCircle->Render();
+
+			SetDepth(true);
+
+			//レンダリングされたイメージを表示.
+			m_pSwapChain->Present(0, 0);
+
+			if (m_bLoadFlg)
+			{
+				break;
+			}
+
+		}
 	});
 
-	thread th2([this] {
-		m_pResource->CreateStaticModel(
-			"Data\\Player\\Ziki.X",
-			clsResource::enStaticModel_Player);
-	});
-	thread th3([this] {
-		m_pResource->CreateStaticModel(
-			"Data\\Player\\Ziki.X",
-			clsResource::enStaticModel_Shot);
-	});
-	thread th4([this] {
-		m_pResource->CreateStaticModel(
-			"Data\\Collision\\Sphere.X",
-			clsResource::enStaticModel_Sphere);
-	});
-	thread th5([this] {
-		m_pResource->CreateSkinModel(
-			"Data\\EXTINGER\\extinger.X",
-			clsResource::enSkinModel_Boss);
-	});
+	th1.detach();
 
-	th1.join();
-	th2.join();
-	th3.join();
-	th4.join();
-	th5.join();
+	m_pResource->CreateStaticModel(
+		"Data\\teststage\\test_stage_X.X",
+		clsResource::enStaticModel_Plane);
+	m_pResource->CreateStaticModel(
+		"Data\\Player\\Ziki.X",
+		clsResource::enStaticModel_Player);
+	m_pResource->CreateStaticModel(
+		"Data\\Player\\Ziki.X",
+		clsResource::enStaticModel_Shot);
+	m_pResource->CreateStaticModel(
+		"Data\\Collision\\Sphere.X",
+		clsResource::enStaticModel_Sphere);
+	m_pResource->CreateSkinModel(
+		"Data\\EXTINGER\\extinger.X",
+		clsResource::enSkinModel_Boss);
 
 	Resource->m_smpFile = make_unique<clsFile>();
 	Resource->m_smpFile->Init("Data\\Txt\\ScoreRank.csv");
@@ -785,60 +821,14 @@ HRESULT clsMain::MeshRead()
 	m_smpSeClick = make_unique<clsSound>();
 	m_smpSeClick->Open("Data\\Sound\\BGM\\Click.mp3", "ClickSe00", Resource->GetSpriteRenderSet().hWnd);
 	m_smpSeClick->SetVolume(100);
-	//キャラクタクラス.
-	//キャラクタのポインタの配列を作る.
-	//for (int i = 0; i < m_iEnemyArrayMax; i++)
-	//{
-	//	m_vsmpEnemyArray.push_back(make_unique<clsCharacter>());
 
-	//	//モデルデータ関連付け.
-	//	//m_vsmpEnemyArray[i]->AttachModel( m_pEnemyModel );
-	//	m_vsmpEnemyArray[i]->AttachModel( m_pResource->GetStaticModels( clsResource::enStaticModel_RoboA ) );
-	//	m_vsmpEnemyArray[i]->SetScale( 3.0f );
-
-	//	m_vsmpEnemyArray[i]->SetPosition(
-	//		D3DXVECTOR3( -5.0f + ( i%10 ) * 1.0f -10.0f
-	//					, 1.0f
-	//					,-5.0f + ( i/10 ) * 1.0f ) );
-
-	//}
-#if 0
-
-	//スキンメッシュクラスに必要な情報を渡して初期化.
-	CD3DXSKINMESH_INIT si;
-	si.hWnd = m_hWnd;
-	si.pDevice = m_pDevice;
-	si.pDeviceContext = m_pDeviceContext;
-
-	m_pAnimModel = make_unique<clsD3DXSKINMESH>();
-	m_pAnimModel->Init(&si);
-	m_pAnimModel->CreateFromX("Data\\EXTINGER\\extinger.X");
-	//m_pAnimModel->m_vPos.y = 0.0f;	//地面との表示位置調整.
-	// ラジアン = ( 度数 × 円周率 ) ÷ 180.
-
-	m_iAnimModelArrayMax = 10;
-	for (int i = 0; i < m_iAnimModelArrayMax; i++)
-	{
-		m_smpBoss.push_back(make_unique<clsCharacterSkin>());
-		m_smpBoss[i]->AttachModel(m_pAnimModel.get());
-
-		m_smpBoss[i]->SetScale(i*0.01f);
-
-		m_smpBoss[i]->SetPosition(
-			D3DXVECTOR3(-5.0f + (i % 10) * 1.0f
-				, 1.0f
-				, -5.0f + (i / 10) * 1.0f));
-
-		m_smpBoss[i]->ChangeAnimSet(i * 2);
-		m_smpBoss[i]->m_dAnimSpeed = i * 0.01;
-	}
-
-#endif // 0
 	m_smpClearScene->MusicStop();
 	m_smpTitleScene->MusicStop();
 	m_smpStageScene->MusicStop();
 	m_smpResultScene->MusicStop();
 	m_smpOverScene->MusicStop();
+
+	m_bLoadFlg = true;
 
 	return S_OK;
 }

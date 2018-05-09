@@ -111,7 +111,7 @@ void clsEnemy::Move()
 void clsEnemy::ChangeAttack()
 {
 	//待機状態へ.
-	if ( m_dAnimTime + m_dAnimSpeed >= GetAnimPeriod(03))
+	if (m_dAnimTime >= GetAnimPeriod(03))
 	{
 		//攻撃待機状態に変更.
 		m_EnemyState = State::InitAttack;
@@ -132,7 +132,7 @@ void clsEnemy::InitAttack()
 void clsEnemy::Attack()
 {
 	//攻撃のモーション中か？.
-	if ( m_dAnimTime + m_dAnimSpeed >= GetAnimPeriod(05) )
+	if (m_dAnimTime >= GetAnimPeriod(05))
 	{
 		m_bAttakFlg = true;
 		ChangeAnimSet(06);
@@ -145,7 +145,7 @@ void clsEnemy::Attack()
 void clsEnemy::IdleAttack()
 {
 	//攻撃のモーション中か？.
-	if (m_dAnimTime + m_dAnimSpeed >= GetAnimPeriod(06))
+	if (m_dAnimTime >= GetAnimPeriod(06))
 	{
 		m_dAnimSpeed = 0.0f;
 		ChangeAnimSet(00);
@@ -153,6 +153,7 @@ void clsEnemy::IdleAttack()
 
 	if (m_iAttakInterval < 0)
 	{
+		m_iAttakInterval = 180.0f;
 		//攻撃待機状態に変更.
 		m_EnemyState = State::InitAttack;
 	}
