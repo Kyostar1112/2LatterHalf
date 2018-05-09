@@ -17,8 +17,8 @@ cbuffer global_0	: register(b0)
 cbuffer global_1	: register(b1)
 {
 	float4 g_Ambient = float4(0, 0, 0, 0);	//環境光.
-		float4 g_Diffuse = float4(1, 0, 0, 0);	//拡散反射(色).
-		float4 g_Specular = float4(1, 1, 1, 1);	//鏡面反射.
+	float4 g_Diffuse = float4(1, 0, 0, 0);	//拡散反射(色).
+	float4 g_Specular = float4(1, 1, 1, 1);	//鏡面反射.
 };
 
 //頂点ｼｪｰﾀﾞの出力ﾊﾟﾗﾒｰﾀ.
@@ -52,21 +52,21 @@ VS_OUT VS_Main(float4 Pos	: POSITION,
 	Out.Light = g_vLightDir;
 
 	float3 PosWorld = mul(Pos, g_mW);
-		Out.PosWorld = mul(Pos, g_mW);
+	Out.PosWorld = mul(Pos, g_mW);
 
 	//.視線ﾍﾞｸﾄﾙ.
 	Out.EyeVector = g_vEye - PosWorld;
 
 	float3 Normal = normalize(Out.Normal);
-		float3 LightDir = normalize(Out.Light);
-		float3 ViewDir = normalize(Out.EyeVector);
-		float4 NL = saturate(dot(Normal, LightDir));
+	float3 LightDir = normalize(Out.Light);
+	float3 ViewDir = normalize(Out.EyeVector);
+	float4 NL = saturate(dot(Normal, LightDir));
 
-		float3 Reflect = normalize(2 * NL * Normal - LightDir);
-		float4 Specular = pow(saturate(dot(Reflect, ViewDir)), 4);
+	float3 Reflect = normalize(2 * NL * Normal - LightDir);
+	float4 Specular = pow(saturate(dot(Reflect, ViewDir)), 4);
 
-		//色.
-		Out.Color = g_Diffuse * NL + Specular * g_Specular;
+	//色.
+	Out.Color = g_Diffuse * NL + Specular * g_Specular;
 	//ﾃｸｽﾁｬ座標.
 	Out.Tex = Tex;
 
@@ -99,35 +99,35 @@ float4 PS_Main(VS_OUT In) : SV_Target
 	f = saturate(f);
 	float4 Fog = f * color + (1 - f) * fFogColor;
 
-		//--- 床フォグ ---.
-		float4 vFogColor = (0.0f, 0.0f, 0.0f, 1.0f);
-		In.PosWorld /= In.PosWorld.w;
-	float fFloorHeight = 3.0f;
-	float y = In.PosWorld.y + fFloorHeight;//絶対座標での高さ.
-	float h = -1.0f;	//ここからFogを出す.
+	//--- 床フォグ ---.
+	float4 vFogColor = (0.0f, 0.0f, 0.0f, 1.0f);
+	In.PosWorld /= In.PosWorld.w;
+float fFloorHeight = 3.0f;
+float y = In.PosWorld.y + fFloorHeight;//絶対座標での高さ.
+float h = -1.0f;	//ここからFogを出す.
 
-	//ごり押し.
-	{
-		float High = 0.0f;
-		float Low = -6.0f;
-		float Mid = (High + Low) / 2;
-		y = Mid - y;
-		float ffa = (y / 1.0f) * (y / 1.0f) * (y / 1.0f) * (y / 1.0f) * (y / 1.0f) * (y / 1.0f);
-		vFogColor = (0.0f, 0.0f, 0.0f, ffa);
-	}
+//ごり押し.
+{
+	float High = 0.0f;
+	float Low = -6.0f;
+	float Mid = (High + Low) / 2;
+	y = Mid - y;
+	float ffa = (y / 1.0f) * (y / 1.0f) * (y / 1.0f) * (y / 1.0f) * (y / 1.0f) * (y / 1.0f);
+	vFogColor = (0.0f, 0.0f, 0.0f, ffa);
+}
 
-	f = y / h;	//ﾌｫｸﾞﾌｧｸﾀｰ.
-	f = saturate(f);
+f = y / h;	//ﾌｫｸﾞﾌｧｸﾀｰ.
+f = saturate(f);
 
-	f *= 1.0f;	//フォグの量.
-	f = saturate(f);
-	float4 FogFloor = f * color + (1.0f - f) * vFogColor;
+f *= 1.0f;	//フォグの量.
+f = saturate(f);
+float4 FogFloor = f * color + (1.0f - f) * vFogColor;
 
-		//----- フォグ処理 終了 -----//.
+//----- フォグ処理 終了 -----//.
 
-		color = (FogFloor * Fog) / color;
+color = (FogFloor * Fog) / color;
 
-	return color;
+return color;
 }
 
 //==========ﾃｸｽﾁｬ無し用ﾃｸｽﾁｬ無し用ﾃｸｽﾁｬ無し用ﾃｸｽﾁｬ無し用ﾃｸｽﾁｬ無し用ﾃｸｽﾁｬ無し用ﾃｸｽﾁｬ無し用ﾃｸｽﾁｬ無し用==========
@@ -140,7 +140,7 @@ float4 PS_Main(VS_OUT In) : SV_Target
 //	頂点ｼｪｰﾀﾞ.
 //============================================================
 VS_OUT VS_NoTex(float4 Pos	: POSITION,
-float4 Norm : NORMAL)
+	float4 Norm : NORMAL)
 {
 	VS_OUT Out = (VS_OUT)0;
 
@@ -153,18 +153,18 @@ float4 Norm : NORMAL)
 	Out.Light = g_vLightDir;
 	//.視線ﾍﾞｸﾄﾙ.
 	float3 PosWorld = mul(Pos, g_mW);
-		Out.EyeVector = g_vEye - PosWorld;
+	Out.EyeVector = g_vEye - PosWorld;
 
 	float3 Normal = normalize(Out.Normal);
-		float3 LightDir = normalize(Out.Light);
-		float3 ViewDir = normalize(Out.EyeVector);
-		float4 NL = saturate(dot(Normal, LightDir));
+	float3 LightDir = normalize(Out.Light);
+	float3 ViewDir = normalize(Out.EyeVector);
+	float4 NL = saturate(dot(Normal, LightDir));
 
-		float3 Reflect = normalize(2 * NL * Normal - LightDir);
-		float4 Specular = pow(saturate(dot(Reflect, ViewDir)), 4);
+	float3 Reflect = normalize(2 * NL * Normal - LightDir);
+	float4 Specular = pow(saturate(dot(Reflect, ViewDir)), 4);
 
-		//色.
-		Out.Color = g_Diffuse * NL + Specular * g_Specular;
+	//色.
+	Out.Color = g_Diffuse * NL + Specular * g_Specular;
 
 	return Out;
 }

@@ -27,7 +27,7 @@ HRESULT clsDebugText::Init(
 	m_fScale = fSize / 25.0f;
 
 	//95•¶š•ªŒJ‚è•Ô‚µ.
-	for (int i = 0; i < 95; i++){
+	for (int i = 0; i < 95; i++) {
 		m_fKerning[i] = 10.0f;
 	}
 	//ÃŞÊŞ²½ºİÃ·½Ä‚ğºËß°.
@@ -104,10 +104,10 @@ HRESULT clsDebugText::Init(
 	//Ì«İÄ‚ÌÃ¸½Á¬ì¬.
 	if (FAILED(
 		D3DX11CreateShaderResourceViewFromFile(
-		m_pDevice11,
-		"Data\\DebugText\\ascii.png",
-		NULL, NULL,
-		&m_pAsciiTexture, NULL)))
+			m_pDevice11,
+			"Data\\DebugText\\ascii.png",
+			NULL, NULL,
+			&m_pAsciiTexture, NULL)))
 	{
 		MessageBox(NULL,
 			"Ì«İÄÃ¸½Á¬ì¬¸”s(DebugText:Init)",
@@ -158,10 +158,10 @@ HRESULT clsDebugText::Init(
 	//’¸“_²İÌß¯ÄÚ²±³Äì¬.
 	if (FAILED(
 		m_pDevice11->CreateInputLayout(
-		layout, numElements,
-		pCompileShader->GetBufferPointer(),
-		pCompileShader->GetBufferSize(),
-		&m_pVertexLayout)))
+			layout, numElements,
+			pCompileShader->GetBufferPointer(),
+			pCompileShader->GetBufferSize(),
+			&m_pVertexLayout)))
 	{
 		MessageBox(NULL,
 			"’¸“_²İÌß¯ÄÚ²±³Äì¬¸”s",
@@ -256,7 +256,7 @@ void clsDebugText::SetBlend(bool flg)
 	//ÌŞÚİÄŞ½Ã°Äì¬.
 	if (FAILED(
 		m_pDevice11->CreateBlendState(
-		&blendDesc, &m_pBlendState)))
+			&blendDesc, &m_pBlendState)))
 	{
 		MessageBox(NULL, "ÌŞÚİÄŞ½Ã°Äì¬¸”s", "´×°", MB_OK);
 	}

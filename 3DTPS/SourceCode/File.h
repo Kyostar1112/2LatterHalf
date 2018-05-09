@@ -48,22 +48,22 @@ public:
 	void Read();
 
 	//ファイルを開く(Txt,Csvのみ).
-	inline void Open(HWND hWnd){
+	inline void Open(HWND hWnd) {
 		ShellExecute(hWnd, NULL, m_Data.sPath.c_str(), NULL, NULL, SW_SHOWNORMAL);
 	}
 
 	//配列の最大数.
-	inline int GetDataArrayNumMax(){
+	inline int GetDataArrayNumMax() {
 		return m_Data.iLineMax;
 	}
 
 	//拡張子がどれか.
-	inline Extension GetExtension(){
+	inline Extension GetExtension() {
 		return m_Data.en_Extension;
 	}
 
 	//拡張子がどれか.
-	inline string GetFilePath(){
+	inline string GetFilePath() {
 		return m_Data.sPath;
 	}
 
@@ -116,12 +116,12 @@ private:
 
 	//文字列置換.
 	string ReplaceString
-		(
+	(
 		string String1   // 置き換え対象.
 		, string String2   // 置き換える内容.
 		, string String3   // 検索対象.
 		, string String4 = "NULL"   // 上の検索対象との間を消す.
-		);
+	);
 
 	template <typename List>
 	void split(const std::string& s, const std::string& delim, List& result);

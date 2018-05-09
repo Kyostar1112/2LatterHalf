@@ -51,9 +51,9 @@ void clsSceneBase::BlackOut()
 			}
 			float tmp = m_smpBlack->GetAlpha();
 			m_smpBlack->SetPos(0.0f, 0.0f);
-			if (m_smpBlack->m_BlackMode == In){
+			if (m_smpBlack->m_BlackMode == In) {
 				m_smpBlack->AddAlpha(m_fChangePoint);
-				if (tmp > 1.0f){
+				if (tmp > 1.0f) {
 					m_smpBlack->m_BlackMode = Change;
 				}
 			}
@@ -74,7 +74,7 @@ void clsSceneBase::BlackOut()
 			m_smpBlack->Render();
 		}
 	}
-	else{
+	else {
 		if (m_smpWhite->m_BlackMode != Idle)
 		{
 			m_smpWhite->SetPos(0.0f, 0.0f);

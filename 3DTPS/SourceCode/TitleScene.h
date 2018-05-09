@@ -4,7 +4,7 @@
 #include"BaseScene.h"
 #include"Sp2DMgrPushButn.h"
 
-namespace TitleScene{
+namespace TitleScene {
 }
 
 class clsTitleScene

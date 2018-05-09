@@ -10,7 +10,7 @@
 #include "Player.h"
 #include "Num.h"
 
-namespace ConstantStageScene{
+namespace ConstantStageScene {
 	const int SHOT_MAX = 255;	//ショットの最大数.
 	const int SHOT_INTERVAL_CNT = 20;	//ショットの間隔.
 	const int ENEMYMAX = 10;	//一度の画面に出てくる敵の最大数.
@@ -33,7 +33,7 @@ public:
 	void Create();
 	void Init();
 	void UpDate();
-	void ModelRender(){};
+	void ModelRender() {};
 	void ModelRender1();
 	void ExpRender();
 	void ModelRender2();

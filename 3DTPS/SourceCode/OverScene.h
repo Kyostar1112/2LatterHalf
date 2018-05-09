@@ -3,7 +3,7 @@
 
 #include"BaseScene.h"
 #include"Sp2DMgrPushButn.h"
-namespace OverScene{
+namespace OverScene {
 }
 
 class clsOverScene

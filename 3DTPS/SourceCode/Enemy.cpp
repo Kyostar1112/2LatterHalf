@@ -3,7 +3,7 @@
 const float PI = 3.141592f;
 namespace ConstantEnemy
 {
-	const float SpawnLength = 20.0f;
+	const float SpawnLength = 30.0f;
 	const int   ExpImg = 3;//爆発画像の数.
 }
 
@@ -75,17 +75,6 @@ void clsEnemy::EnemyMove()
 
 		UpdatePos();
 
-#if 0
-		if (m_fLen > 5.0f)
-		{
-			m_fLen -= 0.05f;
-		}
-
-#endif // 0
-
-		//SetPositionX(m_fLen*cosf(TargetRot));
-		//SetPositionZ(m_fLen*sinf(TargetRot));
-
 		SetRotationY(TargetRot);
 	}
 	else if (!m_bArrival)
@@ -106,10 +95,6 @@ void clsEnemy::EnemyMove()
 			m_dAnimTime = 0.0f;
 			m_bAttakFlg = true;
 			m_dAnimSpeed = 0;
-			//ChangeAnimSet(0);
-			////アニメーション切り替え.
-			//m_iAnimNo = 4;
-			//ChangeAnimSet(m_iAnimNo);
 		}
 		if (m_iAttakInterval < 0)
 		{

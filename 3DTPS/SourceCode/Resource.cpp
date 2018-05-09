@@ -11,7 +11,7 @@ clsResource::clsResource()
 clsResource::~clsResource()
 {
 	//スタティックメッシュのポインタ領域を解放する.
-	if (m_vsmpStaticModels.empty()){
+	if (m_vsmpStaticModels.empty()) {
 		for (size_t i = 0; i < m_vsmpStaticModels.size(); i++)
 		{
 			ReleaseStaticModel((enStaticModel)i);
@@ -20,7 +20,7 @@ clsResource::~clsResource()
 		m_vsmpStaticModels.shrink_to_fit();
 	}
 	//スキンメッシュのポインタ領域を解放する.
-	if (m_vsmpSkinModels.empty()){
+	if (m_vsmpSkinModels.empty()) {
 		for (size_t i = 0; i < m_vsmpSkinModels.size(); i++)
 		{
 			ReleaseSkinModel((enSkinModel)i);
@@ -66,13 +66,13 @@ HRESULT clsResource::CreateStaticModel(
 	//モデル読込.
 	m_vsmpStaticModels[enModel] = make_unique<clsDX9Mesh>();
 	m_vsmpStaticModels[enModel]->Init
-		(m_stSpriteRenderSet.hWnd, m_stSpriteRenderSet.pDevice11, m_stSpriteRenderSet.pContext11, FileName);
+	(m_stSpriteRenderSet.hWnd, m_stSpriteRenderSet.pDevice11, m_stSpriteRenderSet.pContext11, FileName);
 
-	if (!IsRangeStaticModel(enModel)){
+	if (!IsRangeStaticModel(enModel)) {
 		return E_FAIL;
 	}
 	//モデルがすでにない？.
-	if (m_vsmpStaticModels[enModel] == NULL){
+	if (m_vsmpStaticModels[enModel] == NULL) {
 		return E_FAIL;
 	}
 
@@ -80,11 +80,11 @@ HRESULT clsResource::CreateStaticModel(
 }
 HRESULT clsResource::ReleaseStaticModel(enStaticModel enModel)
 {
-	if (!IsRangeStaticModel(enModel)){
+	if (!IsRangeStaticModel(enModel)) {
 		return E_FAIL;
 	}
 	//モデルがすでにない？.
-	if (m_vsmpStaticModels[enModel] == NULL){
+	if (m_vsmpStaticModels[enModel] == NULL) {
 		return E_FAIL;
 	}
 
@@ -97,12 +97,12 @@ HRESULT clsResource::ReleaseStaticModel(enStaticModel enModel)
 clsDX9Mesh* clsResource::GetStaticModels(enStaticModel enModel)
 {
 	//範囲内チェック.
-	if (!IsRangeStaticModel(enModel)){
+	if (!IsRangeStaticModel(enModel)) {
 		return NULL;
 	}
 
 	//モデルあるかチェック.
-	if (m_vsmpStaticModels[enModel] == NULL){
+	if (m_vsmpStaticModels[enModel] == NULL) {
 		return NULL;
 	}
 
@@ -115,7 +115,7 @@ clsDX9Mesh* clsResource::GetStaticModels(enStaticModel enModel)
 bool clsResource::IsRangeStaticModel(enStaticModel enModel)
 {
 	//列挙体の範囲外か？
-	if (enStaticModel_Min < enModel  &&  enModel < enStaticModel_Max){
+	if (enStaticModel_Min < enModel  &&  enModel < enStaticModel_Max) {
 		return true;
 	}
 
@@ -132,11 +132,11 @@ HRESULT clsResource::CreateSkinModel(
 
 	m_vsmpSkinModels[enModel]->CreateFromX(FileName);
 
-	if (!m_vsmpSkinModels[enModel]){
+	if (!m_vsmpSkinModels[enModel]) {
 		return E_FAIL;
 	}
 	//モデルがすでにない？.
-	if (m_vsmpSkinModels[enModel] == NULL){
+	if (m_vsmpSkinModels[enModel] == NULL) {
 		return E_FAIL;
 	}
 
@@ -145,11 +145,11 @@ HRESULT clsResource::CreateSkinModel(
 
 HRESULT clsResource::ReleaseSkinModel(enSkinModel enModel)
 {
-	if (!IsRangeSkinModel(enModel)){
+	if (!IsRangeSkinModel(enModel)) {
 		return E_FAIL;
 	}
 	//モデルがすでにない？.
-	if (m_vsmpSkinModels[enModel] == NULL){
+	if (m_vsmpSkinModels[enModel] == NULL) {
 		return E_FAIL;
 	}
 
@@ -162,12 +162,12 @@ HRESULT clsResource::ReleaseSkinModel(enSkinModel enModel)
 clsD3DXSKINMESH* clsResource::GetSkinModels(enSkinModel enModel)
 {
 	//範囲内チェック.
-	if (!IsRangeSkinModel(enModel)){
+	if (!IsRangeSkinModel(enModel)) {
 		return NULL;
 	}
 
 	//モデルあるかチェック.
-	if (m_vsmpSkinModels[enModel] == NULL){
+	if (m_vsmpSkinModels[enModel] == NULL) {
 		return NULL;
 	}
 
@@ -180,7 +180,7 @@ clsD3DXSKINMESH* clsResource::GetSkinModels(enSkinModel enModel)
 bool clsResource::IsRangeSkinModel(enSkinModel enModel)
 {
 	//列挙体の範囲外か？
-	if (enSkinModel_Min < enModel  &&  enModel < enSkinModel_Max){
+	if (enSkinModel_Min < enModel  &&  enModel < enSkinModel_Max) {
 		return true;
 	}
 

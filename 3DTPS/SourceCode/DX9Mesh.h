@@ -53,11 +53,11 @@ struct MY_MATERIAL
 	ID3D11ShaderResourceView* pTexture;//√∏Ω¡¨.
 	DWORD dwNumFace;	//ÇªÇÃœ√ÿ±ŸÇÃŒﬂÿ∫ﬁ›êî.
 	//∫›Ωƒ◊∏¿.
-	MY_MATERIAL(){
+	MY_MATERIAL() {
 		ZeroMemory(this, sizeof(MY_MATERIAL));
 	}
 	//√ﬁΩƒ◊∏¿.
-	~MY_MATERIAL(){
+	~MY_MATERIAL() {
 		SAFE_RELEASE(pTexture);
 	}
 };
@@ -74,7 +74,7 @@ struct BBOX
 	FLOAT		fLengthY;	//Yí∑Ç≥.
 	FLOAT		fLengthZ;	//Zí∑Ç≥.
 	//èâä˙âª.
-	BBOX(){
+	BBOX() {
 		ZeroMemory(this, sizeof(BBOX));
 		vAxisX = D3DXVECTOR3(1.0f, 0.0f, 0.0f);
 		vAxisY = D3DXVECTOR3(0.0f, 1.0f, 0.0f);

@@ -22,14 +22,14 @@ INT WINAPI WinMain(
 	g_pClsMain = new clsMain;	//初期化&ｸﾗｽの宣言.
 
 	//ｸﾗｽが存在してるかﾁｪｯｸ.
-	if (g_pClsMain != NULL){
+	if (g_pClsMain != NULL) {
 		//ｳｨﾝﾄﾞｳ作成成功.
 		if (SUCCEEDED(
 			g_pClsMain->InitWindow(
-			hInstance,
-			0, 0,
-			WND_W, WND_H,
-			WND_TITLE)))
+				hInstance,
+				0, 0,
+				WND_W, WND_H,
+				WND_TITLE)))
 		{
 			//Dx11用の初期化.
 			if (SUCCEEDED(g_pClsMain->InitD3D()))
@@ -125,7 +125,7 @@ HRESULT clsMain::InitWindow(
 	wc.hIconSm = LoadIcon(NULL, IDI_APPLICATION);
 
 	//ｳｨﾝﾄﾞｳｸﾗｽをWindowsに登録.
-	if (!RegisterClassEx(&wc)){
+	if (!RegisterClassEx(&wc)) {
 		MessageBox(NULL,
 			"ｳｨﾝﾄﾞｳｸﾗｽの登録に失敗", "ｴﾗｰ", MB_OK);
 		return E_FAIL;
@@ -143,7 +143,7 @@ HRESULT clsMain::InitWindow(
 		hInstance,		//ｲﾝｽﾀﾝｽ番号.
 		NULL);			//ｳｨﾝﾄﾞｳ作成時に発生するｲﾍﾞﾝﾄに渡すﾃﾞｰﾀ.
 
-	if (!m_hWnd){
+	if (!m_hWnd) {
 		MessageBox(NULL,
 			"ｳｨﾝﾄﾞｳ作成に失敗", "ｴﾗｰ", MB_OK);
 		return E_FAIL;
@@ -163,27 +163,27 @@ LRESULT clsMain::MsgProc(
 	HWND hWnd, UINT uMsg,
 	WPARAM wParam, LPARAM lParam)
 {
-	switch (uMsg){
-		case WM_DESTROY://ｳｨﾝﾄﾞｳが破棄された時.
-			//ｱﾌﾟﾘｹｰｼｮﾝの終了をWindowsに通知する.
-			PostQuitMessage(0);
-			break;
+	switch (uMsg) {
+	case WM_DESTROY://ｳｨﾝﾄﾞｳが破棄された時.
+		//ｱﾌﾟﾘｹｰｼｮﾝの終了をWindowsに通知する.
+		PostQuitMessage(0);
+		break;
 
-		case WM_KEYDOWN://ｷｰﾎﾞｰﾄﾞが押されたとき.
+	case WM_KEYDOWN://ｷｰﾎﾞｰﾄﾞが押されたとき.
 
-			//ｷｰ別の処理.
-			switch ((char)wParam){
-				case VK_ESCAPE:	//ESCｷｰ.
-					if (MessageBox(NULL,
-						"ゲームを終了しますか？", "警告",
-						MB_YESNO) == IDYES)
-					{
-						//ｳｨﾝﾄﾞｳを破棄する.
-						DestroyWindow(hWnd);
-					}
-					break;
+		//ｷｰ別の処理.
+		switch ((char)wParam) {
+		case VK_ESCAPE:	//ESCｷｰ.
+			if (MessageBox(NULL,
+				"ゲームを終了しますか？", "警告",
+				MB_YESNO) == IDYES)
+			{
+				//ｳｨﾝﾄﾞｳを破棄する.
+				DestroyWindow(hWnd);
 			}
 			break;
+		}
+		break;
 	}
 
 	//ﾒｲﾝに返す情報.
@@ -268,93 +268,93 @@ void clsMain::AppMain()
 	}
 	switch (m_enScene)
 	{
-		case Title:
-		{
-			m_smpTitleScene->UpDate();
-			if (GetAsyncKeyState('I') & 0x8000){
-				m_bTitleFlg = false;
-			}
-			if (GetAsyncKeyState('S') & 0x8000 || GetAsyncKeyState(VK_DOWN) & 0x8000 || m_smpDxInput->IsPressKey(enPKey_Down)){
-				m_bTitleFlg = true;
-			}
-			if (GetAsyncKeyState(VK_SPACE) & 0x0001 || m_smpDxInput->IsPressKey(enPKey_00)){
-				m_smpSeClick->Play();
-				m_smpTitleScene->BlackStart(fBlackSpeed);
-			}
-			if (m_smpTitleScene->GetBlackEnd())
-			{
-				if (m_bTitleFlg)
-				{
-					m_enScene = Stage;
-				}
-				else
-				{
-					m_enScene = Result;
-				}
-			}
+	case Title:
+	{
+		m_smpTitleScene->UpDate();
+		if (GetAsyncKeyState('I') & 0x8000) {
+			m_bTitleFlg = false;
 		}
-		break;
-		case Stage:
-		{
-			m_smpStageScene->UpDate();
-			if (m_smpStageScene->GetMode() != Stage){
-				m_smpStageScene->BlackStart(fBlackSpeed);
-			}
-			if (m_smpStageScene->GetBlackEnd())
-			{
-				m_enScene = m_smpStageScene->GetMode();
-			}
-			if (GetAsyncKeyState('A') & 0x8000 || GetAsyncKeyState(VK_LEFT) & 0x8000 || m_smpDxInput->IsPressKey(enPKey_Left)){
-				m_smpStageScene->LeftRoll();
-			}
-			if (GetAsyncKeyState('D') & 0x8000 || GetAsyncKeyState(VK_RIGHT) & 0x8000 || m_smpDxInput->IsPressKey(enPKey_Right)){
-				m_smpStageScene->RightRoll();
-			}
-			if (GetAsyncKeyState('Z') & 0x0001 || GetAsyncKeyState(VK_SPACE) & 0x8000 || m_smpDxInput->IsPressKey(enPKey_00)){
-				m_smpStageScene->Fire();
-			}
-		}
-		break;
-		case Over:
-		{
-			m_smpOverScene->UpDate();
-			if (GetAsyncKeyState(VK_SPACE) & 0x0001 || m_smpDxInput->IsPressKey(enPKey_00)){
-				m_smpSeClick->Play();
-				m_smpOverScene->BlackStart(fBlackSpeed);
-			}
-			if (m_smpOverScene->GetBlackEnd())
-			{
-				m_enScene = Title;
-			}
-		}
-		break;
-		case Clear:
-		{
-			m_smpClearScene->UpDate();
-			if (GetAsyncKeyState(VK_SPACE) & 0x0001 || m_smpDxInput->IsPressKey(enPKey_00)){
-				m_smpSeClick->Play();
-				m_smpClearScene->BlackStart(fBlackSpeed);
-			}
-			if (m_smpClearScene->GetBlackEnd())
-			{
-				m_enScene = Title;
-			}
-		}
-		break;
-		case Result:
-		{
+		if (GetAsyncKeyState('S') & 0x8000 || GetAsyncKeyState(VK_DOWN) & 0x8000 || m_smpDxInput->IsPressKey(enPKey_Down)) {
 			m_bTitleFlg = true;
-			m_smpResultScene->UpDate();
-			if (GetAsyncKeyState(VK_SPACE) & 0x0001 || m_smpDxInput->IsPressKey(enPKey_00)){
-				m_smpSeClick->Play();
-				m_smpResultScene->BlackStart(fBlackSpeed);
-			}
-			if (m_smpResultScene->GetBlackEnd())
+		}
+		if (GetAsyncKeyState(VK_SPACE) & 0x0001 || m_smpDxInput->IsPressKey(enPKey_00)) {
+			m_smpSeClick->Play();
+			m_smpTitleScene->BlackStart(fBlackSpeed);
+		}
+		if (m_smpTitleScene->GetBlackEnd())
+		{
+			if (m_bTitleFlg)
 			{
-				m_enScene = Title;
+				m_enScene = Stage;
+			}
+			else
+			{
+				m_enScene = Result;
 			}
 		}
-		break;
+	}
+	break;
+	case Stage:
+	{
+		m_smpStageScene->UpDate();
+		if (m_smpStageScene->GetMode() != Stage) {
+			m_smpStageScene->BlackStart(fBlackSpeed);
+		}
+		if (m_smpStageScene->GetBlackEnd())
+		{
+			m_enScene = m_smpStageScene->GetMode();
+		}
+		if (GetAsyncKeyState('A') & 0x8000 || GetAsyncKeyState(VK_LEFT) & 0x8000 || m_smpDxInput->IsPressKey(enPKey_Left)) {
+			m_smpStageScene->LeftRoll();
+		}
+		if (GetAsyncKeyState('D') & 0x8000 || GetAsyncKeyState(VK_RIGHT) & 0x8000 || m_smpDxInput->IsPressKey(enPKey_Right)) {
+			m_smpStageScene->RightRoll();
+		}
+		if (GetAsyncKeyState('Z') & 0x0001 || GetAsyncKeyState(VK_SPACE) & 0x8000 || m_smpDxInput->IsPressKey(enPKey_00)) {
+			m_smpStageScene->Fire();
+		}
+	}
+	break;
+	case Over:
+	{
+		m_smpOverScene->UpDate();
+		if (GetAsyncKeyState(VK_SPACE) & 0x0001 || m_smpDxInput->IsPressKey(enPKey_00)) {
+			m_smpSeClick->Play();
+			m_smpOverScene->BlackStart(fBlackSpeed);
+		}
+		if (m_smpOverScene->GetBlackEnd())
+		{
+			m_enScene = Title;
+		}
+	}
+	break;
+	case Clear:
+	{
+		m_smpClearScene->UpDate();
+		if (GetAsyncKeyState(VK_SPACE) & 0x0001 || m_smpDxInput->IsPressKey(enPKey_00)) {
+			m_smpSeClick->Play();
+			m_smpClearScene->BlackStart(fBlackSpeed);
+		}
+		if (m_smpClearScene->GetBlackEnd())
+		{
+			m_enScene = Title;
+		}
+	}
+	break;
+	case Result:
+	{
+		m_bTitleFlg = true;
+		m_smpResultScene->UpDate();
+		if (GetAsyncKeyState(VK_SPACE) & 0x0001 || m_smpDxInput->IsPressKey(enPKey_00)) {
+			m_smpSeClick->Play();
+			m_smpResultScene->BlackStart(fBlackSpeed);
+		}
+		if (m_smpResultScene->GetBlackEnd())
+		{
+			m_enScene = Title;
+		}
+	}
+	break;
 	}
 
 	SceneChange();
@@ -389,44 +389,44 @@ void clsMain::Render()
 
 	switch (m_enScene)
 	{
-		case Title:
-			m_smpTitleScene->ModelRender();
+	case Title:
+		m_smpTitleScene->ModelRender();
 
-			SetDepth(false);
-			m_smpTitleScene->SpriteRender();
-			SetDepth(true);
-			break;
-		case Stage:
-			m_smpStageScene->ModelRender1();
-			SetDepth(false);
-			m_smpStageScene->ExpRender();
-			SetDepth(true);
-			m_smpStageScene->ModelRender2();
-			SetDepth(false);
-			m_smpStageScene->SpriteRender();
-			SetDepth(true);
-			break;
-		case Over:
-			m_smpOverScene->ModelRender();
+		SetDepth(false);
+		m_smpTitleScene->SpriteRender();
+		SetDepth(true);
+		break;
+	case Stage:
+		m_smpStageScene->ModelRender1();
+		SetDepth(false);
+		m_smpStageScene->ExpRender();
+		SetDepth(true);
+		m_smpStageScene->ModelRender2();
+		SetDepth(false);
+		m_smpStageScene->SpriteRender();
+		SetDepth(true);
+		break;
+	case Over:
+		m_smpOverScene->ModelRender();
 
-			SetDepth(false);
-			m_smpOverScene->SpriteRender();
-			SetDepth(true);
-			break;
-		case Clear:
-			m_smpClearScene->ModelRender();
+		SetDepth(false);
+		m_smpOverScene->SpriteRender();
+		SetDepth(true);
+		break;
+	case Clear:
+		m_smpClearScene->ModelRender();
 
-			SetDepth(false);
-			m_smpClearScene->SpriteRender();
-			SetDepth(true);
-			break;
-		case Result:
-			m_smpResultScene->ModelRender();
+		SetDepth(false);
+		m_smpClearScene->SpriteRender();
+		SetDepth(true);
+		break;
+	case Result:
+		m_smpResultScene->ModelRender();
 
-			SetDepth(false);
-			m_smpResultScene->SpriteRender();
-			SetDepth(true);
-			break;
+		SetDepth(false);
+		m_smpResultScene->SpriteRender();
+		SetDepth(true);
+		break;
 	}
 
 #ifdef _DEBUG
@@ -506,38 +506,38 @@ HRESULT clsMain::InitD3D()
 	//	ﾊｰﾄﾞｳｪｱ(GPU)ﾃﾞﾊﾞｲｽで作成.
 	if (FAILED(
 		D3D11CreateDeviceAndSwapChain(
-		NULL,			//ﾋﾞﾃﾞｵｱﾀﾞﾌﾟﾀへのﾎﾟｲﾝﾀ.
-		D3D_DRIVER_TYPE_HARDWARE,//作成するﾃﾞﾊﾞｲｽの種類.
-		NULL,			//ｿﾌﾄｳｪｱ ﾗｽﾀﾗｲｻﾞｰを実装するDLLのﾊﾝﾄﾞﾙ.
-		0,				//有効にするﾗﾝﾀｲﾑﾚｲﾔｰ.
-		&pFeatureLevels,//作成を試みる機能ﾚﾍﾞﾙの順序を指定する配列へのﾎﾟｲﾝﾀ.
-		1,				//↑の要素数.
-		D3D11_SDK_VERSION,//SDKのﾊﾞｰｼﾞｮﾝ.
-		&sd,			//ｽﾜｯﾌﾟﾁｪｰﾝの初期化ﾊﾟﾗﾒｰﾀのﾎﾟｲﾝﾀ.
-		&m_pSwapChain,	//(out)ﾚﾝﾀﾞﾘﾝｸﾞに使用するｽﾜｯﾌﾟﾁｪｰﾝ.
-		&m_pDevice,		//(out)作成されたﾃﾞﾊﾞｲｽ.
-		pFeatureLevel,	//機能ﾚﾍﾞﾙの配列にある最初の要素を表すﾎﾟｲﾝﾀ.
-		&m_pDeviceContext)))//(out)ﾃﾞﾊﾞｲｽ ｺﾝﾃｷｽﾄ.
+			NULL,			//ﾋﾞﾃﾞｵｱﾀﾞﾌﾟﾀへのﾎﾟｲﾝﾀ.
+			D3D_DRIVER_TYPE_HARDWARE,//作成するﾃﾞﾊﾞｲｽの種類.
+			NULL,			//ｿﾌﾄｳｪｱ ﾗｽﾀﾗｲｻﾞｰを実装するDLLのﾊﾝﾄﾞﾙ.
+			0,				//有効にするﾗﾝﾀｲﾑﾚｲﾔｰ.
+			&pFeatureLevels,//作成を試みる機能ﾚﾍﾞﾙの順序を指定する配列へのﾎﾟｲﾝﾀ.
+			1,				//↑の要素数.
+			D3D11_SDK_VERSION,//SDKのﾊﾞｰｼﾞｮﾝ.
+			&sd,			//ｽﾜｯﾌﾟﾁｪｰﾝの初期化ﾊﾟﾗﾒｰﾀのﾎﾟｲﾝﾀ.
+			&m_pSwapChain,	//(out)ﾚﾝﾀﾞﾘﾝｸﾞに使用するｽﾜｯﾌﾟﾁｪｰﾝ.
+			&m_pDevice,		//(out)作成されたﾃﾞﾊﾞｲｽ.
+			pFeatureLevel,	//機能ﾚﾍﾞﾙの配列にある最初の要素を表すﾎﾟｲﾝﾀ.
+			&m_pDeviceContext)))//(out)ﾃﾞﾊﾞｲｽ ｺﾝﾃｷｽﾄ.
 	{
 		//WARPﾃﾞﾊﾞｲｽの作成.
 		//	D3D_FEATURE_LEVEL_9_1 ～ D3D_FEATURE_LEVEL_10_1
 		if (FAILED(
 			D3D11CreateDeviceAndSwapChain(
-			NULL, D3D_DRIVER_TYPE_WARP,
-			NULL, 0, &pFeatureLevels, 1,
-			D3D11_SDK_VERSION, &sd, &m_pSwapChain,
-			&m_pDevice, pFeatureLevel,
-			&m_pDeviceContext)))
+				NULL, D3D_DRIVER_TYPE_WARP,
+				NULL, 0, &pFeatureLevels, 1,
+				D3D11_SDK_VERSION, &sd, &m_pSwapChain,
+				&m_pDevice, pFeatureLevel,
+				&m_pDeviceContext)))
 		{
 			//ﾘﾌｧﾚﾝｽﾃﾞﾊﾞｲｽの作成.
 			//	DirectX SDKがｲﾝｽﾄｰﾙされていないと使えない.
 			if (FAILED(
 				D3D11CreateDeviceAndSwapChain(
-				NULL, D3D_DRIVER_TYPE_REFERENCE,
-				NULL, 0, &pFeatureLevels, 1,
-				D3D11_SDK_VERSION, &sd, &m_pSwapChain,
-				&m_pDevice, pFeatureLevel,
-				&m_pDeviceContext)))
+					NULL, D3D_DRIVER_TYPE_REFERENCE,
+					NULL, 0, &pFeatureLevels, 1,
+					D3D11_SDK_VERSION, &sd, &m_pSwapChain,
+					&m_pDevice, pFeatureLevel,
+					&m_pDeviceContext)))
 			{
 				MessageBox(NULL,
 					"ﾃﾞﾊﾞｲｽとｽﾜｯﾌﾟﾁｪｰﾝの作成に失敗",
@@ -720,25 +720,38 @@ HRESULT clsMain::MeshRead()
 	m_pResource = clsResource::GetInstance();
 	m_pResource->Init(m_hWnd, m_pDevice, m_pDeviceContext);
 
-	m_pResource->CreateStaticModel(
-		"Data\\teststage\\test_stage_X.X",
-		clsResource::enStaticModel_Plane);
+	thread th1([this] {
+		m_pResource->CreateStaticModel(
+			"Data\\teststage\\test_stage_X.X",
+			clsResource::enStaticModel_Plane);
+	});
 
-	m_pResource->CreateStaticModel(
-		"Data\\Player\\Ziki.X",
-		clsResource::enStaticModel_Player);
+	thread th2([this] {
+		m_pResource->CreateStaticModel(
+			"Data\\Player\\Ziki.X",
+			clsResource::enStaticModel_Player);
+	});
+	thread th3([this] {
+		m_pResource->CreateStaticModel(
+			"Data\\Player\\Ziki.X",
+			clsResource::enStaticModel_Shot);
+	});
+	thread th4([this] {
+		m_pResource->CreateStaticModel(
+			"Data\\Collision\\Sphere.X",
+			clsResource::enStaticModel_Sphere);
+	});
+	thread th5([this] {
+		m_pResource->CreateSkinModel(
+			"Data\\EXTINGER\\extinger.X",
+			clsResource::enSkinModel_Boss);
+	});
 
-	m_pResource->CreateStaticModel(
-		"Data\\Player\\Ziki.X",
-		clsResource::enStaticModel_Shot);
-
-	m_pResource->CreateStaticModel(
-		"Data\\Collision\\Sphere.X",
-		clsResource::enStaticModel_Sphere);
-
-	m_pResource->CreateSkinModel(
-		"Data\\EXTINGER\\extinger.X",
-		clsResource::enSkinModel_Boss);
+	th1.join();
+	th2.join();
+	th3.join();
+	th4.join();
+	th5.join();
 
 	Resource->m_smpFile = make_unique<clsFile>();
 	Resource->m_smpFile->Init("Data\\Txt\\ScoreRank.csv");
@@ -813,8 +826,8 @@ HRESULT clsMain::MeshRead()
 
 		m_smpBoss[i]->SetPosition(
 			D3DXVECTOR3(-5.0f + (i % 10) * 1.0f
-			, 1.0f
-			, -5.0f + (i / 10) * 1.0f));
+				, 1.0f
+				, -5.0f + (i / 10) * 1.0f));
 
 		m_smpBoss[i]->ChangeAnimSet(i * 2);
 		m_smpBoss[i]->m_dAnimSpeed = i * 0.01;
@@ -906,7 +919,7 @@ bool clsMain::Intersect(
 		&U, &V,				//(out)重心ﾋｯﾄ座標.
 		pfDistance,			//ﾀｰｹﾞｯﾄとの距離.
 		NULL, NULL);
-	if (bHit){
+	if (bHit) {
 		//命中したとき.
 		FindVerticesOnPoly(
 			pTarget->GetMeshForRay(), dwIndex, vVertex);
@@ -1007,34 +1020,34 @@ void clsMain::WallJudge(clsGameObject* pAttacker, clsCharacter* pWall)
 
 	//前が壁に接近.
 	fDis = fDistance[0];
-	if (fDis < WSPACE && fDis > 0.01f){
-		if (pAttacker->GetRotationY() < 0.0f){
+	if (fDis < WSPACE && fDis > 0.01f) {
+		if (pAttacker->GetRotationY() < 0.0f) {
 			//時計回り.
-			if (fYaw >= 0.785f && fYaw < 2.355f){		//右から.
+			if (fYaw >= 0.785f && fYaw < 2.355f) {		//右から.
 				pAttacker->SetPositionX(WSPACE - fDis);
 			}
-			else if (fYaw >= 2.355f && fYaw < 3.925f){	//前から.
+			else if (fYaw >= 2.355f && fYaw < 3.925f) {	//前から.
 				pAttacker->SetPositionZ(WSPACE - fDis);
 			}
-			else if (fYaw >= 3.925f && fYaw < 5.495f){	//左から.
+			else if (fYaw >= 3.925f && fYaw < 5.495f) {	//左から.
 				pAttacker->SetPositionX(-WSPACE - fDis);
 			}
-			else{										//奥から.
+			else {										//奥から.
 				pAttacker->SetPositionZ(-WSPACE - fDis);
 			}
 		}
-		else{
+		else {
 			//反時計回り.
-			if (fYaw >= 0.785f && fYaw < 2.355f){		//右から.
+			if (fYaw >= 0.785f && fYaw < 2.355f) {		//右から.
 				pAttacker->SetPositionX(WSPACE - fDis);
 			}
-			else if (fYaw >= 2.355f && fYaw < 3.925f){	//前から.
+			else if (fYaw >= 2.355f && fYaw < 3.925f) {	//前から.
 				pAttacker->SetPositionZ(WSPACE - fDis);
 			}
-			else if (fYaw >= 3.925f && fYaw < 5.495f){	//左から.
+			else if (fYaw >= 3.925f && fYaw < 5.495f) {	//左から.
 				pAttacker->SetPositionX(WSPACE - fDis);
 			}
-			else{										//奥から.
+			else {										//奥から.
 				pAttacker->SetPositionZ(-WSPACE - fDis);
 			}
 		}
@@ -1042,34 +1055,34 @@ void clsMain::WallJudge(clsGameObject* pAttacker, clsCharacter* pWall)
 
 	//後ろが壁に接近.
 	fDis = fDistance[1];
-	if (fDis < WSPACE && fDis > 0.01f){
-		if (pAttacker->GetRotationY() < 0.0f){
+	if (fDis < WSPACE && fDis > 0.01f) {
+		if (pAttacker->GetRotationY() < 0.0f) {
 			//時計回り.
-			if (fYaw >= 0.785f && fYaw < 2.355f){		//右から.
+			if (fYaw >= 0.785f && fYaw < 2.355f) {		//右から.
 				pAttacker->SetPositionX(-WSPACE - fDis);
 			}
-			else if (fYaw >= 2.355f && fYaw < 3.925f){	//前から.
+			else if (fYaw >= 2.355f && fYaw < 3.925f) {	//前から.
 				pAttacker->SetPositionZ(-WSPACE - fDis);
 			}
-			else if (fYaw >= 3.925f && fYaw < 5.495f){	//左から.
+			else if (fYaw >= 3.925f && fYaw < 5.495f) {	//左から.
 				pAttacker->SetPositionX(WSPACE - fDis);
 			}
-			else{										//奥から.
+			else {										//奥から.
 				pAttacker->SetPositionZ(WSPACE - fDis);
 			}
 		}
-		else{
+		else {
 			//反時計回り.
-			if (fYaw >= 0.785f && fYaw < 2.355f){		//右から.
+			if (fYaw >= 0.785f && fYaw < 2.355f) {		//右から.
 				pAttacker->SetPositionX(WSPACE - fDis);
 			}
-			else if (fYaw >= 2.355f && fYaw < 3.925f){	//前から.
+			else if (fYaw >= 2.355f && fYaw < 3.925f) {	//前から.
 				pAttacker->SetPositionZ(-WSPACE - fDis);
 			}
-			else if (fYaw >= 3.925f && fYaw < 5.495f){	//左から.
+			else if (fYaw >= 3.925f && fYaw < 5.495f) {	//左から.
 				pAttacker->SetPositionX(WSPACE - fDis);
 			}
-			else{										//奥から.
+			else {										//奥から.
 				pAttacker->SetPositionZ(WSPACE - fDis);
 			}
 		}
@@ -1077,34 +1090,34 @@ void clsMain::WallJudge(clsGameObject* pAttacker, clsCharacter* pWall)
 
 	//右が壁に接近.
 	fDis = fDistance[2];
-	if (fDis < WSPACE && fDis > 0.01f){
-		if (pAttacker->GetRotationY() < 0.0f){
+	if (fDis < WSPACE && fDis > 0.01f) {
+		if (pAttacker->GetRotationY() < 0.0f) {
 			//時計回り.
-			if (fYaw >= 0.785f && fYaw < 2.355f){		//右から.
+			if (fYaw >= 0.785f && fYaw < 2.355f) {		//右から.
 				pAttacker->SetPositionZ(-WSPACE - fDis);
 			}
-			else if (fYaw >= 2.355f && fYaw < 3.925f){	//前から.
+			else if (fYaw >= 2.355f && fYaw < 3.925f) {	//前から.
 				pAttacker->SetPositionX(WSPACE - fDis);
 			}
-			else if (fYaw >= 3.925f && fYaw < 5.495f){	//左から.
+			else if (fYaw >= 3.925f && fYaw < 5.495f) {	//左から.
 				pAttacker->SetPositionZ(WSPACE - fDis);
 			}
-			else{										//奥から.
+			else {										//奥から.
 				pAttacker->SetPositionZ(-WSPACE - fDis);
 			}
 		}
-		else{
+		else {
 			//反時計回り.
-			if (fYaw >= 0.785f && fYaw < 2.355f){		//右から.
+			if (fYaw >= 0.785f && fYaw < 2.355f) {		//右から.
 				pAttacker->SetPositionZ(WSPACE - fDis);
 			}
-			else if (fYaw >= 2.355f && fYaw < 3.925f){	//前から.
+			else if (fYaw >= 2.355f && fYaw < 3.925f) {	//前から.
 				pAttacker->SetPositionX(WSPACE - fDis);
 			}
-			else if (fYaw >= 3.925f && fYaw < 5.495f){	//左から.
+			else if (fYaw >= 3.925f && fYaw < 5.495f) {	//左から.
 				pAttacker->SetPositionZ(-WSPACE - fDis);
 			}
-			else{										//奥から.
+			else {										//奥から.
 				pAttacker->SetPositionX(-WSPACE - fDis);
 			}
 		}
@@ -1112,34 +1125,34 @@ void clsMain::WallJudge(clsGameObject* pAttacker, clsCharacter* pWall)
 
 	//左が壁に接近.
 	fDis = fDistance[3];
-	if (fDis < WSPACE && fDis > 0.01f){
-		if (pAttacker->GetRotationY() < 0.0f){
+	if (fDis < WSPACE && fDis > 0.01f) {
+		if (pAttacker->GetRotationY() < 0.0f) {
 			//時計回り.
-			if (fYaw >= 0.785f && fYaw < 2.355f){		//右から.
+			if (fYaw >= 0.785f && fYaw < 2.355f) {		//右から.
 				pAttacker->SetPositionZ(WSPACE - fDis);
 			}
-			else if (fYaw >= 2.355f && fYaw < 3.925f){	//前から.
+			else if (fYaw >= 2.355f && fYaw < 3.925f) {	//前から.
 				pAttacker->SetPositionX(-WSPACE - fDis);
 			}
-			else if (fYaw >= 3.925f && fYaw < 5.495f){	//左から.
+			else if (fYaw >= 3.925f && fYaw < 5.495f) {	//左から.
 				pAttacker->SetPositionZ(-WSPACE - fDis);
 			}
-			else{										//奥から.
+			else {										//奥から.
 				pAttacker->SetPositionX(WSPACE - fDis);
 			}
 		}
-		else{
+		else {
 			//反時計回り.
-			if (fYaw >= 0.785f && fYaw < 2.355f){		//右から.
+			if (fYaw >= 0.785f && fYaw < 2.355f) {		//右から.
 				pAttacker->SetPositionZ(-WSPACE - fDis);
 			}
-			else if (fYaw >= 2.355f && fYaw < 3.925f){	//前から.
+			else if (fYaw >= 2.355f && fYaw < 3.925f) {	//前から.
 				pAttacker->SetPositionX(-WSPACE - fDis);
 			}
-			else if (fYaw >= 3.925f && fYaw < 5.495f){	//左から.
+			else if (fYaw >= 3.925f && fYaw < 5.495f) {	//左から.
 				pAttacker->SetPositionZ(WSPACE - fDis);
 			}
-			else{										//奥から.
+			else {										//奥から.
 				pAttacker->SetPositionX(WSPACE - fDis);
 			}
 		}
@@ -1149,13 +1162,13 @@ void clsMain::WallJudge(clsGameObject* pAttacker, clsCharacter* pWall)
 //回転値調整.
 void clsMain::dirOverGuard(float* fYaw)
 {
-	if (*fYaw > D3DX_PI * 2.0f){
+	if (*fYaw > D3DX_PI * 2.0f) {
 		//１周以上している.
 		*fYaw -= D3DX_PI * 2.0f;	//2π(360°)分を引く.
 	}
 
 	//再帰関数.
-	if (*fYaw > D3DX_PI * 2.0f){
+	if (*fYaw > D3DX_PI * 2.0f) {
 		dirOverGuard(fYaw);
 	}
 }
@@ -1167,41 +1180,41 @@ void clsMain::Camera()
 	D3DXVECTOR3 vecAxisZ(0.0f, 0.0f, 1.0f);
 	switch (m_enScene)
 	{
-		case Title:
-			m_Camera.vEye = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
-			m_Camera.vLook = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
-			break;
-		case Stage:
-			//===============================================
-			//ｶﾒﾗ追従処理 ここから.
-			//===============================================
-			//ｶﾒﾗ位置(自機の背中から)の設定.
-			m_Camera.vEye = m_Camera.vLook
-				= m_smpStageScene->m_smpPlayer->GetPosition();//自機の位置をｺﾋﾟｰ.
-			m_Camera.fYaw = m_smpStageScene->m_smpPlayer->GetRotationY();//回転値をｺﾋﾟｰ.
+	case Title:
+		m_Camera.vEye = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+		m_Camera.vLook = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+		break;
+	case Stage:
+		//===============================================
+		//ｶﾒﾗ追従処理 ここから.
+		//===============================================
+		//ｶﾒﾗ位置(自機の背中から)の設定.
+		m_Camera.vEye = m_Camera.vLook
+			= m_smpStageScene->m_smpPlayer->GetPosition();//自機の位置をｺﾋﾟｰ.
+		m_Camera.fYaw = m_smpStageScene->m_smpPlayer->GetRotationY();//回転値をｺﾋﾟｰ.
 
-			//Y軸回転行列の作成.
-			D3DXMatrixRotationY(
-				&m_Camera.mRot, m_Camera.fYaw);
+		//Y軸回転行列の作成.
+		D3DXMatrixRotationY(
+			&m_Camera.mRot, m_Camera.fYaw);
 
-			//Z軸ﾍﾞｸﾄﾙそのものを回転状態により変換する.
-			D3DXVec3TransformCoord(
-				&vecAxisZ, &vecAxisZ, &m_Camera.mRot);
+		//Z軸ﾍﾞｸﾄﾙそのものを回転状態により変換する.
+		D3DXVec3TransformCoord(
+			&vecAxisZ, &vecAxisZ, &m_Camera.mRot);
 
-			m_Camera.vEye -= vecAxisZ/* * 4.0f*/;	//自機の背中側.
-			m_Camera.vLook += vecAxisZ/* * 2.0f*/;	//自機の前側.
+		m_Camera.vEye -= vecAxisZ/* * 4.0f*/;	//自機の背中側.
+		m_Camera.vLook += vecAxisZ/* * 2.0f*/;	//自機の前側.
 
-			m_Camera.vEye.y += 1.0f;	//ｶﾒﾗ位置(高さ)調整.
-			m_Camera.vLook.y += 1.0f;	//注視位置(高さ)調整.
+		m_Camera.vEye.y += 1.0f;	//ｶﾒﾗ位置(高さ)調整.
+		m_Camera.vLook.y += 1.0f;	//注視位置(高さ)調整.
 
-			//===============================================
-			//ｶﾒﾗ追従処理 ここまで.
-			//===============================================
-			break;
-		case Over:
-			break;
-		case Clear:
-			break;
+		//===============================================
+		//ｶﾒﾗ追従処理 ここまで.
+		//===============================================
+		break;
+	case Over:
+		break;
+	case Clear:
+		break;
 	}
 	//ﾋﾞｭｰ(ｶﾒﾗ)変換.
 	D3DXVECTOR3 vUpVec(0.0f, 1.0f, 0.0f);//上方位置.
@@ -1227,34 +1240,34 @@ void clsMain::SceneChange()
 	{
 		switch (m_enScene)
 		{
-			case Title:
-				m_smpClearScene->MusicStop();
-				m_smpOverScene->MusicStop();
-				m_smpResultScene->MusicStop();
-				m_smpTitleScene->Init();
-				m_enOldScene = m_enScene;
-				break;
-			case Stage:
-				m_smpTitleScene->MusicStop();
-				m_smpStageScene->Init();
-				m_enOldScene = m_enScene;
-				break;
-			case Over:
-				m_smpStageScene->MusicStop();
-				m_smpOverScene->Init();
-				m_enOldScene = m_enScene;
-				break;
-			case Clear:
-				m_smpStageScene->MusicStop();
-				m_smpOverScene->MusicStop();
-				m_smpClearScene->Init();
-				m_enOldScene = m_enScene;
-				break;
-			case Result:
-				m_smpTitleScene->MusicStop();
-				m_smpResultScene->Init();
-				m_enOldScene = m_enScene;
-				break;
+		case Title:
+			m_smpClearScene->MusicStop();
+			m_smpOverScene->MusicStop();
+			m_smpResultScene->MusicStop();
+			m_smpTitleScene->Init();
+			m_enOldScene = m_enScene;
+			break;
+		case Stage:
+			m_smpTitleScene->MusicStop();
+			m_smpStageScene->Init();
+			m_enOldScene = m_enScene;
+			break;
+		case Over:
+			m_smpStageScene->MusicStop();
+			m_smpOverScene->Init();
+			m_enOldScene = m_enScene;
+			break;
+		case Clear:
+			m_smpStageScene->MusicStop();
+			m_smpOverScene->MusicStop();
+			m_smpClearScene->Init();
+			m_enOldScene = m_enScene;
+			break;
+		case Result:
+			m_smpTitleScene->MusicStop();
+			m_smpResultScene->Init();
+			m_enOldScene = m_enScene;
+			break;
 		}
 	}
 }

@@ -271,7 +271,7 @@ void clsStageScene::UpDate()
 
 	//弾丸の初期化用.
 #if 0
-	if (GetAsyncKeyState('I') & 0x0001/*||m_pDxInput->IsPressKey( enPKey_00 )*/){
+	if (GetAsyncKeyState('I') & 0x0001/*||m_pDxInput->IsPressKey( enPKey_00 )*/) {
 		for (size_t i = 0; i < m_vsmpShot.size(); i++)
 		{
 			m_vsmpShot[i]->SetPosition(m_smpPlayer->GetPosition());
@@ -349,13 +349,13 @@ void clsStageScene::ModelRender1()
 
 #endif // 0
 }
-void clsStageScene::ExpRender(){
+void clsStageScene::ExpRender() {
 	for (size_t i = 0; i < m_vsmpEnemy.size(); i++)
 	{
 		m_vsmpEnemy[i]->ExpRender();
 	}
 }
-void clsStageScene::ModelRender2(){
+void clsStageScene::ModelRender2() {
 	//ショット.
 	for (int i = 0; i < m_vsmpShot.size(); i++)
 	{
@@ -461,7 +461,7 @@ void clsStageScene::Release()
 void clsStageScene::HitCheak()
 {
 	//当たり判定は最後に.
-	for (size_t i = 0; i < m_vsmpEnemy.size(); i++){
+	for (size_t i = 0; i < m_vsmpEnemy.size(); i++) {
 		Ray(m_vsmpEnemy[i].get());
 	}
 	//弾と敵との当たり判定.
@@ -483,7 +483,7 @@ void clsStageScene::HitCheak()
 			m_vsmpEnemySphere[j]->SetPosition(m_vsmpEnemy[j]->GetPosition());
 			m_vsmpEnemySphere[j]->SetScale(0.5f);
 			m_vsmpEnemySphere[j]->Update();
-			if (Collision(m_vsmpShotSphere[i].get(), m_vsmpEnemySphere[j].get())){
+			if (Collision(m_vsmpShotSphere[i].get(), m_vsmpEnemySphere[j].get())) {
 				for (size_t k = 0; k < m_vsmpHitSe.size(); k++)
 				{
 					if (m_vsmpHitSe[k]->m_bSeekFlg)
@@ -509,7 +509,7 @@ void clsStageScene::HitCheak()
 			{
 				continue;
 			}
-			if (m_vsmpEnemy[i]->m_bAttakFlg){
+			if (m_vsmpEnemy[i]->m_bAttakFlg) {
 				if (m_iHp > 1)
 				{
 					m_iHp--;
@@ -656,7 +656,7 @@ bool clsStageScene::Intersect(
 		&U, &V,				//(out)重心ﾋｯﾄ座標.
 		pfDistance,			//ﾀｰｹﾞｯﾄとの距離.
 		NULL, NULL);
-	if (bHit){
+	if (bHit) {
 		//命中したとき.
 		FindVerticesOnPoly(
 			pTarget->GetMeshForRay(), dwIndex, vVertex);

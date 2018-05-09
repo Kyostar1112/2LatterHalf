@@ -33,7 +33,7 @@ struct PART
 	int			iBirthFrame;//開始ﾌﾚｰﾑ.
 
 	//構造体の初期化(ｺﾝｽﾄﾗｸﾀ)
-	PART(){
+	PART() {
 		ZeroMemory(this, sizeof(PART));
 	}
 };
@@ -74,7 +74,7 @@ public:
 	clsParticle(int MaxParticle, D3DXVECTOR3 &vEmitPos);//ｺﾝｽﾄﾗｸﾀ.
 
 	//ｺﾝｽﾄﾗｸﾀ.
-	clsParticle(){
+	clsParticle() {
 		ZeroMemory(this, sizeof(clsParticle));
 	};
 	~clsParticle();	//ﾃﾞｽﾄﾗｸﾀ.
@@ -101,16 +101,16 @@ public:
 	void Run();
 
 	//ﾊﾟｰﾃｨｸﾙ位置の取得.
-	D3DXVECTOR3& GetParticlePos(int index){
+	D3DXVECTOR3& GetParticlePos(int index) {
 		//配列の範囲かどうかﾁｪｯｸ.
-		if (0 <= index && index < m_MaxParticle){
+		if (0 <= index && index < m_MaxParticle) {
 			return m_pParticleArray[index].vPos;
 		}
 		//範囲外のときは先頭を返す.
 		return m_pParticleArray[index].vPos;
 	}
 	//ﾊﾟｰﾃｨｸﾙ最大数の取得.
-	int GetMaxPartice(){ return m_MaxParticle; }
+	int GetMaxPartice() { return m_MaxParticle; }
 };
 
 #endif//#ifndef _PARTICLE_H_

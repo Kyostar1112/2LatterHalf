@@ -41,7 +41,7 @@ public:
 	enDirection		m_enDir;	//•ûŒü.
 	float			m_fSpd;
 
-	clsD3DXSKINMESH* GetPointor(){
+	clsD3DXSKINMESH* GetPointor() {
 		return m_pSkinModel;
 	}
 	//À•W‚â‰ñ“]‚ÌXV.
