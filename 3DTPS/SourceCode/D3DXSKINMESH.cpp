@@ -123,17 +123,17 @@ HRESULT MY_HIERARCHY::CreateMeshContainer(
 // フレームを破棄する.
 HRESULT MY_HIERARCHY::DestroyFrame(LPD3DXFRAME pFrameToFree)
 {
-	if (pFrameToFree->Name){
+	if (pFrameToFree->Name) {
 		delete[] pFrameToFree->Name;
 		pFrameToFree->Name = NULL;
 	}
-	if (pFrameToFree->pMeshContainer){
+	if (pFrameToFree->pMeshContainer) {
 		DestroyMeshContainer(pFrameToFree->pMeshContainer);
 	}
-	if (pFrameToFree->pFrameFirstChild){
+	if (pFrameToFree->pFrameFirstChild) {
 		DestroyFrame(pFrameToFree->pFrameFirstChild);
 	}
-	if (pFrameToFree->pFrameSibling){
+	if (pFrameToFree->pFrameSibling) {
 		DestroyFrame(pFrameToFree->pFrameSibling);
 	}
 	delete pFrameToFree;
@@ -154,7 +154,7 @@ HRESULT MY_HIERARCHY::DestroyMeshContainer(LPD3DXMESHCONTAINER pMeshContainerBas
 
 	SAFE_DELETE_ARRAY(pMeshContainer->ppBoneMatrix);
 
-	for (DWORD i = 0; i < pMeshContainer->dwBoneNum; i++){
+	for (DWORD i = 0; i < pMeshContainer->dwBoneNum; i++) {
 		pMeshContainer->ppBoneMatrix[i] = NULL;
 	}
 
@@ -248,8 +248,8 @@ HRESULT D3DXPARSER::LoadMeshFromX(LPDIRECT3DDEVICE9 pDevice9, LPSTR FileName)
 	m_pHierarchy = new MY_HIERARCHY;
 	if (FAILED(
 		D3DXLoadMeshHierarchyFromXA(
-		FileName, D3DXMESH_MANAGED, pDevice9, m_pHierarchy,
-		NULL, &m_pFrameRoot, &m_pAnimController)))
+			FileName, D3DXMESH_MANAGED, pDevice9, m_pHierarchy,
+			NULL, &m_pFrameRoot, &m_pAnimController)))
 	{
 		MessageBoxA(NULL, "Xファイルの読み込みに失敗しました", FileName, MB_OK);
 		return E_FAIL;
@@ -340,7 +340,7 @@ DWORD D3DXPARSER::GetBoneVerticesIndices(MYMESHCONTAINER* pContainer, int iBoneI
 	{
 		MessageBox(NULL, "ボーン影響を受ける頂点見つからない", "error", MB_OK);
 	}
-	else{
+	else {
 		dwRslt = pVerts[iIndexInGroup];
 	}
 
@@ -365,7 +365,7 @@ double D3DXPARSER::GetBoneVerticesWeights(MYMESHCONTAINER* pContainer, int iBone
 	{
 		MessageBox(NULL, "ボーン影響を受ける頂点見つからない", "error", MB_OK);
 	}
-	else{
+	else {
 		dRslt = (double)pWights[iIndexInGroup];
 	}
 	delete[] pVerts;
@@ -549,22 +549,22 @@ LPD3DXMESHCONTAINER D3DXPARSER::GetMeshContainer(LPD3DXFRAME pFrame)
 	LPD3DXMESHCONTAINER pCon = NULL;
 
 	// メッシュコンテナあれば返す.
-	if (pFrame->pMeshContainer){
+	if (pFrame->pMeshContainer) {
 		return pFrame->pMeshContainer;
 	}
 
 	// 無かったら、子のフレームをチェック.
 	// そもそも子フレームある？
-	if (pFrame->pFrameFirstChild){
+	if (pFrame->pFrameFirstChild) {
 		// あればチェックする.
 		pCon = GetMeshContainer(pFrame->pFrameFirstChild);
 	}
 
 	// 子のフレーム最下層までチェックしたが見つからなかった.
-	if (pCon == NULL){
+	if (pCon == NULL) {
 		//兄弟のフレームも探す.
 		// そもそも兄弟フレームある？
-		if (pFrame->pFrameSibling){
+		if (pFrame->pFrameSibling) {
 			// あるればチェックする.
 			pCon = GetMeshContainer(pFrame->pFrameSibling);
 		}
@@ -588,10 +588,10 @@ void D3DXPARSER::ChangeAnimSet(int index, LPD3DXANIMATIONCONTROLLER pAC)
 	TrackDesc.Position = 0.0;		// フレーム位置(開始位置を指定できる)
 
 	LPD3DXANIMATIONCONTROLLER pTmpAC;
-	if (pAC){
+	if (pAC) {
 		pTmpAC = pAC;
 	}
-	else{
+	else {
 		pTmpAC = m_pAnimController;
 	}
 
@@ -601,7 +601,7 @@ void D3DXPARSER::ChangeAnimSet(int index, LPD3DXANIMATIONCONTROLLER pAC)
 	pTmpAC->SetTrackEnable(index, true);
 }
 
-// アニメーションｾｯﾄの切り替え(開始フレーム指定可能版)
+// アニメーションセットの切り替え(開始フレーム指定可能版)
 //　第２引数に開始したいフレームを指定する.
 //	完全停止したい場合は、前後でアニメーション速度も0.0fに指定してやる必要がある.
 void D3DXPARSER::ChangeAnimSet_StartPos(int index, double dStartFramePos, LPD3DXANIMATIONCONTROLLER pAC)
@@ -617,10 +617,10 @@ void D3DXPARSER::ChangeAnimSet_StartPos(int index, double dStartFramePos, LPD3DX
 	TrackDesc.Position = dStartFramePos;
 
 	LPD3DXANIMATIONCONTROLLER pTmpAC;
-	if (pAC){
+	if (pAC) {
 		pTmpAC = pAC;
 	}
-	else{
+	else {
 		pTmpAC = m_pAnimController;
 	}
 
@@ -633,7 +633,7 @@ void D3DXPARSER::ChangeAnimSet_StartPos(int index, double dStartFramePos, LPD3DX
 // アニメーション停止時間を取得.
 double D3DXPARSER::GetAnimPeriod(int index)
 {
-	if (index < 0 || MAX_ANIM_SET <= index){
+	if (index < 0 || MAX_ANIM_SET <= index) {
 		return 0.0;
 	}
 	return m_pAnimSet[index]->GetPeriod();
@@ -642,7 +642,7 @@ double D3DXPARSER::GetAnimPeriod(int index)
 // 最大アニメーション数を取得.
 int D3DXPARSER::GetAnimMax(LPD3DXANIMATIONCONTROLLER pAC)
 {
-	if (pAC){
+	if (pAC) {
 		return pAC->GetNumAnimationSets();
 	}
 	return m_pAnimController->GetNumAnimationSets();
@@ -654,7 +654,7 @@ bool D3DXPARSER::GetMatrixFromBone(char* sBoneName, D3DXMATRIX* pOutMat)
 	LPD3DXFRAME pFrame;
 	pFrame = (MYFRAME*)D3DXFrameFind(m_pFrameRoot, sBoneName);
 
-	if (pFrame == NULL){
+	if (pFrame == NULL) {
 		return false;
 	}
 
@@ -669,7 +669,7 @@ bool D3DXPARSER::GetMatrixFromBone(char* sBoneName, D3DXMATRIX* pOutMat)
 bool D3DXPARSER::GetPosFromBone(char* sBoneName, D3DXVECTOR3* pOutPos)
 {
 	D3DXMATRIX mBone;
-	if (!GetMatrixFromBone(sBoneName, &mBone)){
+	if (!GetMatrixFromBone(sBoneName, &mBone)) {
 		return false;
 	}
 	pOutPos->x = mBone._41;
@@ -699,12 +699,12 @@ HRESULT D3DXPARSER::Release()
 	m_pHierarchy->DestroyFrame(m_pFrameRoot);
 
 	// 解放処理いる？
-	if (m_pFrameRoot){
+	if (m_pFrameRoot) {
 		m_pFrameRoot = NULL;
 	}
 
 	// Hierarchy削除.
-	if (m_pHierarchy){
+	if (m_pHierarchy) {
 		delete m_pHierarchy;
 		m_pHierarchy = NULL;
 	}
@@ -864,8 +864,8 @@ HRESULT	clsD3DXSKINMESH::InitShader()
 	//頂点インプットレイアウトを作成
 	if (FAILED(
 		m_pDevice->CreateInputLayout(
-		layout, numElements, pCompiledShader->GetBufferPointer(),
-		pCompiledShader->GetBufferSize(), &m_pVertexLayout)))
+			layout, numElements, pCompiledShader->GetBufferPointer(),
+			pCompiledShader->GetBufferSize(), &m_pVertexLayout)))
 	{
 		return FALSE;
 	}
@@ -875,10 +875,10 @@ HRESULT	clsD3DXSKINMESH::InitShader()
 	//ブロブからピクセルシェーダー作成
 	if (FAILED(
 		D3DX11CompileFromFile(
-		SHADER_NAME, NULL, NULL,
-		"PSSkin", "ps_5_0",
-		uCompileFlag, 0, NULL,
-		&pCompiledShader, &pErrors, NULL)))
+			SHADER_NAME, NULL, NULL,
+			"PSSkin", "ps_5_0",
+			uCompileFlag, 0, NULL,
+			&pCompiledShader, &pErrors, NULL)))
 	{
 		MessageBox(0, "hlsl読み込み失敗", NULL, MB_OK);
 		return E_FAIL;
@@ -886,9 +886,9 @@ HRESULT	clsD3DXSKINMESH::InitShader()
 	SAFE_RELEASE(pErrors);
 	if (FAILED(
 		m_pDevice->CreatePixelShader(
-		pCompiledShader->GetBufferPointer(),
-		pCompiledShader->GetBufferSize(),
-		NULL, &m_pPixelShader)))
+			pCompiledShader->GetBufferPointer(),
+			pCompiledShader->GetBufferSize(),
+			NULL, &m_pPixelShader)))
 	{
 		SAFE_RELEASE(pCompiledShader);
 		MessageBox(0, "ピクセルシェーダー作成失敗", NULL, MB_OK);
@@ -957,7 +957,7 @@ HRESULT	clsD3DXSKINMESH::InitShader()
 HRESULT clsD3DXSKINMESH::ReadSkinInfo(MYMESHCONTAINER* pContainer, MY_SKINVERTEX* pvVB, SKIN_PARTS_MESH* pParts)
 {
 	// Xファイルから抽出すべき情報は、
-	// 「頂点ごとのﾎﾞｰﾝｲﾝﾃﾞｯｸｽ」「頂点ごとのボーンウェイト」.
+	// 「頂点ごとのボーンインデックス」「頂点ごとのボーンウェイト」.
 	// 「バインド行列」「ポーズ行列」の4項目.
 
 	int i, k, m, n;	// 各種ループ変数.
@@ -1096,11 +1096,11 @@ void clsD3DXSKINMESH::Render(
 	m_vLight = vLight;
 	m_vEye = vEye;
 
-	// ｱﾆﾒ進行.
-	if (pAC != NULL){
+	// アニメ進行.
+	if (pAC != NULL) {
 		pAC->AdvanceTime(m_dAnimSpeed, NULL);
 	}
-	else{
+	else {
 		if (m_pD3dxMesh->m_pAnimController)
 		{
 			m_pD3dxMesh->m_pAnimController->AdvanceTime(m_dAnimSpeed, NULL);
@@ -1137,10 +1137,10 @@ HRESULT clsD3DXSKINMESH::CreateAppMeshFromD3DXMesh(LPD3DXFRAME p)
 {
 	MYFRAME* pFrame = (MYFRAME*)p;
 
-	//	LPD3DXMESH pD3DXMesh = pFrame->pMeshContainer->MeshData.pMesh;//D3DXﾒｯｼｭ(ここから・・・)
+	//	LPD3DXMESH pD3DXMesh = pFrame->pMeshContainer->MeshData.pMesh;//D3DXメッシュ(ここから・・・)
 	MYMESHCONTAINER* pContainer = (MYMESHCONTAINER*)pFrame->pMeshContainer;
 
-	// ｱﾌﾟﾘﾒｯｼｭ(・・・ここにメッシュデータをコピーする)
+	// アプリメッシュ(・・・ここにメッシュデータをコピーする)
 	SKIN_PARTS_MESH* pAppMesh = new SKIN_PARTS_MESH;
 	pAppMesh->bTex = false;
 
@@ -1149,7 +1149,7 @@ HRESULT clsD3DXSKINMESH::CreateAppMeshFromD3DXMesh(LPD3DXFRAME p)
 	pAppMesh->dwNumFace = m_pD3dxMesh->GetNumFaces(pContainer);
 	pAppMesh->dwNumUV = m_pD3dxMesh->GetNumUVs(pContainer);
 	// Direct3DではUVの数だけ頂点が必要.
-	if (pAppMesh->dwNumVert < pAppMesh->dwNumUV){
+	if (pAppMesh->dwNumVert < pAppMesh->dwNumUV) {
 		// 共有頂点等で、頂点が足りないとき.
 		MessageBox(NULL,
 			"Direct3Dは、UVの数だけ頂点が必要です(UVを置く場所が必要です)テクスチャは正しく貼られないと思われます",
@@ -1162,25 +1162,25 @@ HRESULT clsD3DXSKINMESH::CreateAppMeshFromD3DXMesh(LPD3DXFRAME p)
 	// 3頂点ポリゴンなので、1フェイス=3頂点(3インデックス)
 
 	//頂点読み込み.
-	for (DWORD i = 0; i < pAppMesh->dwNumVert; i++){
+	for (DWORD i = 0; i < pAppMesh->dwNumVert; i++) {
 		D3DXVECTOR3 v = m_pD3dxMesh->GetVertexCoord(pContainer, i);
 		pvVB[i].vPos.x = v.x;
 		pvVB[i].vPos.y = v.y;
 		pvVB[i].vPos.z = v.z;
 	}
 	// ポリゴン情報(頂点インデックス)読み込み.
-	for (DWORD i = 0; i < pAppMesh->dwNumFace * 3; i++){
+	for (DWORD i = 0; i < pAppMesh->dwNumFace * 3; i++) {
 		piFaceBuffer[i] = m_pD3dxMesh->GetIndex(pContainer, i);
 	}
 	// 法線読み込み.
-	for (DWORD i = 0; i < pAppMesh->dwNumVert; i++){
+	for (DWORD i = 0; i < pAppMesh->dwNumVert; i++) {
 		D3DXVECTOR3 v = m_pD3dxMesh->GetNormal(pContainer, i);
 		pvVB[i].vNorm.x = v.x;
 		pvVB[i].vNorm.y = v.y;
 		pvVB[i].vNorm.z = v.z;
 	}
 	// テクスチャ座標読み込み.
-	for (DWORD i = 0; i < pAppMesh->dwNumVert; i++){
+	for (DWORD i = 0; i < pAppMesh->dwNumVert; i++) {
 		D3DXVECTOR2 v = m_pD3dxMesh->GetUV(pContainer, i);
 		pvVB[i].vTex.x = v.x;
 		pvVB[i].vTex.y = v.y;
@@ -1212,9 +1212,9 @@ HRESULT clsD3DXSKINMESH::CreateAppMeshFromD3DXMesh(LPD3DXFRAME p)
 
 		// テクスチャ(ディフューズテクスチャのみ)
 		char* name = m_pD3dxMesh->GetTexturePath(pContainer, i);
-		if (name){
+		if (name) {
 			char* ret = strrchr(m_FilePath, '\\');
-			if (ret != NULL){
+			if (ret != NULL) {
 				int check = ret - m_FilePath;
 				char path[512];
 				strcpy_s(path, 512, m_FilePath);
@@ -1229,9 +1229,9 @@ HRESULT clsD3DXSKINMESH::CreateAppMeshFromD3DXMesh(LPD3DXFRAME p)
 		// テクスチャを作成.
 		if (pAppMesh->pMaterial[i].szTextureName[0] != 0
 			&& FAILED(
-			D3DX11CreateShaderResourceViewFromFileA(
-			m_pDevice, pAppMesh->pMaterial[i].szTextureName,
-			NULL, NULL, &pAppMesh->pMaterial[i].pTexture, NULL)))
+				D3DX11CreateShaderResourceViewFromFileA(
+					m_pDevice, pAppMesh->pMaterial[i].szTextureName,
+					NULL, NULL, &pAppMesh->pMaterial[i].pTexture, NULL)))
 		{
 			MessageBox(NULL, "テクスチャ読み込み失敗",
 				"Error", MB_OK);
@@ -1241,7 +1241,7 @@ HRESULT clsD3DXSKINMESH::CreateAppMeshFromD3DXMesh(LPD3DXFRAME p)
 		// さらにインデックスの個数を調べる.
 		int iCount = 0;
 		int* pIndex = new int[pAppMesh->dwNumFace * 3];
-		// とりあえず、メッシュ内のポリゴン数でﾒﾓﾘ確保.
+		// とりあえず、メッシュ内のポリゴン数でメモリ確保.
 		// (ここのぽりごんぐるーぷは必ずこれ以下になる)
 
 		for (DWORD k = 0; k < pAppMesh->dwNumFace; k++)
@@ -1259,12 +1259,12 @@ HRESULT clsD3DXSKINMESH::CreateAppMeshFromD3DXMesh(LPD3DXFRAME p)
 				iCount += 3;
 			}
 		}
-		if (iCount > 0){
+		if (iCount > 0) {
 			// インデックスバッファ作成.
-			CreateIndexBuffer(iCount*sizeof(int),
+			CreateIndexBuffer(iCount * sizeof(int),
 				pIndex, &pAppMesh->ppIndexBuffer[i]);
 		}
-		else{
+		else {
 			// 解放時の処理に不具合が出たため.
 			// カウント数が0以下の場合は、インデックスバッファを NULL にしておく.
 			pAppMesh->ppIndexBuffer[i] = NULL;
@@ -1277,13 +1277,13 @@ HRESULT clsD3DXSKINMESH::CreateAppMeshFromD3DXMesh(LPD3DXFRAME p)
 	}
 
 	// スキン情報ある？
-	if (pContainer->pSkinInfo == NULL){
+	if (pContainer->pSkinInfo == NULL) {
 		char strDbg[128];
 		sprintf_s(strDbg, "ContainerName:[%s]", pContainer->Name);
 		MessageBox(NULL, strDbg, "Not SkinInfo", MB_OK);
 		pAppMesh->bEnableBones = false;
 	}
-	else{
+	else {
 		// スキン情報(ジョイント、ウェイト)読み込み.
 		ReadSkinInfo(pContainer, pvVB, pAppMesh);
 	}
@@ -1301,7 +1301,7 @@ HRESULT clsD3DXSKINMESH::CreateAppMeshFromD3DXMesh(LPD3DXFRAME p)
 	HRESULT hRslt = S_OK;
 	if (FAILED(
 		m_pDevice->CreateBuffer(
-		&bd, &InitData, &pAppMesh->pVertexBuffer)))
+			&bd, &InitData, &pAppMesh->pVertexBuffer)))
 	{
 		hRslt = E_FAIL;
 	}
@@ -1310,10 +1310,10 @@ HRESULT clsD3DXSKINMESH::CreateAppMeshFromD3DXMesh(LPD3DXFRAME p)
 	pFrame->pPartsMesh = pAppMesh;
 
 	// 一時的な入れ物は不要なるので削除.
-	if (piFaceBuffer){
+	if (piFaceBuffer) {
 		delete[] piFaceBuffer;
 	}
-	if (pvVB){
+	if (pvVB) {
 		delete[] pvVB;
 	}
 
@@ -1334,7 +1334,7 @@ void clsD3DXSKINMESH::SetNewPoseMatrices(SKIN_PARTS_MESH* pParts, int frame, MYM
 	// m_pD3dxMesh->m_pAnimController->AdvanceTime(...)を.
 	// レンダリング時に実行すること.
 
-	if (pParts->iNumBone <= 0){
+	if (pParts->iNumBone <= 0) {
 		//ボーンが 0　以下の場合.
 	}
 
@@ -1407,15 +1407,15 @@ void clsD3DXSKINMESH::DrawPartsMesh(SKIN_PARTS_MESH* pMesh, D3DXMATRIX World, MY
 
 	// アニメーションフレームを進める スキンを更新.
 	m_iFrame++;
-	if (m_iFrame >= 3600){
+	if (m_iFrame >= 3600) {
 		m_iFrame = 0;
 	}
 	SetNewPoseMatrices(pMesh, m_iFrame, pContainer);
 
 	if (SUCCEEDED(
 		m_pDeviceContext->Map(
-		m_pConstantBufferBone, 0,
-		D3D11_MAP_WRITE_DISCARD, 0, &pData)))
+			m_pConstantBufferBone, 0,
+			D3D11_MAP_WRITE_DISCARD, 0, &pData)))
 	{
 		SHADER_GLOBAL_BONES sg;
 		for (int i = 0; i < pMesh->iNumBone; i++)
@@ -1448,8 +1448,8 @@ void clsD3DXSKINMESH::DrawPartsMesh(SKIN_PARTS_MESH* pMesh, D3DXMATRIX World, MY
 	// カメラ位置をシェーダに渡す
 	if (SUCCEEDED(
 		m_pDeviceContext->Map(
-		m_pConstantBuffer0, 0,
-		D3D11_MAP_WRITE_DISCARD, 0, &pData)))
+			m_pConstantBuffer0, 0,
+			D3D11_MAP_WRITE_DISCARD, 0, &pData)))
 	{
 		SHADER_SKIN_GLOBAL0 sg;
 		sg.vLightDir = D3DXVECTOR4(m_vLight.x, m_vLight.y, m_vLight.z, 0);
@@ -1482,8 +1482,8 @@ void clsD3DXSKINMESH::DrawPartsMesh(SKIN_PARTS_MESH* pMesh, D3DXMATRIX World, MY
 		D3D11_MAPPED_SUBRESOURCE pDat;
 		if (SUCCEEDED(
 			m_pDeviceContext->Map(
-			m_pConstantBuffer1, 0,
-			D3D11_MAP_WRITE_DISCARD, 0, &pDat)))
+				m_pConstantBuffer1, 0,
+				D3D11_MAP_WRITE_DISCARD, 0, &pDat)))
 		{
 			SHADER_SKIN_GLOBAL1 sg;
 			sg.mW = m_mWorld;
@@ -1520,7 +1520,7 @@ void clsD3DXSKINMESH::DrawPartsMesh(SKIN_PARTS_MESH* pMesh, D3DXMATRIX World, MY
 // 解放関数.
 HRESULT clsD3DXSKINMESH::Release()
 {
-	if (m_pD3dxMesh){
+	if (m_pD3dxMesh) {
 		// 全てのメッシュ削除.
 		DestroyAllMesh(m_pD3dxMesh->m_pFrameRoot);
 
@@ -1556,12 +1556,12 @@ HRESULT clsD3DXSKINMESH::DestroyAppMeshFromD3DXMesh(LPD3DXFRAME p)
 {
 	MYFRAME* pFrame = (MYFRAME*)p;
 
-	//	LPD3DXMESH pD3DXMesh = pFrame->pMeshContainer->MeshData.pMesh;//D3DXﾒｯｼｭ(ここから・・・)
+	//	LPD3DXMESH pD3DXMesh = pFrame->pMeshContainer->MeshData.pMesh;//D3DXメッシュ(ここから・・・)
 	MYMESHCONTAINER* pContainer = (MYMESHCONTAINER*)pFrame->pMeshContainer;
 
 	// インデックスバッファ解放.
-	for (DWORD i = 0; i < pFrame->pPartsMesh->dwNumMaterial; i++){
-		if (pFrame->pPartsMesh->ppIndexBuffer[i] != NULL){
+	for (DWORD i = 0; i < pFrame->pPartsMesh->dwNumMaterial; i++) {
+		if (pFrame->pPartsMesh->ppIndexBuffer[i] != NULL) {
 			pFrame->pPartsMesh->ppIndexBuffer[i]->Release();
 			pFrame->pPartsMesh->ppIndexBuffer[i] = NULL;
 		}
@@ -1594,7 +1594,7 @@ void clsD3DXSKINMESH::ChangeAnimSet_StartPos(int index, double dStartFramePos, L
 // アニメーション停止時間を取得.
 double clsD3DXSKINMESH::GetAnimPeriod(int index)
 {
-	if (m_pD3dxMesh == NULL){
+	if (m_pD3dxMesh == NULL) {
 		return 0.0f;
 	}
 	return m_pD3dxMesh->GetAnimPeriod(index);
@@ -1603,7 +1603,7 @@ double clsD3DXSKINMESH::GetAnimPeriod(int index)
 // アニメーション数を取得.
 int clsD3DXSKINMESH::GetAnimMax(LPD3DXANIMATIONCONTROLLER pAC)
 {
-	if (m_pD3dxMesh != NULL){
+	if (m_pD3dxMesh != NULL) {
 		return m_pD3dxMesh->GetAnimMax(pAC);
 	}
 	return -1;
@@ -1612,8 +1612,8 @@ int clsD3DXSKINMESH::GetAnimMax(LPD3DXANIMATIONCONTROLLER pAC)
 // 指定したボーン情報(行列)を取得する関数.
 bool clsD3DXSKINMESH::GetMatrixFromBone(char* sBoneName, D3DXMATRIX* pOutMat)
 {
-	if (m_pD3dxMesh != NULL){
-		if (m_pD3dxMesh->GetMatrixFromBone(sBoneName, pOutMat)){
+	if (m_pD3dxMesh != NULL) {
+		if (m_pD3dxMesh->GetMatrixFromBone(sBoneName, pOutMat)) {
 			return true;
 		}
 	}
@@ -1622,9 +1622,9 @@ bool clsD3DXSKINMESH::GetMatrixFromBone(char* sBoneName, D3DXMATRIX* pOutMat)
 // 指定したボーン情報(座標)を取得する関数.
 bool clsD3DXSKINMESH::GetPosFromBone(char* sBoneName, D3DXVECTOR3* pOutPos)
 {
-	if (m_pD3dxMesh != NULL){
+	if (m_pD3dxMesh != NULL) {
 		D3DXVECTOR3 tmpPos;
-		if (m_pD3dxMesh->GetPosFromBone(sBoneName, &tmpPos)){
+		if (m_pD3dxMesh->GetPosFromBone(sBoneName, &tmpPos)) {
 			D3DXMATRIX mWorld, mScale, mTran;
 			D3DXMATRIX mRot, mYaw, mPitch, mRoll;
 			D3DXMatrixScaling(&mScale, m_fScale, m_fScale, m_fScale);

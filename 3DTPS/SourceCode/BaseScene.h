@@ -15,7 +15,7 @@
 
 #define Resource clsResource::GetInstance()
 
-namespace SceneBase{
+namespace SceneBase {
 }
 
 //======================================
@@ -48,7 +48,7 @@ public:
 	void BlackStart(float ChaAmo, bool BFlg = true);
 
 	//ˆÃ“]‹@”\‚ª“®‚¢‚Ä‚¢‚é‚©‚Ç‚¤‚©byInoue.
-	bool GetBlackIdle(){
+	bool GetBlackIdle() {
 		if (m_smpBlack->m_BlackMode == Idle &&
 			m_smpWhite->m_BlackMode == Idle)
 		{
@@ -58,7 +58,7 @@ public:
 	}
 
 	//ˆÃ“]‚µ‚«‚Á‚½uŠÔ‚ð’m‚ç‚¹‚ébyTahara.
-	bool GetBlackEnd(){
+	bool GetBlackEnd() {
 		if (m_smpBlack->m_BlackMode == Change ||
 			m_smpWhite->m_BlackMode == Change)
 		{

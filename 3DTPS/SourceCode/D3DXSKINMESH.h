@@ -21,7 +21,7 @@
 
 // 最大ボーン数.
 #define MAX_BONES		255
-// 最大ｱﾆﾒｰｼｮﾝｾｯﾄ数.
+// 最大アニメーションセット数.
 #define MAX_ANIM_SET	100
 
 // マクロ.
@@ -149,7 +149,7 @@ struct MYFRAME : public D3DXFRAME
 {
 	D3DXMATRIX CombinedTransformationMatrix;
 	SKIN_PARTS_MESH* pPartsMesh;
-	MYFRAME(){
+	MYFRAME() {
 		ZeroMemory(this, sizeof(MYFRAME));
 	}
 };
@@ -169,7 +169,7 @@ struct MYMESHCONTAINER : public D3DXMESHCONTAINER
 class MY_HIERARCHY : public ID3DXAllocateHierarchy
 {
 public:
-	MY_HIERARCHY(){}
+	MY_HIERARCHY() {}
 	STDMETHOD(CreateFrame)(THIS_ LPCSTR, LPD3DXFRAME *);
 	STDMETHOD(CreateMeshContainer)(THIS_ LPCSTR, CONST D3DXMESHDATA*, CONST D3DXMATERIAL*,
 		CONST D3DXEFFECTINSTANCE*, DWORD, CONST DWORD *, LPD3DXSKININFO, LPD3DXMESHCONTAINER *);
@@ -189,7 +189,7 @@ public:
 	MY_HIERARCHY* m_pHierarchy;
 	LPD3DXFRAME m_pFrameRoot;
 
-	LPD3DXANIMATIONCONTROLLER m_pAnimController;//ﾃﾞﾌｫﾙﾄで一つ.
+	LPD3DXANIMATIONCONTROLLER m_pAnimController;//デフォルトで一つ.
 	LPD3DXANIMATIONSET m_pAnimSet[MAX_ANIM_SET];
 
 	HRESULT LoadMeshFromX(LPDIRECT3DDEVICE9, LPSTR);
@@ -283,8 +283,8 @@ public:
 	// 解放関数.
 	HRESULT Release();
 
-	double GetAnimSpeed()				{ return m_dAnimSpeed; }
-	void SetAnimSpeed(double dSpeed)	{ m_dAnimSpeed = dSpeed; }
+	double GetAnimSpeed() { return m_dAnimSpeed; }
+	void SetAnimSpeed(double dSpeed) { m_dAnimSpeed = dSpeed; }
 
 	// アニメーションセットの切り替え.
 	void ChangeAnimSet(int index, LPD3DXANIMATIONCONTROLLER pAC = NULL);

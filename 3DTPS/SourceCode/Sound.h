@@ -3,16 +3,16 @@
 
 #include <Windows.h>
 
-//ﾗｲﾌﾞﾗﾘ読込.
+//ライブラリ読込.
 #pragma comment( lib, "winmm.lib" )
 
-//文字列ﾊﾞｯﾌｧ.
+//文字列バッファ.
 #define STR_BUFF_MAX	256
 
 /********************************************************
 *
-*	ｻｳﾝﾄﾞｸﾗｽ.
-*		midi, mp3, wav形式ﾌｧｲﾙの再生・停止等を行う.
+*	サウンドクラス.
+*		midi, mp3, wav形式ファイルの再生・停止等を行う.
 *
 **/
 
@@ -28,10 +28,10 @@ public:
 	clsSound();
 	~clsSound();
 
-	//音声ﾌｧｲﾙを開く.
+	//音声ファイルを開く.
 	bool Open(LPCTSTR sFName, char *sAlias, HWND hWnd);
 
-	//音声ﾌｧｲﾙを閉じる.
+	//音声ファイルを閉じる.
 	bool Close();
 
 	//再生関数.
@@ -61,8 +61,8 @@ public:
 	SoundData m_stSoundData;
 
 private:
-	HWND	m_hWnd;					//ｳｨﾝﾄﾞｳﾊﾝﾄﾞﾙ.
-	char	m_sAlias[STR_BUFF_MAX];	//ｴｲﾘｱｽ.
+	HWND	m_hWnd;					//ウィンドウハンドル.
+	char	m_sAlias[STR_BUFF_MAX];	//エイリアス.
 
 	//初期設定.
 	void SetInitParam(char *sAlias, HWND hWnd);

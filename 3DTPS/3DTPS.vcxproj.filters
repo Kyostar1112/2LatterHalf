@@ -12,204 +12,210 @@
     <Filter Include="シェーダー ファイル">
       <UniqueIdentifier>{f32f7ddd-e2aa-4111-89bf-09523bc1e5b7}</UniqueIdentifier>
     </Filter>
-    <Filter Include="SuperClass">
+    <Filter Include="ソース ファイル\Enemy">
+      <UniqueIdentifier>{d3f8e23d-39ca-411b-8c8b-09b2f6fc1c18}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Player">
+      <UniqueIdentifier>{7a4a6843-4864-4269-99f8-1c610a386e25}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\00SuperClass">
       <UniqueIdentifier>{5b4f2c24-371f-4a46-a89d-606ebc0e6452}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Sprite">
-      <UniqueIdentifier>{724ce3eb-6481-4b36-8be4-cf845fffa909}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="SceneMgr">
+    <Filter Include="ソース ファイル\01SceneMgr">
       <UniqueIdentifier>{282f78e9-7fe1-4dec-972e-f4b4c3df2740}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\System">
+      <UniqueIdentifier>{faa08449-010f-4aee-a5c9-66aea3de7aeb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\GameSystem">
+      <UniqueIdentifier>{6aac8a36-30a6-4b65-be58-8ae4ccc70cb4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Sprite">
+      <UniqueIdentifier>{724ce3eb-6481-4b36-8be4-cf845fffa909}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="SourceCode\DebugText.cpp">
-      <Filter>ソース ファイル</Filter>
+    <ClCompile Include="SourceCode\DX9Mesh.cpp">
+      <Filter>ソース ファイル\00SuperClass</Filter>
     </ClCompile>
-    <ClCompile Include="SourceCode\DxInput.cpp">
-      <Filter>ソース ファイル</Filter>
+    <ClCompile Include="SourceCode\D3DXSKINMESH.cpp">
+      <Filter>ソース ファイル\00SuperClass</Filter>
     </ClCompile>
-    <ClCompile Include="SourceCode\Main.cpp">
-      <Filter>ソース ファイル</Filter>
+    <ClCompile Include="SourceCode\Sprite.cpp">
+      <Filter>ソース ファイル\Sprite</Filter>
     </ClCompile>
-    <ClCompile Include="SourceCode\Particle.cpp">
-      <Filter>ソース ファイル</Filter>
+    <ClCompile Include="SourceCode\Sprite2D.cpp">
+      <Filter>ソース ファイル\Sprite</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Sp2DMgrPushButn.cpp">
+      <Filter>ソース ファイル\Sprite</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Character.cpp">
+      <Filter>ソース ファイル\00SuperClass</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\CharacterSkin.cpp">
+      <Filter>ソース ファイル\00SuperClass</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\OverScene.cpp">
+      <Filter>ソース ファイル\01SceneMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\GameObject.cpp">
+      <Filter>ソース ファイル\00SuperClass</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\ClearScene.cpp">
+      <Filter>ソース ファイル\01SceneMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\StageScene.cpp">
+      <Filter>ソース ファイル\01SceneMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\TitleScene.cpp">
+      <Filter>ソース ファイル\01SceneMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\ResultScene.cpp">
+      <Filter>ソース ファイル\01SceneMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\BaseScene.cpp">
+      <Filter>ソース ファイル\00SuperClass</Filter>
     </ClCompile>
     <ClCompile Include="SourceCode\Enemy.cpp">
-      <Filter>ソース ファイル</Filter>
+      <Filter>ソース ファイル\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Player.cpp">
+      <Filter>ソース ファイル\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\PShot.cpp">
+      <Filter>ソース ファイル\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\DebugText.cpp">
+      <Filter>ソース ファイル\Sprite</Filter>
     </ClCompile>
     <ClCompile Include="SourceCode\Common.cpp">
-      <Filter>ソース ファイル</Filter>
+      <Filter>ソース ファイル\00SuperClass</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Sound.cpp">
+      <Filter>ソース ファイル\System</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Num.cpp">
+      <Filter>ソース ファイル\Sprite</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Resource.cpp">
+      <Filter>ソース ファイル\GameSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Ray.cpp">
+      <Filter>ソース ファイル\GameSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\File.cpp">
+      <Filter>ソース ファイル\GameSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Explosin.cpp">
+      <Filter>ソース ファイル\Sprite</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\DxInput.cpp">
+      <Filter>ソース ファイル\System</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Effects.cpp">
+      <Filter>ソース ファイル\System</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Main.cpp">
+      <Filter>ソース ファイル\GameSystem</Filter>
     </ClCompile>
     <ClCompile Include="SourceCode\Sphere.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="SourceCode\Player.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\Num.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\File.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\Explosin.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\Effects.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\PShot.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\Ray.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\Resource.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\Sound.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\DX9Mesh.cpp">
-      <Filter>SuperClass</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\D3DXSKINMESH.cpp">
-      <Filter>SuperClass</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\Sprite.cpp">
-      <Filter>Sprite</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\Sprite2D.cpp">
-      <Filter>Sprite</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\Sp2DMgrPushButn.cpp">
-      <Filter>Sprite</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\Character.cpp">
-      <Filter>SuperClass</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\CharacterSkin.cpp">
-      <Filter>SuperClass</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\OverScene.cpp">
-      <Filter>SceneMgr</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\GameObject.cpp">
-      <Filter>SuperClass</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\ClearScene.cpp">
-      <Filter>SceneMgr</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\StageScene.cpp">
-      <Filter>SceneMgr</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\TitleScene.cpp">
-      <Filter>SceneMgr</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\ResultScene.cpp">
-      <Filter>SceneMgr</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\BaseScene.cpp">
-      <Filter>SuperClass</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="SourceCode\Common.h">
-      <Filter>ソース ファイル</Filter>
+    <ClInclude Include="SourceCode\DX9Mesh.h">
+      <Filter>ソース ファイル\00SuperClass</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\Main.h">
-      <Filter>ソース ファイル</Filter>
+    <ClInclude Include="SourceCode\D3DXSKINMESH.h">
+      <Filter>ソース ファイル\00SuperClass</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\Explosin.h">
-      <Filter>ソース ファイル</Filter>
+    <ClInclude Include="SourceCode\Sprite.h">
+      <Filter>ソース ファイル\Sprite</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\DebugText.h">
-      <Filter>ソース ファイル</Filter>
+    <ClInclude Include="SourceCode\Sprite2D.h">
+      <Filter>ソース ファイル\Sprite</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\DxInput.h">
-      <Filter>ソース ファイル</Filter>
+    <ClInclude Include="SourceCode\Sp2DMgrPushButn.h">
+      <Filter>ソース ファイル\Sprite</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\Effects.h">
-      <Filter>ソース ファイル</Filter>
+    <ClInclude Include="SourceCode\Character.h">
+      <Filter>ソース ファイル\00SuperClass</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\CharacterSkin.h">
+      <Filter>ソース ファイル\00SuperClass</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\GameObject.h">
+      <Filter>ソース ファイル\00SuperClass</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\ClearScene.h">
+      <Filter>ソース ファイル\01SceneMgr</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\StageScene.h">
+      <Filter>ソース ファイル\01SceneMgr</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\TitleScene.h">
+      <Filter>ソース ファイル\01SceneMgr</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\OverScene.h">
+      <Filter>ソース ファイル\01SceneMgr</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\ResultScene.h">
+      <Filter>ソース ファイル\01SceneMgr</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\BaseScene.h">
+      <Filter>ソース ファイル\00SuperClass</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\Enemy.h">
-      <Filter>ソース ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\File.h">
-      <Filter>ソース ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\Global.h">
-      <Filter>ソース ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\MyMacro.h">
-      <Filter>ソース ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\Ray.h">
-      <Filter>ソース ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\Num.h">
-      <Filter>ソース ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\Particle.h">
-      <Filter>ソース ファイル</Filter>
+      <Filter>ソース ファイル\Enemy</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\Player.h">
-      <Filter>ソース ファイル</Filter>
+      <Filter>ソース ファイル\Player</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\PShot.h">
-      <Filter>ソース ファイル</Filter>
+      <Filter>ソース ファイル\Player</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\Resource.h">
-      <Filter>ソース ファイル</Filter>
+    <ClInclude Include="SourceCode\DebugText.h">
+      <Filter>ソース ファイル\Sprite</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Common.h">
+      <Filter>ソース ファイル\00SuperClass</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\Sound.h">
+      <Filter>ソース ファイル\System</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Num.h">
+      <Filter>ソース ファイル\Sprite</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Resource.h">
+      <Filter>ソース ファイル\GameSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Ray.h">
+      <Filter>ソース ファイル\GameSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\File.h">
+      <Filter>ソース ファイル\GameSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Explosin.h">
+      <Filter>ソース ファイル\Sprite</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\DxInput.h">
+      <Filter>ソース ファイル\System</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Effects.h">
+      <Filter>ソース ファイル\System</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Main.h">
+      <Filter>ソース ファイル\GameSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Global.h">
       <Filter>ソース ファイル</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\Sphere.h">
       <Filter>ソース ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\DX9Mesh.h">
-      <Filter>SuperClass</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\D3DXSKINMESH.h">
-      <Filter>SuperClass</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\Sprite.h">
-      <Filter>Sprite</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\Sprite2D.h">
-      <Filter>Sprite</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\Sp2DMgrPushButn.h">
-      <Filter>Sprite</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\Character.h">
-      <Filter>SuperClass</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\CharacterSkin.h">
-      <Filter>SuperClass</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\GameObject.h">
-      <Filter>SuperClass</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\ClearScene.h">
-      <Filter>SceneMgr</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\StageScene.h">
-      <Filter>SceneMgr</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\TitleScene.h">
-      <Filter>SceneMgr</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\OverScene.h">
-      <Filter>SceneMgr</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\ResultScene.h">
-      <Filter>SceneMgr</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\BaseScene.h">
-      <Filter>SuperClass</Filter>
+    <ClInclude Include="SourceCode\MyMacro.h">
+      <Filter>ソース ファイル</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

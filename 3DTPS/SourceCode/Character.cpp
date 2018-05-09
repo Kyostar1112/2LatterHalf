@@ -34,28 +34,28 @@ void clsCharacter::DetachModel()
 void clsDX9Mesh::UpdatePos()
 {
 	//============================================
-	//ｷｬﾗｸﾀ移動処理(ﾗｼﾞｺﾝ)
+	//キャラクタ移動処理(ラジコン)
 	D3DXMATRIX mYaw;
 	D3DXMatrixRotationY(&mYaw, m_fYaw);//Y軸回転.
 
-	//Z軸ﾍﾞｸﾄﾙを用意.
+	//Z軸ベクトルを用意.
 	D3DXVECTOR3	vecAxisZ(0.0f, 0.0f, 1.0f);
 
-	//Z軸ﾍﾞｸﾄﾙそのものを回転状態により変換する.
+	//Z軸ベクトルそのものを回転状態により変換する.
 	D3DXVec3TransformCoord(
 		&vecAxisZ,	//(out)
 		&vecAxisZ,
 		&mYaw);	//Y軸回転行列.
 
 	//方向によって進行させる値を設定.
-	switch (m_enDir){
-		case enDirection_Foward:	//前進.
-			//向かう方向×進める値(0.1f)
-			m_vPos += vecAxisZ * 0.1f;
-			break;
-		case enDirection_Backward:	//後退.
-			m_vPos -= vecAxisZ * 0.1f;
-			break;
+	switch (m_enDir) {
+	case enDirection_Foward:	//前進.
+		//向かう方向×進める値(0.1f)
+		m_vPos += vecAxisZ * 0.1f;
+		break;
+	case enDirection_Backward:	//後退.
+		m_vPos -= vecAxisZ * 0.1f;
+		break;
 	}
 	m_enDir = enDirection_Stop;	//停止.
 	//============================================
@@ -77,7 +77,7 @@ void clsCharacter::Render(D3DXMATRIX &mView, D3DXMATRIX &mProj,
 //座標や回転値を更新する.
 void clsCharacter::Update()
 {
-	if (m_pModel == NULL){
+	if (m_pModel == NULL) {
 		return;
 	}
 
@@ -94,14 +94,14 @@ void clsCharacter::Update()
 //============================================================
 void clsCharacter::UpdatePos()
 {
-	//ｷｬﾗｸﾀ移動処理(ﾗｼﾞｺﾝ)
+	//キャラクタ移動処理(ラジコン)
 	D3DXMATRIX mYaw;
 	D3DXMatrixRotationY(&mYaw, m_vRot.y);
 
-	//Z軸ﾍﾞｸﾄﾙを用意.
+	//Z軸ベクトルを用意.
 	D3DXVECTOR3	vecAxisZ(0.0f, 0.0f, 1.0f);
 
-	//Z軸ﾍﾞｸﾄﾙそのものを回転状態により変換する.
+	//Z軸ベクトルそのものを回転状態により変換する.
 	D3DXVec3TransformCoord(
 		&vecAxisZ,	//(out)
 		&vecAxisZ,
@@ -110,23 +110,23 @@ void clsCharacter::UpdatePos()
 	//方向によって進行させる値を設定.
 	switch (m_enDir)
 	{
-		case enDirection_Stop:
-			break;
-		case enDirection_Foward:	//前進.
-			//向かう方向*進める値(0.1f).
-			m_vPos += vecAxisZ * 0.15f * m_fSpd;
-			//		m_fWalkLangth -= 0.15f * m_fSpd;
-			break;
-		case enDirection_Backward:	//後退.
-			m_vPos -= vecAxisZ * 0.15f * m_fSpd;
-			//		m_fWalkLangth -= 0.15f * m_fSpd;
-			break;
-			//case enDirection_LeftTurn:
-			//	break;
-			//case enDirection_RightTurn:
-			//	break;
-			//default:
-			//	break;
+	case enDirection_Stop:
+		break;
+	case enDirection_Foward:	//前進.
+		//向かう方向*進める値(0.1f).
+		m_vPos += vecAxisZ * 0.15f * m_fSpd;
+		//		m_fWalkLangth -= 0.15f * m_fSpd;
+		break;
+	case enDirection_Backward:	//後退.
+		m_vPos -= vecAxisZ * 0.15f * m_fSpd;
+		//		m_fWalkLangth -= 0.15f * m_fSpd;
+		break;
+		//case enDirection_LeftTurn:
+		//	break;
+		//case enDirection_RightTurn:
+		//	break;
+		//default:
+		//	break;
 	}
 	m_enDir = enDirection_Stop;//停止.
 }

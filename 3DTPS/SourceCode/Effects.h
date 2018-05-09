@@ -1,11 +1,11 @@
 #ifndef _CEFFECTS_H_
 #define _CEFFECTS_H_
 
-//警告についてのｺｰﾄﾞ分析を無効にする。4005:再定義.
+//警告についてのコード分析を無効にする。4005:再定義.
 #pragma warning( disable : 4005 )
 
 //------------------------------------------------
-//	先にしておくﾍｯﾀﾞ,ﾗｲﾌﾞﾗﾘの読込.
+//	先にしておくヘッダ,ライブラリの読込.
 //------------------------------------------------
 #include <stdio.h>
 
@@ -14,7 +14,7 @@
 #pragma comment( lib, "d3d11.lib" )
 
 //------------------------------------------------
-//	ここからEffekseer関係 ﾍｯﾀﾞ,ﾗｲﾌﾞﾗﾘの読込.
+//	ここからEffekseer関係 ヘッダ,ライブラリの読込.
 //------------------------------------------------
 #include <Effekseer.h>
 #include <EffekseerRendererDX11.h>
@@ -36,12 +36,12 @@
 #pragma comment( lib, "d3dx10.lib" )
 
 /*************************************************
-*	ﾌﾘｰｿﾌﾄ Effekseerのﾃﾞｰﾀを使うためのｸﾗｽ.
+*	フリーソフト Effekseerのデータを使うためのクラス.
 **/
 class clsEffects
 {
 public:
-	//ｴﾌｪｸﾄ種類列挙体.
+	//エフェクト種類列挙体.
 	enum enEfcType
 	{
 		enEfcType_Laser = 0,
@@ -50,15 +50,15 @@ public:
 		enEfcType_Max,
 	};
 
-	//ｲﾝｽﾀﾝｽ取得(唯一のｱｸｾｽ経路)
+	//インスタンス取得(唯一のアクセス経路)
 	static clsEffects* GetInstance()
 	{
-		//唯一のｲﾝｽﾀﾝｽを作成する.
+		//唯一のインスタンスを作成する.
 		//(staticで作成されたので2回目は無視される)
 		static clsEffects s_Instance;
 		return &s_Instance;
 	}
-	//ﾃﾞｽﾄﾗｸﾀ.
+	//デストラクタ.
 	~clsEffects();
 
 	//構築関数.
@@ -66,56 +66,56 @@ public:
 		ID3D11DeviceContext* pContext);
 	//破棄関数.
 	HRESULT Destroy();
-	//ﾃﾞｰﾀ読込関数.
+	//データ読込関数.
 	HRESULT LoadData();
-	//ﾃﾞｰﾀ解放関数.
+	//データ解放関数.
 	HRESULT ReleaseData();
 	//描画関数.
 	void Render(D3DXMATRIX& mView, D3DXMATRIX& mProj,
 		D3DXVECTOR3& vEye);
-	//ﾋﾞｭｰ行列設定関数.
+	//ビュー行列設定関数.
 	void SetViewMatrix(D3DXMATRIX& mView);
-	//ﾌﾟﾛｼﾞｪｸｼｮﾝ行列設定関数.
+	//プロジェクション行列設定関数.
 	void SetProjectionMatrix(D3DXMATRIX& mProj);
 
 	//再生関数.
-	::Effekseer::Handle Play(enEfcType enType, D3DXVECTOR3 vPos){
+	::Effekseer::Handle Play(enEfcType enType, D3DXVECTOR3 vPos) {
 		return m_pManager->Play(
 			m_pEffect[enType], vPos.x, vPos.y, vPos.z);
 	}
 	//一時停止.
-	void Paused(::Effekseer::Handle handle, bool bFlag){
+	void Paused(::Effekseer::Handle handle, bool bFlag) {
 		m_pManager->SetPaused(handle, bFlag);//bFlag:true 一時停止.
 	}
 	//停止.
-	void Stop(::Effekseer::Handle handle){
+	void Stop(::Effekseer::Handle handle) {
 		m_pManager->StopEffect(handle);
 	}
 	//全て停止.
-	void StopAll(::Effekseer::Handle handle){
+	void StopAll(::Effekseer::Handle handle) {
 		m_pManager->StopAllEffects();
 	}
-	//ｻｲｽﾞを指定する.
-	void SetScale(::Effekseer::Handle handle, D3DXVECTOR3 vScale){
+	//サイズを指定する.
+	void SetScale(::Effekseer::Handle handle, D3DXVECTOR3 vScale) {
 		m_pManager->SetScale(handle, vScale.x, vScale.y, vScale.z);
 	}
 	//回転を指定する.
-	void SetRotation(::Effekseer::Handle handle, D3DXVECTOR3 vRot){
+	void SetRotation(::Effekseer::Handle handle, D3DXVECTOR3 vRot) {
 		m_pManager->SetRotation(handle, vRot.x, vRot.y, vRot.z);
 	}
 	void SetRotation(::Effekseer::Handle handle,
-		D3DXVECTOR3 vAxis, float fAngle){
+		D3DXVECTOR3 vAxis, float fAngle) {
 		m_pManager->SetRotation(handle,
 			::Effekseer::Vector3D(vAxis.x, vAxis.y, vAxis.z),
 			fAngle);
 	}
 	//位置を指定する.
-	void SetLocation(::Effekseer::Handle handle, D3DXVECTOR3 vPos){
+	void SetLocation(::Effekseer::Handle handle, D3DXVECTOR3 vPos) {
 		m_pManager->SetLocation(handle,
 			::Effekseer::Vector3D(vPos.x, vPos.y, vPos.z));
 	}
 
-	//ﾍﾞｸﾀｰ変換関数.
+	//ベクター変換関数.
 	::Effekseer::Vector3D Vector3DxToEfk(
 		const D3DXVECTOR3* pSrcVec3Dx);
 	D3DXVECTOR3 Vector3EfkToDx(
@@ -127,23 +127,23 @@ public:
 		const ::Effekseer::Matrix44* pSrcMatEfk);
 
 private:
-	//生成やｺﾋﾟｰを禁止する.
-	clsEffects();	//ｺﾝｽﾄﾗｸﾀ.
+	//生成やコピーを禁止する.
+	clsEffects();	//コンストラクタ.
 	clsEffects(const clsEffects& rhs);
 	clsEffects& operator = (const clsEffects& rhs);
 
-	//ｴﾌｪｸﾄを動作させるために必要.
+	//エフェクトを動作させるために必要.
 	::Effekseer::Manager*			m_pManager;
 	::EffekseerRenderer::Renderer*	m_pRender;
 	::EffekseerSound::Sound*		m_pSound;
-	//ｴﾌｪｸﾄﾃﾞｰﾀに含まれる音再生に必要.
+	//エフェクトデータに含まれる音再生に必要.
 	IXAudio2*						m_pXA2;
 	IXAudio2MasteringVoice*			m_pXA2Master;
 
-	//ｴﾌｪｸﾄの種類ごとに必要.
+	//エフェクトの種類ごとに必要.
 	::Effekseer::Effect*			m_pEffect[enEfcType_Max];
-	//ｴﾌｪｸﾄごとに必要.
-	//※同じｴﾌｪｸﾄを同時に３つ出すなら３つ必要.
+	//エフェクトごとに必要.
+	//※同じエフェクトを同時に３つ出すなら３つ必要.
 	::Effekseer::Handle				m_Handle;
 };
 

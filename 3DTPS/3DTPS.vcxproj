@@ -97,7 +97,6 @@
     <ClCompile Include="SourceCode\Main.cpp" />
     <ClCompile Include="SourceCode\Num.cpp" />
     <ClCompile Include="SourceCode\OverScene.cpp" />
-    <ClCompile Include="SourceCode\Particle.cpp" />
     <ClCompile Include="SourceCode\Player.cpp" />
     <ClCompile Include="SourceCode\ResultScene.cpp" />
     <ClCompile Include="SourceCode\BaseScene.cpp" />
@@ -131,7 +130,6 @@
     <ClInclude Include="SourceCode\MyMacro.h" />
     <ClInclude Include="SourceCode\Num.h" />
     <ClInclude Include="SourceCode\OverScene.h" />
-    <ClInclude Include="SourceCode\Particle.h" />
     <ClInclude Include="SourceCode\Player.h" />
     <ClInclude Include="SourceCode\ResultScene.h" />
     <ClInclude Include="SourceCode\BaseScene.h" />

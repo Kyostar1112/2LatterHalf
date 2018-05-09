@@ -10,10 +10,10 @@
 #include "Player.h"
 #include "Num.h"
 
-namespace ConstantStageScene{
+namespace ConstantStageScene {
 	const int SHOT_MAX = 255;	//ショットの最大数.
 	const int SHOT_INTERVAL_CNT = 20;	//ショットの間隔.
-	const int ENEMYMAX = 10;	//一度の画面に出てくる敵の最大数.
+	const int ENEMYMAX = 1;	//一度の画面に出てくる敵の最大数.
 	const int SPAWNCNT = 60.0f;//敵のスポーンするタイミング.
 	const int PLAYERHP = 15;	//プレイヤーの体力.
 	const int PLAYERINVINCIBLETIME = 60;	//プレイヤーの無敵時間.
@@ -22,6 +22,7 @@ namespace ConstantStageScene{
 	const int StageEnemyDowndigit = 4;	//敵の撃破したスコアの桁数.
 	const int StageClearTimeMax = 60;	//ゲームクリアまでの時間.
 }
+namespace CSS = ConstantStageScene;
 
 class clsStageScene
 	:public clsSceneBase
@@ -33,7 +34,7 @@ public:
 	void Create();
 	void Init();
 	void UpDate();
-	void ModelRender(){};
+	void ModelRender() {};
 	void ModelRender1();
 	void ExpRender();
 	void ModelRender2();
@@ -120,9 +121,9 @@ private:
 
 	unique_ptr<clsSprite2D>		m_smpTargetPoint;	//照準.
 
-	//ｽﾌｨｱ作成.
+	//スフィア作成.
 	HRESULT InitSphere(clsDX9Mesh* pMesh, float fScale = 0.7f);
-	//ｽﾌｨｱ作成.
+	//スフィア作成.
 	HRESULT InitSphere(D3DXVECTOR3 vPos, float fScale = 0.7f);
 
 	//当たり判定まとめ.
@@ -133,22 +134,22 @@ private:
 	bool Collision(clsCharacter* pAttacker, clsCharacter* pTarget);
 
 	void Ray(clsEnemy* Enemy);
-	//ﾚｲとﾒｯｼｭの当たり判定.
+	//レイとメッシュの当たり判定.
 	bool Intersect(
 		clsGameObject* pAttacker, clsCharacter* pTarget,
 		float* pfDistance, D3DXVECTOR3* pvIntersect);
-	//交差位置のﾎﾟﾘｺﾞﾝの頂点を見つける.
+	//交差位置のポリゴンの頂点を見つける.
 	HRESULT FindVerticesOnPoly(
 		LPD3DXMESH pTarget, DWORD dwPolyIndex,
 		D3DXVECTOR3* pVecVertices);
 
 #if 0
 
-	//ﾊﾞｳﾝﾃﾞｨﾝｸﾞﾎﾞｯｸｽ作成.
+	//バウンディングボックス作成.
 	HRESULT InitBBox(clsDX9Mesh* pMesh);
 	HRESULT InitBBox(clsD3DXSKINMESH* pMesh);
 
-	//衝突判定(ﾊﾞｳﾝﾃﾞｨﾝｸﾞﾎﾞｯｸｽ).
+	//衝突判定(バウンディングボックス).
 	bool BBoxCollision(clsDX9Mesh* pAttacker, clsDX9Mesh* pTarget);
 	bool BBoxCollision(clsD3DXSKINMESH* pAttacker, clsD3DXSKINMESH* pTarget);
 

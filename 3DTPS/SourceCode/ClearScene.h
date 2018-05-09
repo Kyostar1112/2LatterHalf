@@ -4,7 +4,7 @@
 #include"BaseScene.h"
 #include"Sp2DMgrPushButn.h"
 
-namespace ClearScene{
+namespace ClearScene {
 }
 
 class clsClearScene

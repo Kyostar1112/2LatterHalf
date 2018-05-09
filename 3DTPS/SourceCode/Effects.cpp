@@ -1,12 +1,12 @@
 #include "Effects.h"
 #include "Global.h"
 
-//描画用ｲﾝｽﾀﾝｽ最大数.
+//描画用インスタンス最大数.
 const int g_RenderSpriteMax = 2000;
-//ｴﾌｪｸﾄ管理用ｲﾝｽﾀﾝｽ最大数.
+//エフェクト管理用インスタンス最大数.
 const int g_EffectInstanceMax = 1000;
 
-//ｴﾌｪｸﾄﾌｧｲﾙのﾘｽﾄ.
+//エフェクトファイルのリスト.
 const wchar_t g_strFileNameList
 [clsEffects::enEfcType_Max][128] =
 {
@@ -15,13 +15,13 @@ const wchar_t g_strFileNameList
 	L"Data\\Effekseer\\miko_hihou_effect.efk"
 };
 
-//ｺﾝｽﾄﾗｸﾀ.
+//コンストラクタ.
 clsEffects::clsEffects()
 {
 	ZeroMemory(this, sizeof(clsEffects));
 }
 
-//ﾃﾞｽﾄﾗｸﾀ.
+//デストラクタ.
 clsEffects::~clsEffects()
 {
 }
@@ -45,34 +45,34 @@ HRESULT clsEffects::Create(
 		return E_FAIL;
 	}
 
-	//描画用ｲﾝｽﾀﾝｽの生成.
+	//描画用インスタンスの生成.
 	m_pRender
 		= ::EffekseerRendererDX11::Renderer::Create(
-		pDevice, pContext, g_RenderSpriteMax);
+			pDevice, pContext, g_RenderSpriteMax);
 
-	//ｴﾌｪｸﾄ管理用ｲﾝｽﾀﾝｽの生成.
+	//エフェクト管理用インスタンスの生成.
 	m_pManager
 		= ::Effekseer::Manager::Create(g_EffectInstanceMax);
 
-	//描画用ｲﾝｽﾀﾝｽから描画機能を設定.
+	//描画用インスタンスから描画機能を設定.
 	m_pManager->SetSpriteRenderer(m_pRender->CreateSpriteRenderer());
 	m_pManager->SetRibbonRenderer(m_pRender->CreateRibbonRenderer());
 	m_pManager->SetRingRenderer(m_pRender->CreateRingRenderer());
 	m_pManager->SetModelRenderer(m_pRender->CreateModelRenderer());
 
-	//描画ｲﾝｽﾀﾝｽからﾃｸｽﾁｬの読込機能を設定.
-	//独自拡張可能、現在はﾌｧｲﾙから読み込んでいる.
+	//描画インスタンスからテクスチャの読込機能を設定.
+	//独自拡張可能、現在はファイルから読み込んでいる.
 	m_pManager->SetTextureLoader(m_pRender->CreateTextureLoader());
 	m_pManager->SetModelLoader(m_pRender->CreateModelLoader());
 
-	//音再生用ｲﾝｽﾀﾝｽの生成.
+	//音再生用インスタンスの生成.
 	m_pSound = ::EffekseerSound::Sound::Create(m_pXA2, 16, 16);
 
-	//音再生用ｲﾝｽﾀﾝｽから再生機能を設定.
+	//音再生用インスタンスから再生機能を設定.
 	m_pManager->SetSoundPlayer(m_pSound->CreateSoundPlayer());
 
-	//音再生用ｲﾝｽﾀﾝｽからｻｳﾝﾄﾞﾃﾞｰﾀの読込機能を設定.
-	//独自拡張可能、現在はﾌｧｲﾙから読み込んでいる.
+	//音再生用インスタンスからサウンドデータの読込機能を設定.
+	//独自拡張可能、現在はファイルから読み込んでいる.
 	m_pManager->SetSoundLoader(m_pSound->CreateSoundLoader());
 
 	return S_OK;
@@ -81,20 +81,20 @@ HRESULT clsEffects::Create(
 //破棄関数.
 HRESULT clsEffects::Destroy()
 {
-	//ｴﾌｪｸﾄﾃﾞｰﾀを解放.
+	//エフェクトデータを解放.
 	ReleaseData();
 
-	//先にｴﾌｪｸﾄ管理用ｲﾝｽﾀﾝｽを破棄.
+	//先にエフェクト管理用インスタンスを破棄.
 	m_pManager->Destroy();
 
-	//次に音再生用ｲﾝｽﾀﾝｽを破棄.
+	//次に音再生用インスタンスを破棄.
 	m_pSound->Destory();
 
-	//次に描画用ｲﾝｽﾀﾝｽを破棄.
+	//次に描画用インスタンスを破棄.
 	m_pRender->Destory();
 
 	//XAudio2の解放.
-	if (m_pXA2Master != NULL){
+	if (m_pXA2Master != NULL) {
 		m_pXA2Master->DestroyVoice();
 		m_pXA2Master = NULL;
 	}
@@ -103,30 +103,30 @@ HRESULT clsEffects::Destroy()
 	return S_OK;
 }
 
-//ﾃﾞｰﾀ読込関数.
+//データ読込関数.
 HRESULT clsEffects::LoadData()
 {
-	////ｴﾌｪｸﾄの読込.
+	////エフェクトの読込.
 	//m_pEffect
 	//	= ::Effekseer::Effect::Create(
 	//			m_pManager,
 	//			(const EFK_CHAR*)L"Data\\Effekseer\\Laser03.efk" );
 	//if( m_pEffect == NULL ){
-	//	ERR_MSG( "ｴﾌｪｸﾄﾌｧｲﾙ読込失敗", "clsEffects::LoadData()" );
+	//	ERR_MSG( "エフェクトファイル読込失敗", "clsEffects::LoadData()" );
 	//	return E_FAIL;
 	//}
 
-	//ｴﾌｪｸﾄの読込.
-	for (int i = 0; i < enEfcType_Max; i++){
+	//エフェクトの読込.
+	for (int i = 0; i < enEfcType_Max; i++) {
 		m_pEffect[i]
 			= ::Effekseer::Effect::Create(
-			m_pManager,
-			(const EFK_CHAR*)g_strFileNameList[i]);
-		if (m_pEffect[i] == NULL){
+				m_pManager,
+				(const EFK_CHAR*)g_strFileNameList[i]);
+		if (m_pEffect[i] == NULL) {
 			char strMsg[128];
 			wsprintf(strMsg, "clsEffects::LoadData()\n%ls",
 				g_strFileNameList[i]);
-			ERR_MSG(strMsg, "ｴﾌｪｸﾄﾌｧｲﾙ読込失敗");
+			ERR_MSG(strMsg, "エフェクトファイル読込失敗");
 			return E_FAIL;
 		}
 	}
@@ -134,11 +134,11 @@ HRESULT clsEffects::LoadData()
 	return S_OK;
 }
 
-//ﾃﾞｰﾀ解放関数.
+//データ解放関数.
 HRESULT clsEffects::ReleaseData()
 {
-	//ｴﾌｪｸﾄの破棄.
-	for (int i = 0; i < enEfcType_Max; i++){
+	//エフェクトの破棄.
+	for (int i = 0; i < enEfcType_Max; i++) {
 		ES_SAFE_RELEASE(m_pEffect[i]);
 	}
 
@@ -149,51 +149,51 @@ HRESULT clsEffects::ReleaseData()
 void clsEffects::Render(
 	D3DXMATRIX& mView, D3DXMATRIX& mProj, D3DXVECTOR3& vEye)
 {
-	//ﾋﾞｭｰ行列を設定.
+	//ビュー行列を設定.
 	SetViewMatrix(mView);
 
-	//ﾌﾟﾛｼﾞｪｸｼｮﾝ行列を設定.
+	//プロジェクション行列を設定.
 	SetProjectionMatrix(mProj);
 
-	//ｴﾌｪｸﾄの更新処理.
+	//エフェクトの更新処理.
 	m_pManager->Update();
 
 	//-------------------------------------
-	//	Effekseerﾚﾝﾀﾞﾘﾝｸﾞ.
+	//	Effekseerレンダリング.
 	//-------------------------------------
-	//ｴﾌｪｸﾄの描画開始処理を行う.
+	//エフェクトの描画開始処理を行う.
 	m_pRender->BeginRendering();
 
-	//ｴﾌｪｸﾄの描画を行う.
+	//エフェクトの描画を行う.
 	m_pManager->Draw();
 
-	//ｴﾌｪｸﾄの描画終了処理を行う.
+	//エフェクトの描画終了処理を行う.
 	m_pRender->EndRendering();
 }
 
-//ﾋﾞｭｰ行列設定関数.
+//ビュー行列設定関数.
 void clsEffects::SetViewMatrix(D3DXMATRIX& mView)
 {
-	//ﾋﾞｭｰ(ｶﾒﾗ)行列.
+	//ビュー(カメラ)行列.
 	::Effekseer::Matrix44 tmpEsCamMat;
 
 	//DirectX Matrix → Effekseer Matrix に変換.
 	tmpEsCamMat = MatrixDxToEfk(&mView);
 
-	//ﾋﾞｭｰ行列を設定.
+	//ビュー行列を設定.
 	m_pRender->SetCameraMatrix(tmpEsCamMat);
 }
 
-//ﾌﾟﾛｼﾞｪｸｼｮﾝ行列設定関数.
+//プロジェクション行列設定関数.
 void clsEffects::SetProjectionMatrix(D3DXMATRIX& mProj)
 {
-	//ﾌﾟﾛｼﾞｪｸｼｮﾝ行列.
+	//プロジェクション行列.
 	::Effekseer::Matrix44 tmpEsPrjMat;
 
 	//DirectX Matrix → Effekseer Matrix に変換.
 	tmpEsPrjMat = MatrixDxToEfk(&mProj);
 
-	//ﾌﾟﾛｼﾞｪｸｼｮﾝ行列を設定.
+	//プロジェクション行列を設定.
 	m_pRender->SetProjectionMatrix(tmpEsPrjMat);
 }
 
@@ -224,8 +224,8 @@ D3DXVECTOR3 clsEffects::Vector3EfkToDx(
 	::Effekseer::Matrix44 OutMatEfk;
 
 #if 1
-	for (int i = 0; i < 4; i++){
-		for (int j = 0; j < 4; j++){
+	for (int i = 0; i < 4; i++) {
+		for (int j = 0; j < 4; j++) {
 			OutMatEfk.Values[i][j] = pSrcMatDx->m[i][j];
 		}
 	}
@@ -261,8 +261,8 @@ D3DXMATRIX clsEffects::MatrixEfkToDx(
 	D3DXMATRIX OutMatDx;
 
 #if 1
-	for (int i = 0; i < 4; i++){
-		for (int j = 0; j < 4; j++){
+	for (int i = 0; i < 4; i++) {
+		for (int j = 0; j < 4; j++) {
 			OutMatDx.m[i][j] = pSrcMatEfk->Values[i][j];
 		}
 	}

@@ -54,16 +54,16 @@ void clsPushTxt::Render()
 
 	switch (m_enAlphaMode)
 	{
-		case clsPushTxt::Flassing:
-			m_smpPushTxt->Flashing(0.01f);
-			m_smpAButton->Flashing(0.01f);
-			break;
-		case clsPushTxt::Out:
-			m_smpPushTxt->AddAlpha(m_fAlphaPoint);
-			m_smpAButton->AddAlpha(m_fAlphaPoint);
-			break;
-		default:
-			break;
+	case clsPushTxt::Flassing:
+		m_smpPushTxt->Flashing(0.01f);
+		m_smpAButton->Flashing(0.01f);
+		break;
+	case clsPushTxt::Out:
+		m_smpPushTxt->AddAlpha(m_fAlphaPoint);
+		m_smpAButton->AddAlpha(m_fAlphaPoint);
+		break;
+	default:
+		break;
 	}
 }
 

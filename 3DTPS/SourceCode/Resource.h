@@ -51,10 +51,10 @@ public:
 
 		enSkinModel_Max,		//ここにモデルを入れないで.
 	};
-	//ｲﾝｽﾀﾝｽ取得(唯一のｱｸｾｽ経路).
+	//インスタンス取得(唯一のアクセス経路).
 	static clsResource* GetInstance()
 	{
-		//唯一のｲﾝｽﾀﾝｽを作成する.
+		//唯一のインスタンスを作成する.
 		//(staticで作成されたので2回目は無視される).
 		static clsResource s_Instance;
 		return &s_Instance;
@@ -117,7 +117,7 @@ public:
 		}
 	}
 private:
-	//生成やｺﾋﾟｰを禁止する.
+	//生成やコピーを禁止する.
 	clsResource();
 	clsResource(const clsResource& rhs);
 	clsResource& operator = (const clsResource& rhs);

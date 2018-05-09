@@ -1,6 +1,6 @@
 #ifndef _DEBUG_TEXT_H_
 #define _DEBUG_TEXT_H_
-//警告についてのｺｰﾄﾞ分析を無効にする.4005:再定義.
+//警告についてのコード分析を無効にする.4005:再定義.
 #pragma warning( disable:4005 )
 
 #include <Windows.h>
@@ -13,7 +13,7 @@
 #include "MyMacro.h"
 
 //======================================
-//	ﾗｲﾌﾞﾗﾘ.
+//	ライブラリ.
 //======================================
 #pragma comment( lib, "winmm.lib" )
 #pragma comment( lib, "d3dx11.lib" )
@@ -34,59 +34,59 @@ struct TEXT_CONSTANT_BUFFER
 	D3DXVECTOR4	vColor;
 	D3DXVECTOR4	fAlpha;
 };
-//ﾃｷｽﾄの位置情報.
+//テキストの位置情報.
 struct TextVertex
 {
 	D3DXVECTOR3	Pos;	//位置.
-	D3DXVECTOR2	Tex;	//ﾃｸｽﾁｬ座標.
+	D3DXVECTOR2	Tex;	//テクスチャ座標.
 };
 
-//ﾃｷｽﾄｸﾗｽ.
+//テキストクラス.
 class clsDebugText
 {
 private:
-	//↓ｱﾌﾟﾘにひとつ.
-	ID3D11Device*			m_pDevice11;		//ﾃﾞﾊﾞｲｽｵﾌﾞｼﾞｪｸﾄ.
-	ID3D11DeviceContext*	m_pDeviceContext11;	//ﾃﾞﾊﾞｲｽｺﾝﾃｷｽﾄ.
+	//↓アプリにひとつ.
+	ID3D11Device*			m_pDevice11;		//デバイスオブジェクト.
+	ID3D11DeviceContext*	m_pDeviceContext11;	//デバイスコンテキスト.
 
-	//↓ﾓﾃﾞﾙの種類ごとに用意.
-	ID3D11VertexShader*		m_pVertexShader;//頂点ｼｪｰﾀﾞ.
-	ID3D11InputLayout*		m_pVertexLayout;//頂点ﾚｲｱｳﾄ.
-	ID3D11PixelShader*		m_pPixelShader;	//ﾋﾟｸｾﾙｼｪｰﾀﾞ.
-	ID3D11Buffer*			m_pConstantBuffer;//ｺﾝｽﾀﾝﾄﾊﾞｯﾌｧ.
+	//↓モデルの種類ごとに用意.
+	ID3D11VertexShader*		m_pVertexShader;//頂点シェーダ.
+	ID3D11InputLayout*		m_pVertexLayout;//頂点レイアウト.
+	ID3D11PixelShader*		m_pPixelShader;	//ピクセルシェーダ.
+	ID3D11Buffer*			m_pConstantBuffer;//コンスタントバッファ.
 
-	//↓ﾓﾃﾞﾙごとに用意.
-	ID3D11Buffer*			m_pVertexBuffer[100];//頂点ﾊﾞｯﾌｧ(100個分).
+	//↓モデルごとに用意.
+	ID3D11Buffer*			m_pVertexBuffer[100];//頂点バッファ(100個分).
 
-	ID3D11ShaderResourceView*	m_pAsciiTexture;//ﾃｸｽﾁｬ.
-	ID3D11SamplerState*			m_pSampleLinear;//ﾃｸｽﾁｬのｻﾝﾌﾟﾗ-:ﾃｸｽﾁｬーに各種ﾌｨﾙﾀをかける.
+	ID3D11ShaderResourceView*	m_pAsciiTexture;//テクスチャ.
+	ID3D11SamplerState*			m_pSampleLinear;//テクスチャのサンプラ-:テクスチャーに各種フィルタをかける.
 
-	ID3D11BlendState*			m_pBlendState;//ﾌﾞﾚﾝﾄﾞｽﾃｰﾄ.
+	ID3D11BlendState*			m_pBlendState;//ブレンドステート.
 
-	DWORD	m_dwWindowWidth;	//ｳｨﾝﾄﾞｳ幅.
-	DWORD	m_dwWindowHeight;	//ｳｨﾝﾄﾞｳ高さ.
+	DWORD	m_dwWindowWidth;	//ウィンドウ幅.
+	DWORD	m_dwWindowHeight;	//ウィンドウ高さ.
 
-	float	m_fKerning[100];	//ｶｰﾆﾝｸﾞ(100個分)
+	float	m_fKerning[100];	//カーニング(100個分)
 	float	m_fScale;			//拡縮値(25pixelを基準 25pixel=1.0f)
 	float	m_fAlpha;			//透過値.
 	D3DXVECTOR4	m_vColor;		//色.
 
-	D3DXMATRIX	m_mView;	//ﾋﾞｭｰ行列.
-	D3DXMATRIX	m_mProj;	//ﾌﾟﾛｼﾞｪｸｼｮﾝ行列.
+	D3DXMATRIX	m_mView;	//ビュー行列.
+	D3DXMATRIX	m_mProj;	//プロジェクション行列.
 
 public:
-	clsDebugText();	//ｺﾝｽﾄﾗｸﾀ.
-	~clsDebugText();//ﾃﾞｽﾄﾗｸﾀ.
+	clsDebugText();	//コンストラクタ.
+	~clsDebugText();//デストラクタ.
 
 	HRESULT Init(ID3D11DeviceContext* pContext,
 		DWORD dwWidth, DWORD dwHeight,
 		float fSize, D3DXVECTOR4 vColor);
 
-	//透過(ｱﾙﾌｧﾌﾞﾚﾝﾄﾞ)設定の切り替え.
+	//透過(アルファブレンド)設定の切り替え.
 	void SetBlend(bool flg);
-	//ﾚﾝﾀﾞﾘﾝｸﾞ関数.
+	//レンダリング関数.
 	void Render(char* text, int x, int y);
-	//ﾌｫﾝﾄﾚﾝﾀﾞﾘﾝｸﾞ関数.
+	//フォントレンダリング関数.
 	void RenderFont(int FontIndex, int x, int y);
 };
 

@@ -15,7 +15,7 @@ clsCharacterSkin::~clsCharacterSkin()
 //モデルデータ関連付け.
 void clsCharacterSkin::AttachModel(clsD3DXSKINMESH* pModel)
 {
-	if (pModel == nullptr){
+	if (pModel == nullptr) {
 		return;
 	}
 
@@ -40,21 +40,21 @@ void clsCharacterSkin::AttachModel(clsD3DXSKINMESH* pModel)
 //モデルデータ関連付け解除.
 void clsCharacterSkin::DetachModel()
 {
-	if (m_pSkinModel != nullptr){
+	if (m_pSkinModel != nullptr) {
 		m_pSkinModel = NULL;
 
-		if (m_pAnimCtrl != NULL){
+		if (m_pAnimCtrl != NULL) {
 			m_pAnimCtrl->Release();
 			m_pAnimCtrl = NULL;
 		}
 	}
 }
 
-//ﾚﾝﾀﾞﾘﾝｸﾞ関数.
+//レンダリング関数.
 void clsCharacterSkin::Render(D3DXMATRIX& mView, D3DXMATRIX& mProj,
 	D3DXVECTOR3& vLight, D3DXVECTOR3& vEye)
 {
-	if (m_pSkinModel == nullptr && m_pAnimCtrl == nullptr){
+	if (m_pSkinModel == nullptr && m_pAnimCtrl == nullptr) {
 		return;
 	}
 
@@ -68,7 +68,7 @@ void clsCharacterSkin::Render(D3DXMATRIX& mView, D3DXMATRIX& mProj,
 //座標や回転の更新.
 void clsCharacterSkin::Update()
 {
-	if (m_pSkinModel == nullptr){
+	if (m_pSkinModel == nullptr) {
 		return;
 	}
 	m_pSkinModel->m_vPos = m_vPos;
@@ -86,14 +86,14 @@ void clsCharacterSkin::Update()
 //============================================================
 void clsCharacterSkin::UpdatePos()
 {
-	//ｷｬﾗｸﾀ移動処理(ﾗｼﾞｺﾝ)
+	//キャラクタ移動処理(ラジコン)
 	D3DXMATRIX mYaw;
 	D3DXMatrixRotationY(&mYaw, m_vRot.y);
 
-	//Z軸ﾍﾞｸﾄﾙを用意.
+	//Z軸ベクトルを用意.
 	D3DXVECTOR3	vecAxisZ(0.0f, 0.0f, 1.0f);
 
-	//Z軸ﾍﾞｸﾄﾙそのものを回転状態により変換する.
+	//Z軸ベクトルそのものを回転状態により変換する.
 	D3DXVec3TransformCoord(
 		&vecAxisZ,	//(out)
 		&vecAxisZ,
@@ -102,30 +102,30 @@ void clsCharacterSkin::UpdatePos()
 	//方向によって進行させる値を設定.
 	switch (m_enDir)
 	{
-		case enDirection_Stop:
-			break;
-		case enDirection_Foward:	//前進.
-			//向かう方向*進める値(0.1f).
-			m_vPos += vecAxisZ * 0.15f * m_fSpd;
-			//		m_fWalkLangth -= 0.15f * m_fSpd;
-			break;
-		case enDirection_Backward:	//後退.
-			m_vPos -= vecAxisZ * 0.15f * m_fSpd;
-			//		m_fWalkLangth -= 0.15f * m_fSpd;
-			break;
-			//case enDirection_LeftTurn:
-			//	break;
-			//case enDirection_RightTurn:
-			//	break;
-			//default:
-			//	break;
+	case enDirection_Stop:
+		break;
+	case enDirection_Foward:	//前進.
+		//向かう方向*進める値(0.1f).
+		m_vPos += vecAxisZ * 0.15f * m_fSpd;
+		//		m_fWalkLangth -= 0.15f * m_fSpd;
+		break;
+	case enDirection_Backward:	//後退.
+		m_vPos -= vecAxisZ * 0.15f * m_fSpd;
+		//		m_fWalkLangth -= 0.15f * m_fSpd;
+		break;
+		//case enDirection_LeftTurn:
+		//	break;
+		//case enDirection_RightTurn:
+		//	break;
+		//default:
+		//	break;
 	}
 	m_enDir = enDirection_Stop;//停止.
 }
 //アニメーション最大数を取得する.
 int clsCharacterSkin::GetAnimSetMax()
 {
-	if (m_pAnimCtrl != NULL){
+	if (m_pAnimCtrl != NULL) {
 		return (int)m_pAnimCtrl->GetMaxNumAnimationSets();
 	}
 	return -1;
@@ -135,7 +135,7 @@ int clsCharacterSkin::GetAnimSetMax()
 void clsCharacterSkin::ChangeAnimSet(int index, double dStartPos)
 {
 	//アニメーションの範囲内かチェック.
-	if (index < 0 || index >= GetAnimSetMax()){
+	if (index < 0 || index >= GetAnimSetMax()) {
 		return;
 	}
 	m_pSkinModel->ChangeAnimSet_StartPos(

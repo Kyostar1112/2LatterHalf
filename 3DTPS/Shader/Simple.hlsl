@@ -44,7 +44,7 @@ VS_OUTPUT VS(float4 Pos	: POSITION,	//ˆÊ’u.
 	output.Light = g_vLightDir;
 
 	float3 PosWorld = mul(Pos, g_mW);
-		output.EyeVector = g_vEye - PosWorld;
+	output.EyeVector = g_vEye - PosWorld;
 
 	output.Tex = Tex;
 

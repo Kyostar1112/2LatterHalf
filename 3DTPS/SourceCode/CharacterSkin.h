@@ -19,7 +19,7 @@ public:
 	//モデルデータ関連付け解除.
 	void DetachModel();
 
-	//ﾚﾝﾀﾞﾘﾝｸﾞ.
+	//レンダリング.
 	void Render(D3DXMATRIX& mView, D3DXMATRIX& mProj,
 		D3DXVECTOR3& vLight, D3DXVECTOR3& vEye);
 
@@ -29,7 +29,8 @@ public:
 	void ChangeAnimSet(int index, double dStartPos = 0.0f);
 	double GetAnimPeriod(int index)
 	{
-		return m_pSkinModel->GetAnimPeriod(index);
+		float fMotionAdjustment = 0.036f;//レンダーの位置に合わせるために.
+		return m_pSkinModel->GetAnimPeriod(index)/* - fMotionAdjustment*/;
 	}
 
 	double m_dAnimSpeed;
@@ -41,7 +42,7 @@ public:
 	enDirection		m_enDir;	//方向.
 	float			m_fSpd;
 
-	clsD3DXSKINMESH* GetPointor(){
+	clsD3DXSKINMESH* GetPointor() {
 		return m_pSkinModel;
 	}
 	//座標や回転の更新.

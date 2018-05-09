@@ -1,14 +1,14 @@
 #ifndef _C_COMMON_H_
 #define _C_COMMON_H_
 
-//ｲﾝｸﾙｰﾄﾞ.
+//インクルード.
 #include "Global.h"
 
 //頂点の構造体.
 struct SpriteVertex
 {
 	D3DXVECTOR3 vPos;	//位置.
-	D3DXVECTOR2 vTex;	//ﾃｸｽﾁｬ座標.
+	D3DXVECTOR2 vTex;	//テクスチャ座標.
 };
 
 //幅高さ構造体.
@@ -18,21 +18,21 @@ struct WHSIZE_FLOAT
 	float h;
 };
 
-//共通ｸﾗｽ(親ｸﾗｽ).
+//共通クラス(親クラス).
 class clsCommon
 {
 public:
-	clsCommon(){};
-	virtual ~clsCommon(){};
+	clsCommon() {};
+	virtual ~clsCommon() {};
 
-	//透過(ｱﾙﾌｧﾌﾞﾚﾝﾄﾞ)設定の切り替え.
+	//透過(アルファブレンド)設定の切り替え.
 	void SetBlend(bool flg);
 
-	//↓ｱﾌﾟﾘに一つ.
-	ID3D11Device*			m_pDevice11;		//ﾃﾞﾊﾞｲｽｵﾌﾞｼﾞｪｸﾄ.
-	ID3D11DeviceContext*	m_pDeviceContext11;	//ﾃﾞﾊﾞｲｽｺﾝﾃｷｽﾄ.
+	//↓アプリに一つ.
+	ID3D11Device*			m_pDevice11;		//デバイスオブジェクト.
+	ID3D11DeviceContext*	m_pDeviceContext11;	//デバイスコンテキスト.
 
-	ID3D11BlendState*		m_pBlendState;	//ﾌﾞﾚﾝﾄﾞｽﾃｰﾄ.
+	ID3D11BlendState*		m_pBlendState;	//ブレンドステート.
 
 private:
 };

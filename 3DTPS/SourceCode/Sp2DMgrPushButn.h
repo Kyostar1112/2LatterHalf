@@ -22,7 +22,7 @@ public:
 	void Release();
 
 	void AddAlpha(float AlphaPoint);
-	void SetAlphaMode(enAlphaMode AlphaMode){
+	void SetAlphaMode(enAlphaMode AlphaMode) {
 		m_enAlphaMode = AlphaMode;
 	}
 

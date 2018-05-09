@@ -2,7 +2,7 @@
 #define _C_PLAYER_SHOT_H_
 
 #include"Character.h"
-namespace Shot{
+namespace Shot {
 	const int SHOT_FIRING_CNT = 100;		//ショットの発射されてからの生存時間の最大値.
 }
 

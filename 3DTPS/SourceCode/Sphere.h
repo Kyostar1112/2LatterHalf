@@ -18,7 +18,7 @@ public:
 	}
 	SPHERE m_stSphere;
 private:
-	//ｽﾌｨｱ作成.
+	//スフィア作成.
 };
 
 #endif //_C_SPHERE_H_
