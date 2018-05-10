@@ -737,7 +737,8 @@ HRESULT clsMain::MeshRead()
 	m_smpLoadCircle->SetPatarnV(0.0f);
 	m_smpLoadCircle->SetAlpha(1.0f);
 
-	thread th1([this] {
+
+	thread th1([this]() {
 		//リソースクラス.
 		m_pResource = clsResource::GetInstance();
 		m_pResource->Init(m_hWnd, m_pDevice, m_pDeviceContext);

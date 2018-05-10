@@ -13,7 +13,7 @@
 namespace ConstantStageScene {
 	const int SHOT_MAX = 255;	//ショットの最大数.
 	const int SHOT_INTERVAL_CNT = 20;	//ショットの間隔.
-	const int ENEMYMAX = 1;	//一度の画面に出てくる敵の最大数.
+	const int ENEMYMAX = 10;	//一度の画面に出てくる敵の最大数.
 	const int SPAWNCNT = 60;//敵のスポーンするタイミング.
 	const int PLAYERHP = 15;	//プレイヤーの体力.
 	const int PLAYERINVINCIBLETIME = 60;	//プレイヤーの無敵時間.
