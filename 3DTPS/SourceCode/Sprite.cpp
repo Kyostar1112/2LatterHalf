@@ -21,8 +21,8 @@ clsSprite::~clsSprite()
 //初期化.
 HRESULT clsSprite::Init()
 {
-	m_pDevice11 = Resource->GetSpriteRenderSet().pDevice11;
-	m_pDeviceContext11 = Resource->GetSpriteRenderSet().pContext11;
+	m_pDevice11 = clsResource::GetInstance()->GetSpriteRenderSet().pDevice11;
+	m_pDeviceContext11 = clsResource::GetInstance()->GetSpriteRenderSet().pContext11;
 
 	//シェーダ作成.
 	if (FAILED(InitShader())) {
@@ -271,9 +271,9 @@ HRESULT clsSprite::InitModel()
 //板ポリゴンを画面にレンダリング.
 void clsSprite::Render()
 {
-	D3DXMATRIX  mView = Resource->GetModelRenderSet().mView;
-	D3DXMATRIX  mProj = Resource->GetModelRenderSet().mProj;
-	D3DXVECTOR3 vEye = Resource->GetModelRenderSet().vEye;
+	D3DXMATRIX  mView = clsResource::GetInstance()->GetModelRenderSet().mView;
+	D3DXMATRIX  mProj = clsResource::GetInstance()->GetModelRenderSet().mProj;
+	D3DXVECTOR3 vEye = clsResource::GetInstance()->GetModelRenderSet().vEye;
 
 	//ワールド行列.
 	D3DXMATRIX	mWorld;

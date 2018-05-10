@@ -43,7 +43,7 @@ inline T Randam()
 
 	uniform_int_distribution<int> rdDeg();
 
-	return rdDeg(mt);
+	return static_cast<T>(rdDeg(mt));
 }
 
 template <typename T>
@@ -53,9 +53,9 @@ inline T RandamAmong(T x, T y )
 
 	mt19937 mt(rd());
 
-	uniform_int_distribution<int> rdDeg(x, y);
+	uniform_int_distribution<int> rdDeg(static_cast<int>(x), static_cast<int>(y));
 
-	return rdDeg(mt);
+	return static_cast<T>(rdDeg(mt));
 }
 
 #endif//#ifndef _MY_MACRO_H_

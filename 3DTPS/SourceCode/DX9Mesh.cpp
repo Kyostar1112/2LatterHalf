@@ -323,7 +323,7 @@ HRESULT clsDX9Mesh::LoadXMesh(LPSTR fileName)
 		if (m_bTexture) {
 			//※テクスチャがあれば処理する.
 			//頂点数分繰り返し.
-			for (int i = 0; i < m_pMesh->GetNumVertices(); i++) {
+			for (UINT i = 0; i < m_pMesh->GetNumVertices(); i++) {
 				if (pVertex[i].vTex.x < 0.0f) {
 					pVertex[i].vTex.x += 1.0f;
 				}

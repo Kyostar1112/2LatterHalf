@@ -136,6 +136,12 @@ private:
 
 	unique_ptr<clsSound>	m_smpSeClick;
 
+	//ÉçÅ[ÉhâÊñ óp.
+	unique_ptr<clsSprite2D> m_smpLoadString;
+	unique_ptr<clsSprite2D> m_smpLoadCircle;
+
+	bool m_bLoadFlg;
+
 	void SceneChange();
 	bool m_bTitleFlg;
 

@@ -1,7 +1,5 @@
 #ifndef _C_RESURCE_H_
 #define _C_RESURCE_H_
-#define Resource clsResource::GetInstance()
-;
 #include"Global.h"
 #include"DX9Mesh.h"
 #include"D3DXSKINMESH.h"

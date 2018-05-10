@@ -118,7 +118,7 @@ void clsStageScene::Create()
 	m_vsmpShotSe.push_back(make_unique<clsSound>());
 	strcpy(m_vsmpShotSe[1]->m_stSoundData.sPath, "Data\\Sound\\SE\\Shot01.mp3");
 	strcpy(m_vsmpShotSe[1]->m_stSoundData.sAilias, "SeShot01");
-	for (int i = 0; i < m_vsmpShotSe.size(); i++)
+	for (UINT i = 0; i < m_vsmpShotSe.size(); i++)
 	{
 		m_vsmpShotSe[i]->Open(m_vsmpShotSe[i]->m_stSoundData.sPath, m_vsmpShotSe[i]->m_stSoundData.sAilias, Resource->GetSpriteRenderSet().hWnd);
 		m_vsmpShotSe[i]->SetVolume(15);
@@ -137,7 +137,7 @@ void clsStageScene::Create()
 	m_vsmpHitSe.push_back(make_unique<clsSound>());
 	strcpy(m_vsmpHitSe[2]->m_stSoundData.sPath, "Data\\Sound\\SE\\EnemyHit.mp3");
 	strcpy(m_vsmpHitSe[2]->m_stSoundData.sAilias, "SeEnemyHit02");
-	for (int i = 0; i < m_vsmpHitSe.size(); i++)
+	for (UINT i = 0; i < m_vsmpHitSe.size(); i++)
 	{
 		m_vsmpHitSe[i]->Open(m_vsmpHitSe[i]->m_stSoundData.sPath, m_vsmpHitSe[i]->m_stSoundData.sAilias, Resource->GetSpriteRenderSet().hWnd);
 		m_vsmpHitSe[i]->SetVolume(15);
@@ -160,8 +160,8 @@ void clsStageScene::Init()
 	m_bPlayerDamage = false;
 	m_iPlayerinvincible = 0;
 
-	m_iShotIntervalCnt = 0.0f;
-	m_iEnemyIntervalCnt = 0.0f;
+	m_iShotIntervalCnt = 0;
+	m_iEnemyIntervalCnt = 0;
 
 	m_iHp = ConstantStageScene::PLAYERHP;
 
@@ -233,7 +233,7 @@ void clsStageScene::UpDate()
 	m_iEnemyIntervalCnt--;
 	if (m_iEnemyIntervalCnt < 0)
 	{
-		for (int i = 0; i < m_vsmpEnemy.size(); i++)
+		for (UINT i = 0; i < m_vsmpEnemy.size(); i++)
 		{
 			if (!m_vsmpEnemy[i]->GetEnableFlg())
 			{
@@ -244,8 +244,17 @@ void clsStageScene::UpDate()
 		}
 	}
 
+	if (m_stMode == Stage)
+	{
+		if (m_icnt % 60 == 0)
+		{
+			m_iClearTime--;
+			m_icnt = 0;
+		}
+	}
+
 	//ゲームクリア判断用.
-	if (m_iClearTime < 0 && m_stMode == Stage)
+	if (m_iClearTime < 1 && m_stMode == Stage)
 	{
 		m_stMode = Clear;
 		Resource->m_viScore.push_back(m_iScore);
@@ -255,7 +264,7 @@ void clsStageScene::UpDate()
 	}
 
 	//敵の動き.
-	for (int i = 0; i < m_vsmpEnemy.size(); i++)
+	for (UINT i = 0; i < m_vsmpEnemy.size(); i++)
 	{
 		if (m_vsmpEnemy[i]->GetEnableFlg())
 		{
@@ -282,11 +291,6 @@ void clsStageScene::UpDate()
 	//当たり判定.
 	HitCheak();
 
-	if (m_icnt % 60 == 0)
-	{
-		m_iClearTime--;
-		m_icnt = 0;
-	}
 }
 
 void clsStageScene::RightRoll()
@@ -357,7 +361,7 @@ void clsStageScene::ExpRender() {
 }
 void clsStageScene::ModelRender2() {
 	//ショット.
-	for (int i = 0; i < m_vsmpShot.size(); i++)
+	for (UINT i = 0; i < m_vsmpShot.size(); i++)
 	{
 		if (m_vsmpShot[i]->GetShotFlg())
 		{
@@ -369,7 +373,7 @@ void clsStageScene::ModelRender2() {
 	}
 
 	//スキンメッシュの表示.
-	for (int i = 0; i < m_vsmpEnemy.size(); i++)
+	for (UINT i = 0; i < m_vsmpEnemy.size(); i++)
 	{
 		if (m_vsmpEnemy[i]->GetEnableFlg())
 		{
@@ -407,7 +411,7 @@ void clsStageScene::SpriteRender()
 void clsStageScene::Release()
 {
 	//キャラクタクラスの破棄.
-	for (int i = 0; i < m_vsmpEnemy.size(); i++)
+	for (UINT i = 0; i < m_vsmpEnemy.size(); i++)
 	{
 		//モデルデータの関連付け解除.
 		m_vsmpEnemy[i]->DetachModel();
@@ -419,7 +423,7 @@ void clsStageScene::Release()
 	m_vsmpEnemy.clear();
 	m_vsmpEnemy.shrink_to_fit();
 
-	for (int i = 0; i < m_vsmpShot.size(); i++)
+	for (UINT i = 0; i < m_vsmpShot.size(); i++)
 	{
 		//モデルデータの関連付け解除.
 		m_vsmpShot[i]->DetachModel();
@@ -448,11 +452,11 @@ void clsStageScene::Release()
 
 	//音楽破棄.
 	m_vsmpBgm[0]->Close();
-	for (int i = 0; i < m_vsmpShotSe.size(); i++)
+	for (UINT i = 0; i < m_vsmpShotSe.size(); i++)
 	{
 		m_vsmpShotSe[i]->Close();
 	}
-	for (int i = 0; i < m_vsmpHitSe.size(); i++)
+	for (UINT i = 0; i < m_vsmpHitSe.size(); i++)
 	{
 		m_vsmpHitSe[i]->Close();
 	}

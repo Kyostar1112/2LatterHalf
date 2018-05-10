@@ -30,7 +30,7 @@ public:
 	double GetAnimPeriod(int index)
 	{
 		float fMotionAdjustment = 0.036f;//ƒŒƒ“ƒ_[‚ÌˆÊ’u‚É‡‚í‚¹‚é‚½‚ß‚É.
-		return m_pSkinModel->GetAnimPeriod(index)/* - fMotionAdjustment*/;
+		return m_pSkinModel->GetAnimPeriod(index) - fMotionAdjustment;
 	}
 
 	double m_dAnimSpeed;
