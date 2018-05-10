@@ -125,6 +125,7 @@ void clsEnemy::InitAttack()
 	ChangeAnimSet(05);
 	m_dAnimTime = 0;
 	m_dAnimSpeed = 0.01f;
+	m_iAttakInterval = CE::iAttakInterval;
 	//UŒ‚ó‘Ô‚É•ÏX.
 	m_EnemyState = State::Attak;
 }
