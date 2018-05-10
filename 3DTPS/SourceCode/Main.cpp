@@ -802,7 +802,6 @@ HRESULT clsMain::MeshRead()
 
 	});
 
-	th1.detach();
 
 	while (true)
 	{
@@ -827,10 +826,11 @@ HRESULT clsMain::MeshRead()
 
 		if (m_bLoadFlg)
 		{
+			th1.join();
 			break;
 		}
-
 	}
+
 	return S_OK;
 }
 
