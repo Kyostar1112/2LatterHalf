@@ -244,8 +244,17 @@ void clsStageScene::UpDate()
 		}
 	}
 
+	if (m_stMode == Stage)
+	{
+		if (m_icnt % 60 == 0)
+		{
+			m_iClearTime--;
+			m_icnt = 0;
+		}
+	}
+
 	//ゲームクリア判断用.
-	if (m_iClearTime < 0 && m_stMode == Stage)
+	if (m_iClearTime < 1 && m_stMode == Stage)
 	{
 		m_stMode = Clear;
 		Resource->m_viScore.push_back(m_iScore);
@@ -282,11 +291,6 @@ void clsStageScene::UpDate()
 	//当たり判定.
 	HitCheak();
 
-	if (m_icnt % 60 == 0)
-	{
-		m_iClearTime--;
-		m_icnt = 0;
-	}
 }
 
 void clsStageScene::RightRoll()
