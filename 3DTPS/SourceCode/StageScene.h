@@ -13,8 +13,8 @@
 namespace ConstantStageScene {
 	const int SHOT_MAX = 255;	//ショットの最大数.
 	const int SHOT_INTERVAL_CNT = 20;	//ショットの間隔.
-	const int ENEMYMAX = 1;	//一度の画面に出てくる敵の最大数.
-	const int SPAWNCNT = 60.0f;//敵のスポーンするタイミング.
+	const int ENEMYMAX = 10;	//一度の画面に出てくる敵の最大数.
+	const int SPAWNCNT = 60;//敵のスポーンするタイミング.
 	const int PLAYERHP = 15;	//プレイヤーの体力.
 	const int PLAYERINVINCIBLETIME = 60;	//プレイヤーの無敵時間.
 	const int PlayerHpNumdigit = 2;	//自機の体力の桁数.
@@ -58,11 +58,11 @@ public:
 	void MusicStop()
 	{
 		m_vsmpBgm[0]->Stop();
-		for (int i = 0; i < m_vsmpShotSe.size(); i++)
+		for (UINT i = 0; i < m_vsmpShotSe.size(); i++)
 		{
 			m_vsmpShotSe[i]->Stop();
 		}
-		for (int i = 0; i < m_vsmpHitSe.size(); i++)
+		for (UINT i = 0; i < m_vsmpHitSe.size(); i++)
 		{
 			m_vsmpHitSe[i]->Stop();
 		}

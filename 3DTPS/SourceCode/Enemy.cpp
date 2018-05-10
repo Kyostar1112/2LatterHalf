@@ -3,9 +3,9 @@
 const float PI = 3.141592f;
 namespace ConstantEnemy
 {
-	const float fSpawnLength = 30.0f;	//“G‚ªo‚Ä‚­‚é‹——£.
-	const int   iExpImg = 3;			//”š”­‰æ‘œ‚Ì”.
-	const int	iAttakInterval = 180.0f;//UŒ‚ŠÔŠu.
+	const float fSpawnLength	= 30.0f;//“G‚ªo‚Ä‚­‚é‹——£.
+	const int   iExpImg			= 3;	//”š”­‰æ‘œ‚Ì”.
+	const int	iAttakInterval	= 180;	//UŒ‚ŠÔŠu.
 }
 
 namespace CE = ConstantEnemy;
@@ -55,7 +55,7 @@ void clsEnemy::Loop()
 void clsEnemy::Spawn()
 {
 	ChangeAnimSet(02);
-	m_iAttakInterval = 180.0f;
+	m_iAttakInterval = CE::iAttakInterval;
 	float fZ, fX;
 
 	float fDeg = RandamAmong(0.0f, 360.0f);//Šp“x.
@@ -111,7 +111,7 @@ void clsEnemy::Move()
 void clsEnemy::ChangeAttack()
 {
 	//‘Ò‹@ó‘Ô‚Ö.
-	if ( m_dAnimTime + m_dAnimSpeed >= GetAnimPeriod(03))
+	if (m_dAnimTime >= GetAnimPeriod(03))
 	{
 		//UŒ‚‘Ò‹@ó‘Ô‚É•ÏX.
 		m_EnemyState = State::InitAttack;
@@ -133,7 +133,7 @@ void clsEnemy::InitAttack()
 void clsEnemy::Attack()
 {
 	//UŒ‚‚Ìƒ‚[ƒVƒ‡ƒ“’†‚©H.
-	if ( m_dAnimTime + m_dAnimSpeed >= GetAnimPeriod(05) )
+	if (m_dAnimTime >= GetAnimPeriod(05))
 	{
 		m_bAttakFlg = true;
 		ChangeAnimSet(06);
@@ -146,7 +146,7 @@ void clsEnemy::Attack()
 void clsEnemy::IdleAttack()
 {
 	//UŒ‚‚Ìƒ‚[ƒVƒ‡ƒ“’†‚©H.
-	if (m_dAnimTime + m_dAnimSpeed >= GetAnimPeriod(06))
+	if (m_dAnimTime >= GetAnimPeriod(06))
 	{
 		m_dAnimSpeed = 0.0f;
 		ChangeAnimSet(00);
@@ -154,6 +154,7 @@ void clsEnemy::IdleAttack()
 
 	if (m_iAttakInterval < 0)
 	{
+		m_iAttakInterval = CE::iAttakInterval;
 		//UŒ‚‘Ò‹@ó‘Ô‚É•ÏX.
 		m_EnemyState = State::InitAttack;
 	}

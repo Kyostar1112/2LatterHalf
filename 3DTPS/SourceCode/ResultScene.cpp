@@ -18,7 +18,7 @@ void clsResultScene::Create()
 	m_smpBgm->Open("Data\\Sound\\BGM\\ResultScene.mp3", "ResultBGM00", Resource->GetSpriteRenderSet().hWnd);
 	m_smpBgm->SetVolume(10);
 
-	for (size_t i = 0; i < ResultScene::ciRank; i++)
+	for (int i = 0; i < ResultScene::ciRank; i++)
 	{
 		m_vsmpDispScore.push_back(make_unique<clsNum>());
 		m_vsmpDispScore[i]->Create(ResultScene::ciScoredigit);
@@ -28,7 +28,7 @@ void clsResultScene::Create()
 		m_vsmpDispScore[i]->SetPosY(m_vsmpDispScore[i]->GetDispH() / 3 + m_vsmpDispScore[i]->GetDispH()*i);
 	}
 
-	for (size_t i = 0; i < ResultScene::ciRank; i++)
+	for (int i = 0; i < ResultScene::ciRank; i++)
 	{
 		m_vsmpScoreRank.push_back(make_unique<clsNum>());
 		m_vsmpScoreRank[i]->Create(1);
@@ -93,7 +93,7 @@ void clsResultScene::SpriteRender()
 
 	m_smpPushTxt->Render();
 
-	for (size_t i = 0; i < ResultScene::ciRank; i++)
+	for (int i = 0; i < ResultScene::ciRank; i++)
 	{
 		m_vsmpDispScore[i]->Render(m_viScore[i]);
 		m_vsmpScoreRank[i]->Render(i + 1);
