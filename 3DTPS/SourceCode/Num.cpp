@@ -38,7 +38,7 @@ void clsNum::Render(int Num)
 	{
 		int tmp = static_cast<int>(pow(10, i));
 		m_viDispNum[i] = 9 - Num / tmp;
-		m_vsmpNum[i]->SetPatarnV(m_viDispNum[i]);
+		m_vsmpNum[i]->SetPatarnV(static_cast<float>(m_viDispNum[i]));
 		m_vsmpNum[i]->Render();
 	}
 }
