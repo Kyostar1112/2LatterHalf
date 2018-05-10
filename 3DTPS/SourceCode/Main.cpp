@@ -78,9 +78,9 @@ clsMain::clsMain()
 	m_pBackBuffer_DSTexDSV = NULL;//デプスステンシルビュー.
 
 	//カメラ(視点)位置.
-	m_Camera.vEye = D3DXVECTOR3(0.0f, 2.0f, -3.0f);
+	m_Camera.vEye = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	//注視位置.
-	m_Camera.vLook = D3DXVECTOR3(0.0f, 0.0f, 10.0f);
+	m_Camera.vLook = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 
 	//ライト方向.
 	m_vLight = D3DXVECTOR3(0.0f, 0.5f, -1.0f);
@@ -1151,20 +1151,22 @@ void clsMain::dirOverGuard(float* fYaw)
 //カメラ関数.
 void clsMain::Camera()
 {
+	//カメラ(視点)位置.
+	m_Camera.vEye = D3DXVECTOR3(0.0f, 5.0f, 0.0f);
+
 	//軸ベクトルを用意.
-	D3DXVECTOR3 vecAxisZ(0.0f, 0.0f, 1.0f);
+	D3DXVECTOR3 vecAxisZ(0.0f, 0.0f, 15.0f);
 	switch (m_enScene)
 	{
 	case Title:
-		m_Camera.vEye = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
-		m_Camera.vLook = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 		break;
 	case Stage:
 		//===============================================
 		//カメラ追従処理 ここから.
 		//===============================================
 		//カメラ位置(自機の背中から)の設定.
-		m_Camera.vEye = m_Camera.vLook
+		//注視位置.
+		m_Camera.vLook
 			= m_smpStageScene->m_smpPlayer->GetPosition();//自機の位置をコピー.
 		m_Camera.fYaw = m_smpStageScene->m_smpPlayer->GetRotationY();//回転値をコピー.
 
@@ -1179,8 +1181,8 @@ void clsMain::Camera()
 		m_Camera.vEye -= vecAxisZ/* * 4.0f*/;	//自機の背中側.
 		m_Camera.vLook += vecAxisZ/* * 2.0f*/;	//自機の前側.
 
-		m_Camera.vEye.y += 1.0f;	//カメラ位置(高さ)調整.
-		m_Camera.vLook.y += 1.0f;	//注視位置(高さ)調整.
+		//m_Camera.vEye.y += 1.0f;	//カメラ位置(高さ)調整.
+		//m_Camera.vLook.y += 1.0f;	//注視位置(高さ)調整.
 
 		//===============================================
 		//カメラ追従処理 ここまで.
