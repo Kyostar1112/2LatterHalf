@@ -197,6 +197,7 @@ void clsStageScene::Init()
 
 	m_smpHpGage->SetPos(0.0f, 0.0f);
 	m_smpTargetPoint->SetPos(WND_W / 2 - m_smpTargetPoint->GetSs().Disp.w / 2, WND_H / 2 - m_smpTargetPoint->GetSs().Disp.h / 2 - 60.0f);
+	m_smpTargetPointHit->SetPos(WND_W / 2 - m_smpTargetPointHit->GetSs().Disp.w / 2, WND_H / 2 - m_smpTargetPointHit->GetSs().Disp.h / 2 - 60.0f);
 }
 
 void clsStageScene::UpDate()
@@ -371,7 +372,7 @@ void clsStageScene::ModelRender1()
 	m_smpPlayer->Render(m_stModelRenderSet.mView, m_stModelRenderSet.mProj, m_stModelRenderSet.vLight, m_stModelRenderSet.vEye);
 
 	//当たり判定確認用.
-#if 0
+#if 1
 	{
 		for (size_t i = 0; i < m_vsmpShotSphere.size(); i++)
 		{
@@ -517,8 +518,15 @@ void clsStageScene::HitCheak()
 		{
 			continue;
 		}
+
 		//交点の座標からy座標を敵のy座標としてセット.
-		if(IntersectionLocation(m_smpPlayer.get(), m_vsmpEnemySphere[i].get(),D3DXVECTOR3(0.0f,0.0f,1.0f)))
+		D3DXMATRIX mYaw;
+		D3DXMatrixRotationY(&mYaw, m_smpPlayer->GetRotationY());
+		D3DXVECTOR3 vDir;
+		D3DXVec3TransformCoord(&vDir, &D3DXVECTOR3(0.0f, 0.0f, 1.0f), &mYaw);
+
+		if(IntersectionLocation(m_smpPlayer.get(), m_vsmpEnemySphere[i].get(), vDir)
+			)
 		{
 			bTargetPointHitCheackFlg = true;
 		}
