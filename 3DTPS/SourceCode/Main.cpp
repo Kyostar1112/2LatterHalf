@@ -304,14 +304,22 @@ void clsMain::AppMain()
 		{
 			m_enScene = m_smpStageScene->GetMode();
 		}
-		if (GetAsyncKeyState('A') & 0x8000 || GetAsyncKeyState(VK_LEFT) & 0x8000 || m_smpDxInput->IsPressKey(enPKey_Left)) {
-			m_smpStageScene->LeftRoll();
-		}
-		if (GetAsyncKeyState('D') & 0x8000 || GetAsyncKeyState(VK_RIGHT) & 0x8000 || m_smpDxInput->IsPressKey(enPKey_Right)) {
-			m_smpStageScene->RightRoll();
-		}
+		//UŒ‚’†ƒ{ƒ^ƒ“‚ª‰Ÿ‚³‚ê‚Ä‚¢‚é‚©‚Ç‚¤‚©.
+		bool bAttackFlg = false;
+		float fMovePoint= 0.03f;
 		if (GetAsyncKeyState('Z') & 0x0001 || GetAsyncKeyState(VK_SPACE) & 0x8000 || m_smpDxInput->IsPressKey(enPKey_00)) {
 			m_smpStageScene->Fire();
+			bAttackFlg = true;
+		}
+		if (bAttackFlg)
+		{
+			fMovePoint = 0.015f;
+		}
+		if (GetAsyncKeyState('A') & 0x8000 || GetAsyncKeyState(VK_LEFT) & 0x8000 || m_smpDxInput->IsPressKey(enPKey_Left)) {
+			m_smpStageScene->LeftRoll(fMovePoint);
+		}
+		if (GetAsyncKeyState('D') & 0x8000 || GetAsyncKeyState(VK_RIGHT) & 0x8000 || m_smpDxInput->IsPressKey(enPKey_Right)) {
+			m_smpStageScene->RightRoll(fMovePoint);
 		}
 	}
 	break;

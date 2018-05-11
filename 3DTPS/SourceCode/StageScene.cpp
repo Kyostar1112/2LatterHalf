@@ -150,6 +150,16 @@ void clsStageScene::Init()
 {
 	m_stMode = Stage;
 	m_iScore = 0;
+
+	//アニメーション経過時間
+	m_smpPlayer->m_dAnimTime = 0;
+
+	//アニメーション速度.
+	m_smpPlayer->m_dAnimSpeed = 0.03f;
+
+	m_smpPlayer->m_dAnimNum = 1;
+	m_smpPlayer->ChangeAnimSet(m_smpPlayer->m_dAnimNum);
+
 	m_iClearTime = ConstantStageScene::StageClearTimeMax;
 	m_icnt = 0;
 	m_vsmpBgm[0]->SeekToStart();
@@ -185,6 +195,17 @@ void clsStageScene::Init()
 void clsStageScene::UpDate()
 {
 	m_icnt++;
+	//アニメーション速度加算は先に.
+	m_smpPlayer->m_dAnimTime += m_smpPlayer->m_dAnimSpeed;
+	if (m_smpPlayer->m_dAnimNum == 7)
+	{
+		if (m_smpPlayer->m_dAnimTime > m_smpPlayer->GetAnimPeriod(07))
+		{
+			m_smpPlayer->m_dAnimSpeed = 0.03f;
+			m_smpPlayer->m_dAnimNum = 01;
+			m_smpPlayer->ChangeAnimSet(m_smpPlayer->m_dAnimNum);
+		}
+	}
 	//音楽関連.
 	{
 		for (UINT i = 0; i < m_vsmpBgm.size(); i++)
@@ -294,13 +315,13 @@ void clsStageScene::UpDate()
 
 }
 
-void clsStageScene::RightRoll()
+void clsStageScene::RightRoll(float MovePoint)
 {
-	m_smpPlayer->AddRotationY(0.05f);
+	m_smpPlayer->AddRotationY(MovePoint);
 }
-void clsStageScene::LeftRoll()
+void clsStageScene::LeftRoll(float MovePoint)
 {
-	m_smpPlayer->AddRotationY(-0.05f);
+	m_smpPlayer->AddRotationY(-MovePoint);
 }
 void clsStageScene::Fire()
 {
@@ -318,6 +339,10 @@ void clsStageScene::Fire()
 						break;
 					}
 				}
+				m_smpPlayer->m_dAnimNum = 7;
+				m_smpPlayer->m_dAnimTime = 0;
+				m_smpPlayer->m_dAnimSpeed = 0.05f;
+				m_smpPlayer->ChangeAnimSet(m_smpPlayer->m_dAnimNum);
 				m_vsmpShot[i]->SetRotationY(m_smpPlayer->GetRotationY());
 				m_vsmpShot[i]->SetPosition(m_smpPlayer->GetPosition());
 				m_vsmpShot[i]->SetPositionY(1.5f);
