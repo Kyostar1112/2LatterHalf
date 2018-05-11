@@ -15,19 +15,19 @@ public:
 	~clsCharacterSkin();
 
 	//モデルデータ関連付け.
-	void AttachModel(clsD3DXSKINMESH* pModel);
+	virtual void AttachModel(clsD3DXSKINMESH* pModel);
 	//モデルデータ関連付け解除.
-	void DetachModel();
+	virtual void DetachModel();
 
 	//レンダリング.
-	void Render(D3DXMATRIX& mView, D3DXMATRIX& mProj,
+	virtual void Render(D3DXMATRIX& mView, D3DXMATRIX& mProj,
 		D3DXVECTOR3& vLight, D3DXVECTOR3& vEye);
 
 	//アニメーション最大数を取得する.
 	int GetAnimSetMax();
 	//アニメーション切り替え.
-	void ChangeAnimSet(int index, double dStartPos = 0.0f);
-	double GetAnimPeriod(int index)
+	virtual void ChangeAnimSet(int index, double dStartPos = 0.0f);
+	virtual double GetAnimPeriod(int index)
 	{
 		float fMotionAdjustment = 0.036f;//レンダーの位置に合わせるために.
 		return m_pSkinModel->GetAnimPeriod(index) - fMotionAdjustment;
@@ -38,18 +38,21 @@ public:
 	int m_iAnimNo;
 
 	//位置更新関数.
-	void UpdatePos();
+	virtual void UpdatePos();
 	enDirection		m_enDir;	//方向.
 	float			m_fSpd;
 
-	clsD3DXSKINMESH* GetPointor() {
+	virtual clsD3DXSKINMESH* GetPointor() {
 		return m_pSkinModel;
 	}
 	//座標や回転の更新.
 	virtual void Update();//仮想関数.
-private:
+
+protected:
 	clsD3DXSKINMESH*			m_pSkinModel;
 	LPD3DXANIMATIONCONTROLLER	m_pAnimCtrl;
+
+
 };
 
 #endif //#ifndef _C_CHARACTER_SKIN_H_.

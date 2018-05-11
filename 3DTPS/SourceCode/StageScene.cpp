@@ -43,8 +43,9 @@ void clsStageScene::Create()
 
 	//「自機」
 	m_smpPlayer = make_unique<clsPlayer>();
-	m_smpPlayer->AttachModel(Resource->GetStaticModels(Resource->enStaticModel_Player));
-	m_smpPlayer->SetPosition(D3DXVECTOR3(0.0f, 0.9f, 0.0f));
+	m_smpPlayer->AttachModel(Resource->GetSkinModels(Resource->enSkinModel_Player));
+	m_smpPlayer->SetPosition(D3DXVECTOR3(0.0f, 0.0f, 0.0f));
+	m_smpPlayer->SetScale(0.0008f);
 	m_smpPlayerSphere = make_unique<clsSphere>();
 	m_smpPlayerSphere->AttachModel(Resource->GetStaticModels(Resource->enStaticModel_Sphere));
 
@@ -152,7 +153,7 @@ void clsStageScene::Init()
 	m_iClearTime = ConstantStageScene::StageClearTimeMax;
 	m_icnt = 0;
 	m_vsmpBgm[0]->SeekToStart();
-	for (size_t i = 0; i < m_vsmpEnemy.size(); i++)
+	for (UINT i = 0; i < m_vsmpEnemy.size(); i++)
 	{
 		m_vsmpEnemy[i]->InitEnemy(false, m_smpPlayer->GetPosition());
 	}
@@ -178,7 +179,7 @@ void clsStageScene::Init()
 	m_smpClearTimeNum->AddPosX(m_smpClock->GetSs().Disp.w + m_smpClock->GetPos().x);
 
 	m_smpHpGage->SetPos(0.0f, 0.0f);
-	m_smpTargetPoint->SetPos(WND_W / 2 - m_smpTargetPoint->GetSs().Disp.w / 2, WND_H / 2 - m_smpTargetPoint->GetSs().Disp.h / 2 + 40.0f);
+	m_smpTargetPoint->SetPos(WND_W / 2 - m_smpTargetPoint->GetSs().Disp.w / 2, WND_H / 2 - m_smpTargetPoint->GetSs().Disp.h / 2 - 60.0f);
 }
 
 void clsStageScene::UpDate()
@@ -186,7 +187,7 @@ void clsStageScene::UpDate()
 	m_icnt++;
 	//音楽関連.
 	{
-		for (size_t i = 0; i < m_vsmpBgm.size(); i++)
+		for (UINT i = 0; i < m_vsmpBgm.size(); i++)
 		{
 			if (m_vsmpBgm[i]->IsStopped())
 			{
@@ -198,14 +199,14 @@ void clsStageScene::UpDate()
 			}
 		}
 
-		for (size_t i = 0; i < m_vsmpShotSe.size(); i++)
+		for (UINT i = 0; i < m_vsmpShotSe.size(); i++)
 		{
 			if (m_vsmpShotSe[i]->IsStopped())
 			{
 				m_vsmpShotSe[i]->SeekToStart();
 			}
 		}
-		for (size_t i = 0; i < m_vsmpHitSe.size(); i++)
+		for (UINT i = 0; i < m_vsmpHitSe.size(); i++)
 		{
 			if (m_vsmpHitSe[i]->IsStopped())
 			{
@@ -216,7 +217,7 @@ void clsStageScene::UpDate()
 	m_iShotIntervalCnt--;
 
 #if 1
-	for (size_t i = 0; i < m_vsmpShot.size(); i++)
+	for (UINT i = 0; i < m_vsmpShot.size(); i++)
 	{
 		if (!m_vsmpShot[i]->GetShotFlg())
 		{
@@ -225,7 +226,7 @@ void clsStageScene::UpDate()
 			m_vsmpShot[i]->SetPositionY(1.5f);
 			break;
 		}
-		m_vsmpShot[i]->FiringCnt();
+		m_vsmpShot[i]->FireInterval();
 	}
 
 #endif // 0
@@ -281,7 +282,7 @@ void clsStageScene::UpDate()
 	//弾丸の初期化用.
 #if 0
 	if (GetAsyncKeyState('I') & 0x0001/*||m_pDxInput->IsPressKey( enPKey_00 )*/) {
-		for (size_t i = 0; i < m_vsmpShot.size(); i++)
+		for (UINT i = 0; i < m_vsmpShot.size(); i++)
 		{
 			m_vsmpShot[i]->SetPosition(m_smpPlayer->GetPosition());
 		}
@@ -305,11 +306,11 @@ void clsStageScene::Fire()
 {
 	if (m_iShotIntervalCnt < 0)
 	{
-		for (size_t i = 0; i < m_vsmpShot.size(); i++)
+		for (UINT i = 0; i < m_vsmpShot.size(); i++)
 		{
 			if (!m_vsmpShot[i]->GetShotFlg())
 			{
-				for (size_t j = 0; j < m_vsmpShotSe.size(); j++)
+				for (UINT j = 0; j < m_vsmpShotSe.size(); j++)
 				{
 					if (m_vsmpShotSe[j]->m_bSeekFlg)
 					{
@@ -337,6 +338,7 @@ void clsStageScene::ModelRender1()
 
 	//「自機」の表示.
 	m_smpPlayer->Render(m_stModelRenderSet.mView, m_stModelRenderSet.mProj, m_stModelRenderSet.vLight, m_stModelRenderSet.vEye);
+
 	//当たり判定確認用.
 #if 0
 	{
@@ -354,7 +356,7 @@ void clsStageScene::ModelRender1()
 #endif // 0
 }
 void clsStageScene::ExpRender() {
-	for (size_t i = 0; i < m_vsmpEnemy.size(); i++)
+	for (UINT i = 0; i < m_vsmpEnemy.size(); i++)
 	{
 		m_vsmpEnemy[i]->ExpRender();
 	}
@@ -469,7 +471,7 @@ void clsStageScene::HitCheak()
 		Ray(m_vsmpEnemy[i].get());
 	}
 	//弾と敵との当たり判定.
-	for (size_t i = 0; i < m_vsmpShotSphere.size(); i++)
+	for (UINT i = 0; i < m_vsmpShotSphere.size(); i++)
 	{
 		if (!m_vsmpShot[i]->GetShotFlg())
 		{
@@ -478,7 +480,7 @@ void clsStageScene::HitCheak()
 		m_vsmpShotSphere[i]->SetPosition(m_vsmpShot[i]->m_Sphere.vCenter);
 		m_vsmpShotSphere[i]->SetScale(m_vsmpShot[i]->m_Sphere.fRadius);
 		m_vsmpShotSphere[i]->Update();
-		for (size_t j = 0; j < m_vsmpEnemy.size(); j++)
+		for (UINT j = 0; j < m_vsmpEnemy.size(); j++)
 		{
 			if (!m_vsmpEnemy[j]->GetEnableFlg())
 			{
@@ -488,7 +490,7 @@ void clsStageScene::HitCheak()
 			m_vsmpEnemySphere[j]->SetScale(0.5f);
 			m_vsmpEnemySphere[j]->Update();
 			if (Collision(m_vsmpShotSphere[i].get(), m_vsmpEnemySphere[j].get())) {
-				for (size_t k = 0; k < m_vsmpHitSe.size(); k++)
+				for (UINT k = 0; k < m_vsmpHitSe.size(); k++)
 				{
 					if (m_vsmpHitSe[k]->m_bSeekFlg)
 					{
@@ -507,7 +509,7 @@ void clsStageScene::HitCheak()
 	//自機と敵の当たり判定.
 	if (!m_bPlayerDamage && m_iPlayerinvincible < 0)
 	{
-		for (size_t i = 0; i < m_vsmpEnemy.size(); i++)
+		for (UINT i = 0; i < m_vsmpEnemy.size(); i++)
 		{
 			if (!m_vsmpEnemy[i]->GetEnableFlg())
 			{

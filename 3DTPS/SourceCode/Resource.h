@@ -31,7 +31,6 @@ public:
 		enStaticModel_Min = 0,	//‚±‚±‚Éƒ‚ƒfƒ‹‚ð“ü‚ê‚È‚¢‚Å.
 
 		enStaticModel_Plane,
-		enStaticModel_Player,
 		enStaticModel_Stage1,
 		enStaticModel_Stage2,
 		enStaticModel_Shot,
@@ -44,6 +43,8 @@ public:
 	enum enSkinModel
 	{
 		enSkinModel_Min = 0,	//‚±‚±‚Éƒ‚ƒfƒ‹‚ð“ü‚ê‚È‚¢‚Å.
+
+		enSkinModel_Player,
 
 		enSkinModel_Boss,
 

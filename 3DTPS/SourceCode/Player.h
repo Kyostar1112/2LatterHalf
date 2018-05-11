@@ -1,32 +1,19 @@
 #ifndef _C_PLAYER_H_
 #define _C_PLAYER_H_
 
-#include"Character.h"
+#include"CharacterSkin.h"
 
 class clsPlayer
-	:public clsCharacter
+	:public clsCharacterSkin
 {
 public:
 	clsPlayer();
 	~clsPlayer();
 
-#if 0
-	bool GetEnableFlg()
-	{
-		return m_bEnableFlg;
-	}
-
-	void SetEnableFlg(bool EnableFlg)
-	{
-		m_bEnableFlg = EnableFlg;
-	}
-
-#endif // 0
+	void Render(D3DXMATRIX & mView, D3DXMATRIX & mProj, D3DXVECTOR3 & vLight, D3DXVECTOR3 & vEye);
 
 private:
-#if 0
-	bool m_bEnableFlg;//Žg—p‚µ‚Ä‚¢‚é‚©‚Ç‚¤‚©.
-#endif // 0
+
 };
 
 #endif  //#ifdef _C_PLAYER_H_
