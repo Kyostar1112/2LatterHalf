@@ -67,7 +67,7 @@ HRESULT clsRay::InitShader()
 			NULL,			//スレッドポンプインターフェイスへのポインタ(未使用)
 			&pCompiledShader,//ブロブを格納するメモリへのポインタ.
 			&pErrors,		//エラーと警告一覧を格納するメモリへのポインタ.
-			NULL)))		//戻り値へのポインタ(未使用)
+			NULL)))			//戻り値へのポインタ(未使用)
 	{
 		MessageBox(NULL, "hlsl読込失敗", "エラー", MB_OK);
 		return E_FAIL;

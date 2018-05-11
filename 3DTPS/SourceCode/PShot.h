@@ -13,29 +13,12 @@ public:
 	clsPlayerShot();
 	~clsPlayerShot();
 
-	bool GetShotFlg()
-	{
-		return m_bShotFlg;
-	}
+	//
+	bool GetShotFlg();
 
-	void Fire()
-	{
-		m_bShotFlg = true;
-		m_iShotFiringCnt = Shot::SHOT_FIRING_CNT;
-		m_fSpd = 2.0f;
-	}
+	void Fire();
 
-	void FiringCnt()
-	{
-		if (m_bShotFlg)
-		{
-			m_iShotFiringCnt--;
-			if (m_iShotFiringCnt < 0)
-			{
-				m_bShotFlg = false;
-			}
-		}
-	}
+	void FireInterval();
 
 private:
 	bool m_bShotFlg;//true‚È‚ç”­ŽË‚µ‚Ä‚¢‚é.
