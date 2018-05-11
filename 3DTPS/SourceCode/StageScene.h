@@ -123,6 +123,7 @@ private:
 	ModelRenderSet m_stModelRenderSet;
 
 	unique_ptr<clsSprite2D>		m_smpTargetPoint;	//照準.
+	unique_ptr<clsSprite2D>		m_smpTargetPointHit;	//照準当たる位置のみ.
 
 	//スフィア作成.
 	HRESULT InitSphere(clsDX9Mesh* pMesh, float fScale = 0.7f);
@@ -136,7 +137,7 @@ private:
 	bool Collision(clsDX9Mesh* pAttacker, clsDX9Mesh* pTarget);
 	bool Collision(clsCharacter* pAttacker, clsCharacter* pTarget);
 
-	void Ray(clsEnemy* Enemy);
+	D3DXVECTOR3 IntersectionLocation(clsGameObject* Object);
 	//レイとメッシュの当たり判定.
 	bool Intersect(
 		clsGameObject* pAttacker, clsCharacter* pTarget,

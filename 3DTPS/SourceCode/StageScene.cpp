@@ -49,6 +49,8 @@ void clsStageScene::Create()
 	m_smpPlayerSphere = make_unique<clsSphere>();
 	m_smpPlayerSphere->AttachModel(Resource->GetStaticModels(Resource->enStaticModel_Sphere));
 
+
+
 	//HPゲーシ゛.
 	m_smpHpGage = make_unique<clsSprite2D>();
 	m_smpHpGage->Create(Resource->GetSpriteRenderSet().pDevice11, Resource->GetSpriteRenderSet().pContext11, "Data\\Image\\LoadGage.png");
@@ -58,8 +60,13 @@ void clsStageScene::Create()
 	//「照準」
 	m_smpTargetPoint = make_unique<clsSprite2D>();
 	m_smpTargetPoint->Create(Resource->GetSpriteRenderSet().pDevice11, Resource->GetSpriteRenderSet().pContext11, "Data\\Image\\TargetPoint.png");
-	m_smpTargetPoint->MulDisp(0.5f);
+	m_smpTargetPoint->MulDisp(0.3f);
 	m_smpTargetPoint->UpDateSpriteSs();
+
+	m_smpTargetPointHit = make_unique<clsSprite2D>();
+	m_smpTargetPointHit->Create(Resource->GetSpriteRenderSet().pDevice11, Resource->GetSpriteRenderSet().pContext11, "Data\\Image\\TargetPoint.png");
+	m_smpTargetPointHit->MulDisp(0.3f);
+	m_smpTargetPointHit->UpDateSpriteSs();
 
 	m_smpScoreNum = make_unique<clsNum>();
 	m_smpScoreNum->Create(ConstantStageScene::StageEnemyDowndigit);
@@ -490,9 +497,10 @@ void clsStageScene::Release()
 
 void clsStageScene::HitCheak()
 {
-	//当たり判定は最後に.
+	//当たり判定は最後地面との判定.
 	for (size_t i = 0; i < m_vsmpEnemy.size(); i++) {
-		Ray(m_vsmpEnemy[i].get());
+		//交点の座標からy座標を敵のy座標としてセット.
+		m_vsmpEnemy[i]->SetPositionY(0.9f + IntersectionLocation(m_vsmpEnemy[i].get()).y);
 	}
 	//弾と敵との当たり判定.
 	for (UINT i = 0; i < m_vsmpShotSphere.size(); i++)
@@ -607,25 +615,25 @@ bool clsStageScene::Collision(
 	return false;//衝突していない.
 }
 
-void clsStageScene::Ray(clsEnemy* Enemy)
+D3DXVECTOR3 clsStageScene::IntersectionLocation(clsGameObject* Object)
 {
 	FLOAT		fDistance;	//距離.
 	D3DXVECTOR3 vIntersect;	//交差座標.
 	//現在位置をコピー.
-	Enemy->m_vRay = Enemy->GetPosition();
+	Object->m_vRay = Object->GetPosition();
 	//レイの高さを自機の位置より上にする.
-	Enemy->m_vRay.y
-		= Enemy->GetPositionY() + 1.0f;
+	Object->m_vRay.y
+		= Object->GetPositionY() + 1.0f;
 	//軸ベクトルは垂直で下向き.
-	Enemy->m_vAxis
+	Object->m_vAxis
 		= D3DXVECTOR3(0.0f, -1.0f, 0.0f);
 
 	Intersect(
-		Enemy, m_smpGround.get(), &fDistance, &vIntersect);
+		Object, m_smpGround.get(), &fDistance, &vIntersect);
 
-	//交点の座標からy座標を自機のy座標としてセット.
-	Enemy->SetPositionY(vIntersect.y + 0.03f);
+	return vIntersect;
 }
+
 //レイとメッシュの当たり判定.
 bool clsStageScene::Intersect(
 	clsGameObject* pAttacker,	//基準の物体.
