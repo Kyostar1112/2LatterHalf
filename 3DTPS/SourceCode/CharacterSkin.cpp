@@ -72,7 +72,6 @@ void clsCharacterSkin::Update()
 		return;
 	}
 	m_pSkinModel->m_vPos = m_vPos;
-
 	m_pSkinModel->m_fYaw = m_vRot.y;
 	m_pSkinModel->m_fPitch = m_vRot.x;
 	m_pSkinModel->m_fRoll = m_vRot.z;

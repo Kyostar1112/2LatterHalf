@@ -78,9 +78,9 @@ clsMain::clsMain()
 	m_pBackBuffer_DSTexDSV = NULL;//デプスステンシルビュー.
 
 	//カメラ(視点)位置.
-	m_Camera.vEye = D3DXVECTOR3(0.0f, 2.0f, -3.0f);
+	m_Camera.vEye = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	//注視位置.
-	m_Camera.vLook = D3DXVECTOR3(0.0f, 0.0f, 10.0f);
+	m_Camera.vLook = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 
 	//ライト方向.
 	m_vLight = D3DXVECTOR3(0.0f, 0.5f, -1.0f);
@@ -434,32 +434,32 @@ void clsMain::Render()
 	if (m_smpText != NULL)//NULLチェック.
 	{
 		char strDbgTxt[256];
-		float DbgY = 10.0f;
-		const float CDBGY = 25.0f;
+		int iDbgY = 10;
+		const int CDBGY = 25;
 
 		sprintf_s(strDbgTxt, "Ply:x[%f],y[%f],z[%f]",
 			m_smpStageScene->m_smpPlayer->GetPositionX(),
 			m_smpStageScene->m_smpPlayer->GetPositionY(),
 			m_smpStageScene->m_smpPlayer->GetPositionZ());
-		m_smpText->Render(strDbgTxt, 0, DbgY);
-		DbgY += CDBGY;
+		m_smpText->Render(strDbgTxt, 0, iDbgY);
+		iDbgY += CDBGY;
 
 		sprintf_s(strDbgTxt, "PlyRot:y[%f]",
 			m_smpStageScene->m_smpPlayer->GetRotationY());
-		m_smpText->Render(strDbgTxt, 0, DbgY);
-		DbgY += CDBGY;
+		m_smpText->Render(strDbgTxt, 0, iDbgY);
+		iDbgY += CDBGY;
 
 		sprintf_s(strDbgTxt, "Enemy:x[%f],y[%f],z[%f]",
 			m_smpStageScene->m_vsmpEnemy[0]->GetPositionX(),
 			m_smpStageScene->m_vsmpEnemy[0]->GetPositionY(),
 			m_smpStageScene->m_vsmpEnemy[0]->GetPositionZ());
-		m_smpText->Render(strDbgTxt, 0, DbgY);
-		DbgY += CDBGY;
+		m_smpText->Render(strDbgTxt, 0, iDbgY);
+		iDbgY += CDBGY;
 
 		sprintf_s(strDbgTxt, m_vsSceneName[static_cast<int>(m_enScene)].c_str(),
 			m_smpStageScene->m_smpPlayer->GetRotationY());
-		m_smpText->Render(strDbgTxt, 0, DbgY);
-		DbgY += CDBGY;
+		m_smpText->Render(strDbgTxt, 0, iDbgY);
+		iDbgY += CDBGY;
 	}
 #endif//#ifdef _DEBUG
 
@@ -760,21 +760,26 @@ HRESULT clsMain::MeshRead()
 	m_pResource = clsResource::GetInstance();
 	m_pResource->Init(m_hWnd, m_pDevice, m_pDeviceContext);
 
+	/*ここからスタティックモデル*/
 	m_pResource->CreateStaticModel(
 		"Data\\teststage\\test_stage_X.X",
 		clsResource::enStaticModel_Plane);
-	m_pResource->CreateStaticModel(
-		"Data\\Player\\Ziki.X",
-		clsResource::enStaticModel_Player);
 	m_pResource->CreateStaticModel(
 		"Data\\Player\\Ziki.X",
 		clsResource::enStaticModel_Shot);
 	m_pResource->CreateStaticModel(
 		"Data\\Collision\\Sphere.X",
 		clsResource::enStaticModel_Sphere);
+	/*ここまでスタティックモデル*/
+
+	/*ここからスキンモデル*/
+	m_pResource->CreateSkinModel(
+		"Data\\Player\\Bozu.x",
+		clsResource::enSkinModel_Player);
 	m_pResource->CreateSkinModel(
 		"Data\\EXTINGER\\extinger.X",
 		clsResource::enSkinModel_Boss);
+	/*ここまでスキンモデル*/
 
 	Resource->m_smpFile = make_unique<clsFile>();
 	Resource->m_smpFile->Init("Data\\Txt\\ScoreRank.csv");
@@ -1151,20 +1156,22 @@ void clsMain::dirOverGuard(float* fYaw)
 //カメラ関数.
 void clsMain::Camera()
 {
+	//カメラ(視点)位置.
+	m_Camera.vEye = D3DXVECTOR3(0.0f, 5.0f, 0.0f);
+
 	//軸ベクトルを用意.
-	D3DXVECTOR3 vecAxisZ(0.0f, 0.0f, 1.0f);
+	D3DXVECTOR3 vecAxisZ(0.0f, 0.0f, 15.0f);
 	switch (m_enScene)
 	{
 	case Title:
-		m_Camera.vEye = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
-		m_Camera.vLook = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 		break;
 	case Stage:
 		//===============================================
 		//カメラ追従処理 ここから.
 		//===============================================
 		//カメラ位置(自機の背中から)の設定.
-		m_Camera.vEye = m_Camera.vLook
+		//注視位置.
+		m_Camera.vLook
 			= m_smpStageScene->m_smpPlayer->GetPosition();//自機の位置をコピー.
 		m_Camera.fYaw = m_smpStageScene->m_smpPlayer->GetRotationY();//回転値をコピー.
 
@@ -1178,9 +1185,6 @@ void clsMain::Camera()
 
 		m_Camera.vEye -= vecAxisZ/* * 4.0f*/;	//自機の背中側.
 		m_Camera.vLook += vecAxisZ/* * 2.0f*/;	//自機の前側.
-
-		m_Camera.vEye.y += 1.0f;	//カメラ位置(高さ)調整.
-		m_Camera.vLook.y += 1.0f;	//注視位置(高さ)調整.
 
 		//===============================================
 		//カメラ追従処理 ここまで.
@@ -1204,7 +1208,7 @@ void clsMain::Proj()
 	//プロジェクション(射影行列)変換.
 	D3DXMatrixPerspectiveFovLH(
 		&m_mProj,	//(out)プロジェクション計算結果.
-		D3DX_PI / 4.0, //y方向の視野(ラジアン指定)数値を大きくしたら視野が狭くなる.
+		D3DX_PI / 6.0, //y方向の視野(ラジアン指定)数値を大きくしたら視野が狭くなる.
 		(FLOAT)WND_W / (FLOAT)WND_H,//アスペクト比(幅÷高さ)
 		0.1f,		//近いビュー平面のz値.
 		100.0f);	//遠いビュー平面のz値.
