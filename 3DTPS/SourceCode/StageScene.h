@@ -122,8 +122,9 @@ private:
 
 	ModelRenderSet m_stModelRenderSet;
 
-	unique_ptr<clsSprite2D>		m_smpTargetPoint;	//照準.
+	unique_ptr<clsSprite2D>		m_smpTargetPoint;		//照準.
 	unique_ptr<clsSprite2D>		m_smpTargetPointHit;	//照準当たる位置のみ.
+	bool bTargetPointHitCheackFlg;
 
 	//スフィア作成.
 	HRESULT InitSphere(clsDX9Mesh* pMesh, float fScale = 0.7f);
@@ -137,11 +138,13 @@ private:
 	bool Collision(clsDX9Mesh* pAttacker, clsDX9Mesh* pTarget);
 	bool Collision(clsCharacter* pAttacker, clsCharacter* pTarget);
 
-	D3DXVECTOR3 IntersectionLocation(clsGameObject* Object);
+	D3DXVECTOR3 IntersectionLocation(clsGameObject* AttackObject, clsCharacter* DefenceObject, D3DXVECTOR3 RayOrientation);
+
 	//レイとメッシュの当たり判定.
 	bool Intersect(
 		clsGameObject* pAttacker, clsCharacter* pTarget,
 		float* pfDistance, D3DXVECTOR3* pvIntersect);
+
 	//交差位置のポリゴンの頂点を見つける.
 	HRESULT FindVerticesOnPoly(
 		LPD3DXMESH pTarget, DWORD dwPolyIndex,

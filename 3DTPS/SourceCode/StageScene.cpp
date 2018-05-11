@@ -64,7 +64,7 @@ void clsStageScene::Create()
 	m_smpTargetPoint->UpDateSpriteSs();
 
 	m_smpTargetPointHit = make_unique<clsSprite2D>();
-	m_smpTargetPointHit->Create(Resource->GetSpriteRenderSet().pDevice11, Resource->GetSpriteRenderSet().pContext11, "Data\\Image\\TargetPoint.png");
+	m_smpTargetPointHit->Create(Resource->GetSpriteRenderSet().pDevice11, Resource->GetSpriteRenderSet().pContext11, "Data\\Image\\TargetPointHit.png");
 	m_smpTargetPointHit->MulDisp(0.3f);
 	m_smpTargetPointHit->UpDateSpriteSs();
 
@@ -417,7 +417,14 @@ void clsStageScene::ModelRender2() {
 
 void clsStageScene::SpriteRender()
 {
-	m_smpTargetPoint->Render();
+	if (bTargetPointHitCheackFlg)
+	{
+		m_smpTargetPointHit->Render();
+	}
+	else
+	{
+		m_smpTargetPoint->Render();
+	}
 	//m_smpHpGage->Render();
 	if (m_iPlayerinvincible > 0)
 	{
@@ -500,8 +507,27 @@ void clsStageScene::HitCheak()
 	//当たり判定は最後地面との判定.
 	for (size_t i = 0; i < m_vsmpEnemy.size(); i++) {
 		//交点の座標からy座標を敵のy座標としてセット.
-		m_vsmpEnemy[i]->SetPositionY(0.9f + IntersectionLocation(m_vsmpEnemy[i].get()).y);
+		m_vsmpEnemy[i]->SetPositionY(0.9f + IntersectionLocation(m_vsmpEnemy[i].get(), m_smpGround.get(), D3DXVECTOR3(0.0f,-1.0f,0.0f) ).y);
 	}
+
+	//照準の判定.
+	for (UINT i = 0; i < m_vsmpEnemy.size(); i++)
+	{
+		if (!m_vsmpEnemy[i]->GetEnableFlg())
+		{
+			continue;
+		}
+		//交点の座標からy座標を敵のy座標としてセット.
+		if(IntersectionLocation(m_smpPlayer.get(), m_vsmpEnemySphere[i].get(),D3DXVECTOR3(0.0f,0.0f,1.0f)))
+		{
+			bTargetPointHitCheackFlg = true;
+		}
+		else
+		{
+			bTargetPointHitCheackFlg = false;
+		}
+	}
+
 	//弾と敵との当たり判定.
 	for (UINT i = 0; i < m_vsmpShotSphere.size(); i++)
 	{
@@ -594,7 +620,7 @@ bool clsStageScene::Collision(
 
 bool clsStageScene::Collision(
 	clsCharacter* pAttacker,	//攻撃側.
-	clsCharacter* pTarget)	//標的.
+	clsCharacter* pTarget)		//標的.
 {
 	pAttacker->SetPositionY(0.0f);
 	pTarget->SetPositionY(0.0f);
@@ -615,21 +641,19 @@ bool clsStageScene::Collision(
 	return false;//衝突していない.
 }
 
-D3DXVECTOR3 clsStageScene::IntersectionLocation(clsGameObject* Object)
+D3DXVECTOR3 clsStageScene::IntersectionLocation(clsGameObject* pAttacker, clsCharacter* pTarget, D3DXVECTOR3 RayOrientation)
 {
 	FLOAT		fDistance;	//距離.
 	D3DXVECTOR3 vIntersect;	//交差座標.
-	//現在位置をコピー.
-	Object->m_vRay = Object->GetPosition();
-	//レイの高さを自機の位置より上にする.
-	Object->m_vRay.y
-		= Object->GetPositionY() + 1.0f;
-	//軸ベクトルは垂直で下向き.
-	Object->m_vAxis
-		= D3DXVECTOR3(0.0f, -1.0f, 0.0f);
+							//現在位置をコピー.
+	pAttacker->m_vRay = pAttacker->GetPosition();
+
+	//軸ベクトルをここで指定.
+	pAttacker->m_vAxis
+		= RayOrientation;
 
 	Intersect(
-		Object, m_smpGround.get(), &fDistance, &vIntersect);
+		pAttacker, pTarget, &fDistance, &vIntersect);
 
 	return vIntersect;
 }
