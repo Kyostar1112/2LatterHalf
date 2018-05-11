@@ -62,19 +62,19 @@ void clsEnemy::Spawn()
 
 	m_fLen = CE::fSpawnLength;//’·‚³.
 
-	float rad = fDeg * PI / 180.0f;
+	float rad = D3DXToRadian(fDeg);
 
 	fX = m_fLen*cosf(rad);
 	fZ = m_fLen*sinf(rad);
-
-	m_dAnimSpeed = 0.01f;
-	m_iAnimNo = 0;
 
 	D3DXVECTOR3 vTmp = m_vSpawnPos;
 
 	vTmp.x += fX;
 	vTmp.z += fZ;
 	SetPosition(vTmp);
+
+	m_dAnimSpeed = 0.01f;
+	m_iAnimNo = 0;
 
 	m_bEnableFlg = true;
 
