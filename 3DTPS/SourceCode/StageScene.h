@@ -46,8 +46,8 @@ public:
 	unique_ptr<clsPlayer>		m_smpPlayer;	//自機.
 	unique_ptr<clsCharacter>	m_smpGround;	//地面.
 
-	void RightRoll();
-	void LeftRoll();
+	void RightRoll(float MovePoint);
+	void LeftRoll(float MovePoint);
 	void Fire();
 
 	SceneMode GetMode()
@@ -76,6 +76,9 @@ private:
 	int m_iClearTime;	//ステージクリアまでの時間.
 
 	int m_iScore;//敵の撃破によるスコア加算.
+
+	//アニメーション経過時間
+	double m_dAnimTime;
 
 	SceneMode m_stMode;
 
