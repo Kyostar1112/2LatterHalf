@@ -3,9 +3,9 @@
 const float PI = 3.141592f;
 namespace ConstantEnemy
 {
-	const float fSpawnLength	= 30.0f;//“G‚ªo‚Ä‚­‚é‹——£.
-	const int   iExpImg			= 3;	//”š”­‰æ‘œ‚Ì”.
-	const int	iAttakInterval	= 180;	//UŒ‚ŠÔŠu.
+	const float fSpawnLength = 30.0f;//“G‚ªo‚Ä‚­‚é‹——£.
+	const int   iExpImg = 3;	//”š”­‰æ‘œ‚Ì”.
+	const int	iAttakInterval = 180;	//UŒ‚ŠÔŠu.
 }
 
 namespace CE = ConstantEnemy;
@@ -184,4 +184,3 @@ void clsEnemy::ExpRender()	//”š”­‚Ì•\¦ˆ—.
 		}
 	}
 }
-

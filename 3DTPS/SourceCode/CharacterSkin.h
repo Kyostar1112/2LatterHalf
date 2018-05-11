@@ -51,8 +51,6 @@ public:
 protected:
 	clsD3DXSKINMESH*			m_pSkinModel;
 	LPD3DXANIMATIONCONTROLLER	m_pAnimCtrl;
-
-
 };
 
 #endif //#ifndef _C_CHARACTER_SKIN_H_.

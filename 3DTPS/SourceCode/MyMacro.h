@@ -47,7 +47,7 @@ inline T Randam()
 }
 
 template <typename T>
-inline T RandamAmong(T x, T y )
+inline T RandamAmong(T x, T y)
 {
 	random_device rd;
 

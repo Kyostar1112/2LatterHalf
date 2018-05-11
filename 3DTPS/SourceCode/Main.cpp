@@ -306,7 +306,7 @@ void clsMain::AppMain()
 		}
 		//攻撃中ボタンが押されているかどうか.
 		bool bAttackFlg = false;
-		float fMovePoint= 0.03f;
+		float fMovePoint = 0.03f;
 		if (GetAsyncKeyState('Z') & 0x0001 || GetAsyncKeyState(VK_SPACE) & 0x8000 || m_smpDxInput->IsPressKey(enPKey_00)) {
 			m_smpStageScene->Fire();
 			bAttackFlg = true;
@@ -724,7 +724,6 @@ HRESULT clsMain::InitSphere(clsDX9Mesh* pMesh, float fScale)
 //メッシュ読込関数（まとめた）
 HRESULT clsMain::MeshRead()
 {
-
 	m_bLoadFlg = false;
 
 	m_smpLoadString = make_unique<clsSprite2D>();
