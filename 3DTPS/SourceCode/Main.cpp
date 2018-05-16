@@ -477,7 +477,6 @@ void clsMain::Render()
 			m_smpText->Render(strDbgTxt, 0, iDbgY);
 			iDbgY += CDBGY;
 		}
-
 	}
 #endif//#ifdef _DEBUG
 

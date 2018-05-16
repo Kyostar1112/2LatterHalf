@@ -155,9 +155,7 @@ private:
 		D3DXVECTOR3* pVecVertices);
 
 	//内積を使用した角度の間に存在確認関数
-	bool InnerProductDot( const D3DXVECTOR3& vPos, const D3DXVECTOR3& vTargetPos, const float& fYAxis, const float& fAngle );
-
-
+	bool InnerProductDot(const D3DXVECTOR3& vPos, const D3DXVECTOR3& vTargetPos, const float& fYAxis, const float& fAngle);
 
 #if 0
 
