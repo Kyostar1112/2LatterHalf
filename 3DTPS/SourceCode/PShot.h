@@ -20,6 +20,8 @@ public:
 
 	void FireInterval();
 
+	void FireInit();
+
 private:
 	bool m_bShotFlg;//true‚È‚ç”­ŽË‚µ‚Ä‚¢‚é.
 	int  m_iShotFiringCnt;//true‚È‚ç”­ŽË‚µ‚Ä‚¢‚é.

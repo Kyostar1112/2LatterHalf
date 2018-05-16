@@ -13,17 +13,17 @@
 #include <math.h>
 
 namespace ConstantStageScene {
-	const int iShotMax = 255;			//ショットの最大数.
-	const int iShotInterValCnt = 20;	//ショットの間隔.
+	const int iShotMax = 100;			//ショットの最大数.
+	const int iShotInterValCnt = 30;	//ショットの間隔.
 	const int iEnemyMax = 10;			//一度の画面に出てくる敵の最大数.
 	const int iSpawnCnt = 60;			//敵のスポーンするタイミング.
 	const int iPlayerHp = 15;			//プレイヤーの体力.
-	const int PlayerInvincible = 60;//プレイヤーの無敵時間.
-	const int iPlayerHpNumdigit = 2;		//自機の体力の桁数.
+	const int PlayerInvincible = 60;	//プレイヤーの無敵時間.
+	const int iPlayerHpNumdigit = 2;	//自機の体力の桁数.
 	const int iStageClearTimedigit = 2;	//クリアまでの数字の桁数.
 	const int iStageEnemyDowndigit = 4;	//敵の撃破したスコアの桁数.
 	const int iStageClearTimeMax = 60;	//ゲームクリアまでの時間.
-	const float fTagetAngle = 35.0f;		//ターゲットの照準を色を変える角度.
+	const float fTagetAngle = 35.0f;	//ターゲットの照準を色を変える角度.
 }
 namespace CSS = ConstantStageScene;
 

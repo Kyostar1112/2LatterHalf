@@ -542,15 +542,17 @@ void clsStageScene::HitTestOfEnemyAndBullet()
 		m_vsmpShotSphere[i]->SetPosition(m_vsmpShot[i]->m_Sphere.vCenter);
 		m_vsmpShotSphere[i]->SetScale(m_vsmpShot[i]->m_Sphere.fRadius);
 		m_vsmpShotSphere[i]->Update();
+
 		for (UINT j = 0; j < m_vsmpEnemy.size(); j++)
 		{
 			if (!m_vsmpEnemy[j]->GetEnableFlg())
 			{
 				continue;
 			}
-			m_vsmpEnemySphere[j]->SetPosition(m_vsmpEnemy[j]->GetPosition());
 			m_vsmpEnemySphere[j]->SetScale(0.5f);
+			m_vsmpEnemySphere[j]->SetPosition(m_vsmpEnemy[j]->GetPosition());
 			m_vsmpEnemySphere[j]->Update();
+
 			if (Collision(m_vsmpShotSphere[i].get(), m_vsmpEnemySphere[j].get())) {
 				for (UINT k = 0; k < m_vsmpHitSe.size(); k++)
 				{
@@ -561,6 +563,7 @@ void clsStageScene::HitTestOfEnemyAndBullet()
 					}
 				}
 				m_iScore += 100;
+				m_vsmpShot[i]->FireInit();
 				m_vsmpEnemy[j]->Damage();
 				m_vsmpEnemy[j]->SetPositionY(99.0f);
 				m_vsmpEnemy[j]->SetEnableFlg(false);
