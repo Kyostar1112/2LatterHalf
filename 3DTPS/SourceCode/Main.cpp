@@ -687,49 +687,6 @@ void clsMain::DestroyD3D()
 	SAFE_RELEASE(m_pDevice);
 }
 
-#if 0
-//スフィア作成.
-HRESULT clsMain::InitSphere(clsDX9Mesh* pMesh, float fScale)
-{
-	LPDIRECT3DVERTEXBUFFER9 pVB = NULL;	//頂点バッファ.
-	void*		pVertices = NULL;	//頂点
-	D3DXVECTOR3 vCenter;		//中心.
-	float		fRadius;			//半径.
-
-	//頂点バッファを取得.
-	if (FAILED(pMesh->m_pMesh->GetVertexBuffer(&pVB)))
-	{
-		return E_FAIL;
-	}
-
-	//メッシュの頂点バッファをロックする.
-	if (FAILED(pVB->Lock(0, 0, &pVertices, 0)))
-	{
-		SAFE_RELEASE(pVB);
-		return E_FAIL;
-	}
-
-	//メッシュの外接円の中心と半径を計算する.
-	D3DXComputeBoundingSphere(
-		(D3DXVECTOR3*)pVertices,
-		pMesh->m_pMesh->GetNumVertices(),//頂点の数.
-		D3DXGetFVFVertexSize(pMesh->m_pMesh->GetFVF()),//頂点の情報.
-		&vCenter,	//(out)中心座標.
-		&fRadius);	//(out)半径.
-
-	//アンロック.
-	pVB->Unlock();
-	SAFE_RELEASE(pVB);
-
-	//中心と半径を構造体に設定.
-	pMesh->m_Sphere.vCenter = vCenter;
-	pMesh->m_Sphere.fRadius = fRadius * fScale;
-
-	return S_OK;
-}
-
-#endif // 0
-
 //メッシュ読込関数（まとめた）
 HRESULT clsMain::MeshRead()
 {
