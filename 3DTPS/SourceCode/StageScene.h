@@ -69,6 +69,13 @@ public:
 	vector<float> InnerProduct;
 
 private:
+	void HitTestOfEnemyAndGround();
+
+	void HitTestOfEnemyAndAlignment();
+
+	void HitTestOfEnemyAndBullet();
+
+	void HitTestOfShipAndEnemy();
 
 	int m_icnt;//60カウント用.
 
