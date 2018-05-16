@@ -446,14 +446,16 @@ void clsMain::Render()
 		m_smpText->Render(strDbgTxt, 0, iDbgY);
 		iDbgY += CDBGY;
 
-		for (UINT i = 0; i < CSS::iEnemyMax; i++)
+		for (UINT i = 0; i < Resource->m_viScore.size(); i++)
 		{
-			sprintf_s(strDbgTxt, "HitInnerProduct[%d]:[%f]",
-				i,
-				m_smpStageScene->InnerProduct[i]);
-			m_smpText->Render(strDbgTxt, 0, iDbgY);
-			iDbgY += CDBGY;
+
 		}
+		sprintf_s(strDbgTxt, "Enemy:x[%f]",
+			m_smpStageScene->m_vsmpEnemy[0]->GetPositionX(),
+			m_smpStageScene->m_vsmpEnemy[0]->GetPositionY(),
+			m_smpStageScene->m_vsmpEnemy[0]->GetPositionZ());
+		m_smpText->Render(strDbgTxt, 0, iDbgY);
+		iDbgY += CDBGY;
 	}
 #endif//#ifdef _DEBUG
 

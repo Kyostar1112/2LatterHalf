@@ -3,7 +3,7 @@
 
 #include"BaseScene.h"
 #include"Sp2DMgrPushButn.h"
-
+#include"Num.h"
 namespace ClearScene {
 }
 
@@ -28,6 +28,9 @@ public:
 private:
 	unique_ptr<clsSprite2D> m_smpClearBack;
 	unique_ptr<clsSprite2D> m_smpClearTxt;
+	unique_ptr<clsSprite2D> m_smpThankyouTxt;
+	unique_ptr<clsSprite2D> m_smpLastScoreTxt;
+	unique_ptr<clsNum> m_smpLastScoreNum;
 
 	unique_ptr<clsPushTxt> m_smpPushTxt;
 
