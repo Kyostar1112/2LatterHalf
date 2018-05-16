@@ -49,7 +49,6 @@ public:
 
 	//“G‚Ì”š”j—p.
 	vector<unique_ptr<clsExplosion>> m_vsmpExplosion;
-
 private:
 
 	void Move();

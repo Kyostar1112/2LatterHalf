@@ -10,10 +10,11 @@ clsStageScene::~clsStageScene()
 
 void clsStageScene::Create()
 {
-	m_vsmpShot.reserve(ConstantStageScene::SHOT_MAX);
+	InnerProduct.resize(CSS::iEnemyMax);
+	m_vsmpShot.reserve(CSS::iShotMax);
 
 	//弾作成.
-	for (int i = 0; i < ConstantStageScene::SHOT_MAX; i++)
+	for (int i = 0; i < CSS::iShotMax; i++)
 	{
 		m_vsmpShot.push_back(make_unique<clsPlayerShot>());
 		m_vsmpShotSphere.push_back(make_unique<clsSphere>());
@@ -25,7 +26,7 @@ void clsStageScene::Create()
 	}
 
 	//敵作成.
-	for (int i = 0; i < ConstantStageScene::ENEMYMAX; i++)
+	for (int i = 0; i < CSS::iEnemyMax; i++)
 	{
 		m_vsmpEnemy.push_back(make_unique<clsEnemy>());
 		m_vsmpEnemySphere.push_back(make_unique<clsSphere>());
@@ -46,10 +47,11 @@ void clsStageScene::Create()
 	m_smpPlayer->AttachModel(Resource->GetSkinModels(Resource->enSkinModel_Player));
 	m_smpPlayer->SetPosition(D3DXVECTOR3(0.0f, 0.0f, 0.0f));
 	m_smpPlayer->SetScale(0.0008f);
+	//「自機の当たり判定」
 	m_smpPlayerSphere = make_unique<clsSphere>();
 	m_smpPlayerSphere->AttachModel(Resource->GetStaticModels(Resource->enStaticModel_Sphere));
 
-	//HPゲーシ゛.
+	//「HPゲーシ゛」.
 	m_smpHpGage = make_unique<clsSprite2D>();
 	m_smpHpGage->Create(Resource->GetSpriteRenderSet().pDevice11, Resource->GetSpriteRenderSet().pContext11, "Data\\Image\\LoadGage.png");
 	m_smpHpGage->SetStrideX(20.0f);
@@ -58,22 +60,30 @@ void clsStageScene::Create()
 	//「照準」
 	m_smpTargetPoint = make_unique<clsSprite2D>();
 	m_smpTargetPoint->Create(Resource->GetSpriteRenderSet().pDevice11, Resource->GetSpriteRenderSet().pContext11, "Data\\Image\\TargetPoint.png");
-	m_smpTargetPoint->MulDisp(0.5f);
+	m_smpTargetPoint->MulDisp(0.3f);
 	m_smpTargetPoint->UpDateSpriteSs();
 
+	//「敵に照準当たってる時だけのもの」
+	m_smpTargetPointHit = make_unique<clsSprite2D>();
+	m_smpTargetPointHit->Create(Resource->GetSpriteRenderSet().pDevice11, Resource->GetSpriteRenderSet().pContext11, "Data\\Image\\TargetPointHit.png");
+	m_smpTargetPointHit->MulDisp(0.3f);
+	m_smpTargetPointHit->UpDateSpriteSs();
+
+	//「スコアの数字」
 	m_smpScoreNum = make_unique<clsNum>();
-	m_smpScoreNum->Create(ConstantStageScene::StageEnemyDowndigit);
-
-	m_smpHpNum = make_unique<clsNum>();
-	m_smpHpNum->Create(ConstantStageScene::PlayerHpNumdigit);
-
-	m_smpClearTimeNum = make_unique<clsNum>();
-	m_smpClearTimeNum->Create(ConstantStageScene::StageClearTimedigit);
-
+	m_smpScoreNum->Create(CSS::iStageEnemyDowndigit);
 	m_smpScoreNum->SetMulDisp(0.6f);
 	m_smpScoreNum->UpDateSpriteSs();
+
+	//「体力の数字」
+	m_smpHpNum = make_unique<clsNum>();
+	m_smpHpNum->Create(CSS::iPlayerHpNumdigit);
 	m_smpHpNum->SetMulDisp(0.6f);
 	m_smpHpNum->UpDateSpriteSs();
+
+	//「クリアするまでの数字」
+	m_smpClearTimeNum = make_unique<clsNum>();
+	m_smpClearTimeNum->Create(CSS::iStageClearTimedigit);
 	m_smpClearTimeNum->SetMulDisp(0.6f);
 	m_smpClearTimeNum->UpDateSpriteSs();
 
@@ -160,7 +170,7 @@ void clsStageScene::Init()
 	m_smpPlayer->m_dAnimNum = 1;
 	m_smpPlayer->ChangeAnimSet(m_smpPlayer->m_dAnimNum);
 
-	m_iClearTime = ConstantStageScene::StageClearTimeMax;
+	m_iClearTime = CSS::iStageClearTimeMax;
 	m_icnt = 0;
 	m_vsmpBgm[0]->SeekToStart();
 	for (UINT i = 0; i < m_vsmpEnemy.size(); i++)
@@ -174,7 +184,7 @@ void clsStageScene::Init()
 	m_iShotIntervalCnt = 0;
 	m_iEnemyIntervalCnt = 0;
 
-	m_iHp = ConstantStageScene::PLAYERHP;
+	m_iHp = CSS::iPlayerHp;
 
 	m_smpHeart->SetPos(0.0f, 0.0f);
 	m_smpHpNum->Init();
@@ -190,6 +200,7 @@ void clsStageScene::Init()
 
 	m_smpHpGage->SetPos(0.0f, 0.0f);
 	m_smpTargetPoint->SetPos(WND_W / 2 - m_smpTargetPoint->GetSs().Disp.w / 2, WND_H / 2 - m_smpTargetPoint->GetSs().Disp.h / 2 - 60.0f);
+	m_smpTargetPointHit->SetPos(WND_W / 2 - m_smpTargetPointHit->GetSs().Disp.w / 2, WND_H / 2 - m_smpTargetPointHit->GetSs().Disp.h / 2 - 60.0f);
 }
 
 void clsStageScene::UpDate()
@@ -260,7 +271,7 @@ void clsStageScene::UpDate()
 			if (!m_vsmpEnemy[i]->GetEnableFlg())
 			{
 				m_vsmpEnemy[i]->Spawn();
-				m_iEnemyIntervalCnt = ConstantStageScene::SPAWNCNT;
+				m_iEnemyIntervalCnt = CSS::iSpawnCnt;
 				break;
 			}
 		}
@@ -296,12 +307,12 @@ void clsStageScene::UpDate()
 	m_iPlayerinvincible--;
 	if (m_bPlayerDamage)
 	{
-		m_iPlayerinvincible = ConstantStageScene::PLAYERINVINCIBLETIME;
+		m_iPlayerinvincible = CSS::PlayerInvincible;
 		m_bPlayerDamage = false;
 	}
 
 	//弾丸の初期化用.
-#if 0
+#if _DEBUG
 	if (GetAsyncKeyState('I') & 0x0001/*||m_pDxInput->IsPressKey( enPKey_00 )*/) {
 		for (UINT i = 0; i < m_vsmpShot.size(); i++)
 		{
@@ -346,7 +357,7 @@ void clsStageScene::Fire()
 				m_vsmpShot[i]->SetPosition(m_smpPlayer->GetPosition());
 				m_vsmpShot[i]->SetPositionY(1.5f);
 				m_vsmpShot[i]->Fire();
-				m_iShotIntervalCnt = ConstantStageScene::SHOT_INTERVAL_CNT;
+				m_iShotIntervalCnt = CSS::iShotInterValCnt;
 				break;
 			}
 		}
@@ -364,18 +375,16 @@ void clsStageScene::ModelRender1()
 	m_smpPlayer->Render(m_stModelRenderSet.mView, m_stModelRenderSet.mProj, m_stModelRenderSet.vLight, m_stModelRenderSet.vEye);
 
 	//当たり判定確認用.
-#if 0
+#if 1
+	for (size_t i = 0; i < m_vsmpShotSphere.size(); i++)
 	{
-		for (size_t i = 0; i < m_vsmpShotSphere.size(); i++)
-		{
-			m_vsmpShotSphere[i]->Render(m_stModelRenderSet.mView, m_stModelRenderSet.mProj, m_stModelRenderSet.vLight, m_stModelRenderSet.vEye);
-		}
-		for (size_t i = 0; i < m_vsmpEnemySphere.size(); i++)
-		{
-			m_vsmpEnemySphere[i]->Render(m_stModelRenderSet.mView, m_stModelRenderSet.mProj, m_stModelRenderSet.vLight, m_stModelRenderSet.vEye);
-		}
-		m_smpPlayerSphere->Render(m_stModelRenderSet.mView, m_stModelRenderSet.mProj, m_stModelRenderSet.vLight, m_stModelRenderSet.vEye);
+		m_vsmpShotSphere[i]->Render(m_stModelRenderSet.mView, m_stModelRenderSet.mProj, m_stModelRenderSet.vLight, m_stModelRenderSet.vEye);
 	}
+	for (size_t i = 0; i < m_vsmpEnemySphere.size(); i++)
+	{
+		m_vsmpEnemySphere[i]->Render(m_stModelRenderSet.mView, m_stModelRenderSet.mProj, m_stModelRenderSet.vLight, m_stModelRenderSet.vEye);
+	}
+	m_smpPlayerSphere->Render(m_stModelRenderSet.mView, m_stModelRenderSet.mProj, m_stModelRenderSet.vLight, m_stModelRenderSet.vEye);
 
 #endif // 0
 }
@@ -410,8 +419,16 @@ void clsStageScene::ModelRender2() {
 
 void clsStageScene::SpriteRender()
 {
-	m_smpTargetPoint->Render();
-	//m_smpHpGage->Render();
+	if (m_bTargetPointHitCheackFlg)
+	{
+		m_smpTargetPointHit->Render();
+		m_bTargetPointHitCheackFlg = false;
+	}
+	else
+	{
+		m_smpTargetPoint->Render();
+	}
+
 	if (m_iPlayerinvincible > 0)
 	{
 		m_smpDamageImg->Flashing(0.05f, 0.5f);
@@ -490,10 +507,22 @@ void clsStageScene::Release()
 
 void clsStageScene::HitCheak()
 {
-	//当たり判定は最後に.
+	//当たり判定は最後地面との判定.
 	for (size_t i = 0; i < m_vsmpEnemy.size(); i++) {
-		Ray(m_vsmpEnemy[i].get());
+		//交点の座標からy座標を敵のy座標としてセット.
+		m_vsmpEnemy[i]->SetPositionY(0.9f + IntersectionLocation(m_vsmpEnemy[i].get(), m_smpGround.get(), D3DXVECTOR3(0.0f,-1.0f,0.0f) ).y);
 	}
+
+	for (UINT i = 0; i < m_vsmpEnemy.size(); i++)
+	{
+		//計算用変数.
+		if (InnerProductDot( m_smpPlayer->GetPosition(), m_vsmpEnemy[i]->GetPosition(), m_smpPlayer->GetRotationY(), CSS::fTagetAngle))
+		{
+			m_bTargetPointHitCheackFlg = true;
+			break;
+		}
+	}
+
 	//弾と敵との当たり判定.
 	for (UINT i = 0; i < m_vsmpShotSphere.size(); i++)
 	{
@@ -586,7 +615,7 @@ bool clsStageScene::Collision(
 
 bool clsStageScene::Collision(
 	clsCharacter* pAttacker,	//攻撃側.
-	clsCharacter* pTarget)	//標的.
+	clsCharacter* pTarget)		//標的.
 {
 	pAttacker->SetPositionY(0.0f);
 	pTarget->SetPositionY(0.0f);
@@ -607,25 +636,23 @@ bool clsStageScene::Collision(
 	return false;//衝突していない.
 }
 
-void clsStageScene::Ray(clsEnemy* Enemy)
+D3DXVECTOR3 clsStageScene::IntersectionLocation(clsGameObject* pAttacker, clsCharacter* pTarget, D3DXVECTOR3 RayOrientation)
 {
 	FLOAT		fDistance;	//距離.
 	D3DXVECTOR3 vIntersect;	//交差座標.
-	//現在位置をコピー.
-	Enemy->m_vRay = Enemy->GetPosition();
-	//レイの高さを自機の位置より上にする.
-	Enemy->m_vRay.y
-		= Enemy->GetPositionY() + 1.0f;
-	//軸ベクトルは垂直で下向き.
-	Enemy->m_vAxis
-		= D3DXVECTOR3(0.0f, -1.0f, 0.0f);
+							//現在位置をコピー.
+	pAttacker->m_vRay = pAttacker->GetPosition();
+
+	//軸ベクトルをここで指定.
+	pAttacker->m_vAxis
+		= RayOrientation;
 
 	Intersect(
-		Enemy, m_smpGround.get(), &fDistance, &vIntersect);
+		pAttacker, pTarget, &fDistance, &vIntersect);
 
-	//交点の座標からy座標を自機のy座標としてセット.
-	Enemy->SetPositionY(vIntersect.y + 0.03f);
+	return vIntersect;
 }
+
 //レイとメッシュの当たり判定.
 bool clsStageScene::Intersect(
 	clsGameObject* pAttacker,	//基準の物体.
@@ -757,7 +784,35 @@ HRESULT clsStageScene::FindVerticesOnPoly(
 
 	return S_OK;
 }
+bool clsStageScene::InnerProductDot( const D3DXVECTOR3& vPos, const D3DXVECTOR3& vTargetPos, const float& fYAxis, const float& fAngle )
+{
+	//二点間のベクトルを算出.
+	D3DXVECTOR3 vToTargetDir = vTargetPos - vPos;
 
+	//二つのベクトルを正規化する(位置は関係なくなり方向ベクトルになる).
+	D3DXVec3Normalize(&vToTargetDir, &vToTargetDir);
+
+	//正面方向を取るためにYの回転軸のマトリクスを作成.
+	D3DXMATRIX mYaw;
+	D3DXMatrixRotationY(&mYaw, fYAxis);
+	D3DXVECTOR3 vForWordDir;
+	D3DXVec3TransformCoord(
+		&vForWordDir,
+		&D3DXVECTOR3(0.0f, 0.0f, 1.0f),
+		&mYaw);
+
+	float InnerProduct;
+	//プレイヤー正面側と実際の相手とのベクトル.
+	InnerProduct = D3DXVec3Dot(&vForWordDir, &vToTargetDir);
+	InnerProduct = acosf(InnerProduct);
+	InnerProduct = InnerProduct * 180.0f;
+
+	if (InnerProduct < abs(fAngle))
+	{
+		return true;
+	}
+	return false;
+}
 //スフィア作成.
 HRESULT clsStageScene::InitSphere(clsDX9Mesh* pMesh, float fScale)
 {

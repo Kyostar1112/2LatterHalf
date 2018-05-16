@@ -10,17 +10,20 @@
 #include "Player.h"
 #include "Num.h"
 
+#include <math.h>
+
 namespace ConstantStageScene {
-	const int SHOT_MAX = 255;	//ショットの最大数.
-	const int SHOT_INTERVAL_CNT = 20;	//ショットの間隔.
-	const int ENEMYMAX = 10;	//一度の画面に出てくる敵の最大数.
-	const int SPAWNCNT = 60;//敵のスポーンするタイミング.
-	const int PLAYERHP = 15;	//プレイヤーの体力.
-	const int PLAYERINVINCIBLETIME = 60;	//プレイヤーの無敵時間.
-	const int PlayerHpNumdigit = 2;	//自機の体力の桁数.
-	const int StageClearTimedigit = 2;	//クリアまでの数字の桁数.
-	const int StageEnemyDowndigit = 4;	//敵の撃破したスコアの桁数.
-	const int StageClearTimeMax = 60;	//ゲームクリアまでの時間.
+	const int iShotMax = 255;			//ショットの最大数.
+	const int iShotInterValCnt = 20;	//ショットの間隔.
+	const int iEnemyMax = 10;			//一度の画面に出てくる敵の最大数.
+	const int iSpawnCnt = 60;			//敵のスポーンするタイミング.
+	const int iPlayerHp = 15;			//プレイヤーの体力.
+	const int PlayerInvincible = 60;//プレイヤーの無敵時間.
+	const int iPlayerHpNumdigit = 2;		//自機の体力の桁数.
+	const int iStageClearTimedigit = 2;	//クリアまでの数字の桁数.
+	const int iStageEnemyDowndigit = 4;	//敵の撃破したスコアの桁数.
+	const int iStageClearTimeMax = 60;	//ゲームクリアまでの時間.
+	const float fTagetAngle = 35.0f;		//ターゲットの照準を色を変える角度.
 }
 namespace CSS = ConstantStageScene;
 
@@ -67,6 +70,7 @@ public:
 			m_vsmpHitSe[i]->Stop();
 		}
 	}
+	vector<float> InnerProduct;
 
 private:
 
@@ -122,7 +126,9 @@ private:
 
 	ModelRenderSet m_stModelRenderSet;
 
-	unique_ptr<clsSprite2D>		m_smpTargetPoint;	//照準.
+	unique_ptr<clsSprite2D>		m_smpTargetPoint;		//照準.
+	unique_ptr<clsSprite2D>		m_smpTargetPointHit;	//照準当たる位置のみ.
+	bool m_bTargetPointHitCheackFlg;
 
 	//スフィア作成.
 	HRESULT InitSphere(clsDX9Mesh* pMesh, float fScale = 0.7f);
@@ -136,15 +142,22 @@ private:
 	bool Collision(clsDX9Mesh* pAttacker, clsDX9Mesh* pTarget);
 	bool Collision(clsCharacter* pAttacker, clsCharacter* pTarget);
 
-	void Ray(clsEnemy* Enemy);
+	D3DXVECTOR3 IntersectionLocation(clsGameObject* AttackObject, clsCharacter* DefenceObject, D3DXVECTOR3 RayOrientation);
+
 	//レイとメッシュの当たり判定.
 	bool Intersect(
 		clsGameObject* pAttacker, clsCharacter* pTarget,
 		float* pfDistance, D3DXVECTOR3* pvIntersect);
+
 	//交差位置のポリゴンの頂点を見つける.
 	HRESULT FindVerticesOnPoly(
 		LPD3DXMESH pTarget, DWORD dwPolyIndex,
 		D3DXVECTOR3* pVecVertices);
+
+	//内積を使用した角度の間に存在確認関数
+	bool InnerProductDot( const D3DXVECTOR3& vPos, const D3DXVECTOR3& vTargetPos, const float& fYAxis, const float& fAngle );
+
+
 
 #if 0
 
