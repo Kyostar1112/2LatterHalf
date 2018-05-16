@@ -39,8 +39,7 @@ public:
 	virtual void Create() = 0;//ゲーム起動時の初期化関数.
 	virtual void Init() = 0;//シーンごとの初期化関数.
 	virtual void UpDate() = 0;//ずっと回すよ.
-	virtual void ModelRender() = 0;//ずっと回すよモデル表示だけこっちに.
-	virtual void SpriteRender() = 0;//ずっと回すよ表示だけこっちに.
+	virtual void Render() = 0;//表示.
 	virtual void MusicStop() = 0;//音楽止めて.
 	virtual void Release() = 0;//破棄するよ.
 
@@ -67,7 +66,14 @@ public:
 		return false;
 	}
 
+	//ON(True)/Off(false)
+	void SetDepth(bool bFlg)
+	{
+		Resource->SetDepth(bFlg);
+	}
+
 private:
+
 
 	unique_ptr<clsSprite2D> m_smpBlack;	//暗転用.
 	unique_ptr<clsSprite2D> m_smpWhite;	//暗転用.

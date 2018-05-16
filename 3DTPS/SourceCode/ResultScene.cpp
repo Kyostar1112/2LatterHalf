@@ -82,12 +82,10 @@ void clsResultScene::UpDate()
 	}
 }
 
-void clsResultScene::ModelRender()
+void clsResultScene::Render()
 {
-}
 
-void clsResultScene::SpriteRender()
-{
+	SetDepth(false);
 	m_smpBack->Render();
 	m_smpTxt->Render();
 
@@ -100,6 +98,7 @@ void clsResultScene::SpriteRender()
 	}
 
 	BlackOut();
+	SetDepth(true);
 }
 
 void clsResultScene::Release()

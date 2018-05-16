@@ -50,17 +50,15 @@ void clsClearScene::UpDate()
 	}
 }
 
-void clsClearScene::ModelRender()
+void clsClearScene::Render()
 {
-}
-
-void clsClearScene::SpriteRender()
-{
+	SetDepth(false);
 	m_smpClearBack->Render();
 	m_smpClearTxt->Render();
 
 	m_smpPushTxt->Render();
 	BlackOut();
+	SetDepth(true);
 }
 
 void clsClearScene::Release()

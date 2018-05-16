@@ -50,17 +50,15 @@ void clsOverScene::UpDate()
 	}
 }
 
-void clsOverScene::ModelRender()
+void clsOverScene::Render()
 {
-}
-
-void clsOverScene::SpriteRender()
-{
+	SetDepth(false);
 	m_smpOverBack->Render();
 	m_smpOverTxt->Render();
 
 	m_smpPushTxt->Render();
 	BlackOut();
+	SetDepth(true);
 }
 
 void clsOverScene::Release()

@@ -49,17 +49,15 @@ void clsTitleScene::UpDate()
 	}
 }
 
-void clsTitleScene::ModelRender()
+void clsTitleScene::Render()
 {
-}
-
-void clsTitleScene::SpriteRender()
-{
+	SetDepth(false);
 	m_smpTitleBack->Render();
 	m_smpTitleLogo->Render();
 
 	m_smpPushTxt->Render();
 	BlackOut();
+	SetDepth(true);
 }
 
 void clsTitleScene::Release()

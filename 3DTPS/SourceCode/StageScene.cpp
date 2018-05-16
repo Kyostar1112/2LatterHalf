@@ -1,4 +1,4 @@
-#include"StageScene.h"
+ï»¿#include"StageScene.h"
 
 clsStageScene::clsStageScene()
 {
@@ -13,107 +13,107 @@ void clsStageScene::Create()
 	InnerProduct.resize(CSS::iEnemyMax);
 	m_vsmpShot.reserve(CSS::iShotMax);
 
-	//’eì¬.
+	//å¼¾ä½œæˆ.
 	for (int i = 0; i < CSS::iShotMax; i++)
 	{
 		m_vsmpShot.push_back(make_unique<clsPlayerShot>());
 		m_vsmpShotSphere.push_back(make_unique<clsSphere>());
 
-		//ƒ‚ƒfƒ‹ƒf[ƒ^ŠÖ˜A•t‚¯.
+		//ãƒ¢ãƒ‡ãƒ«ãƒ‡ãƒ¼ã‚¿é–¢é€£ä»˜ã‘.
 		m_vsmpShot[i]->AttachModel(Resource->GetStaticModels(Resource->enStaticModel_Shot));
 		m_vsmpShot[i]->SetScale(1.0f);
 		m_vsmpShotSphere[i]->AttachModel(Resource->GetStaticModels(Resource->enStaticModel_Sphere));
 	}
 
-	//“Gì¬.
+	//æ•µä½œæˆ.
 	for (int i = 0; i < CSS::iEnemyMax; i++)
 	{
 		m_vsmpEnemy.push_back(make_unique<clsEnemy>());
 		m_vsmpEnemySphere.push_back(make_unique<clsSphere>());
 
-		//ƒ‚ƒfƒ‹ƒf[ƒ^ŠÖ˜A•t‚¯.
+		//ãƒ¢ãƒ‡ãƒ«ãƒ‡ãƒ¼ã‚¿é–¢é€£ä»˜ã‘.
 		m_vsmpEnemy[i]->AttachModel(Resource->GetSkinModels(Resource->enSkinModel_Boss));
 		m_vsmpEnemy[i]->SetScale(0.05f);
 		m_vsmpEnemySphere[i]->AttachModel(Resource->GetStaticModels(Resource->enStaticModel_Sphere));
 	}
 
-	//u’n–Êv
+	//ã€Œåœ°é¢ã€
 	m_smpGround = make_unique<clsCharacter>();
 	m_smpGround->AttachModel(Resource->GetStaticModels(Resource->enStaticModel_Plane));
 	m_smpGround->SetPosition(D3DXVECTOR3(0.0f, 0.0f, 0.0f));
 
-	//u©‹@v
+	//ã€Œè‡ªæ©Ÿã€
 	m_smpPlayer = make_unique<clsPlayer>();
 	m_smpPlayer->AttachModel(Resource->GetSkinModels(Resource->enSkinModel_Player));
 	m_smpPlayer->SetPosition(D3DXVECTOR3(0.0f, 0.0f, 0.0f));
 	m_smpPlayer->SetScale(0.0008f);
-	//u©‹@‚Ì“–‚½‚è”»’èv
+	//ã€Œè‡ªæ©Ÿã®å½“ãŸã‚Šåˆ¤å®šã€
 	m_smpPlayerSphere = make_unique<clsSphere>();
 	m_smpPlayerSphere->AttachModel(Resource->GetStaticModels(Resource->enStaticModel_Sphere));
 
-	//uHPƒQ[ƒVJv.
+	//ã€ŒHPã‚²ãƒ¼ã‚·ã‚›ã€.
 	m_smpHpGage = make_unique<clsSprite2D>();
 	m_smpHpGage->Create(Resource->GetSpriteRenderSet().pDevice11, Resource->GetSpriteRenderSet().pContext11, "Data\\Image\\LoadGage.png");
 	m_smpHpGage->SetStrideX(20.0f);
 	m_smpHpGage->SetPatarnU(1.0f);
 
-	//uÆ€v
+	//ã€Œç…§æº–ã€
 	m_smpTargetPoint = make_unique<clsSprite2D>();
 	m_smpTargetPoint->Create(Resource->GetSpriteRenderSet().pDevice11, Resource->GetSpriteRenderSet().pContext11, "Data\\Image\\TargetPoint.png");
 	m_smpTargetPoint->MulDisp(0.3f);
 	m_smpTargetPoint->UpDateSpriteSs();
 
-	//u“G‚ÉÆ€“–‚½‚Á‚Ä‚é‚¾‚¯‚Ì‚à‚Ìv
+	//ã€Œæ•µã«ç…§æº–å½“ãŸã£ã¦ã‚‹æ™‚ã ã‘ã®ã‚‚ã®ã€
 	m_smpTargetPointHit = make_unique<clsSprite2D>();
 	m_smpTargetPointHit->Create(Resource->GetSpriteRenderSet().pDevice11, Resource->GetSpriteRenderSet().pContext11, "Data\\Image\\TargetPointHit.png");
 	m_smpTargetPointHit->MulDisp(0.3f);
 	m_smpTargetPointHit->UpDateSpriteSs();
 
-	//uƒXƒRƒA‚Ì”šv
+	//ã€Œã‚¹ã‚³ã‚¢ã®æ•°å­—ã€
 	m_smpScoreNum = make_unique<clsNum>();
 	m_smpScoreNum->Create(CSS::iStageEnemyDowndigit);
 	m_smpScoreNum->SetMulDisp(0.6f);
 	m_smpScoreNum->UpDateSpriteSs();
 
-	//u‘Ì—Í‚Ì”šv
+	//ã€Œä½“åŠ›ã®æ•°å­—ã€
 	m_smpHpNum = make_unique<clsNum>();
 	m_smpHpNum->Create(CSS::iPlayerHpNumdigit);
 	m_smpHpNum->SetMulDisp(0.6f);
 	m_smpHpNum->UpDateSpriteSs();
 
-	//uƒNƒŠƒA‚·‚é‚Ü‚Å‚Ì”šv
+	//ã€Œã‚¯ãƒªã‚¢ã™ã‚‹ã¾ã§ã®æ•°å­—ã€
 	m_smpClearTimeNum = make_unique<clsNum>();
 	m_smpClearTimeNum->Create(CSS::iStageClearTimedigit);
 	m_smpClearTimeNum->SetMulDisp(0.6f);
 	m_smpClearTimeNum->UpDateSpriteSs();
 
-	//ƒn[ƒgƒ}[ƒN.
+	//ãƒãƒ¼ãƒˆãƒãƒ¼ã‚¯.
 	m_smpHeart = make_unique<clsSprite2D>();
 	m_smpHeart->Create(Resource->GetSpriteRenderSet().pDevice11, Resource->GetSpriteRenderSet().pContext11, "Data\\Image\\Heart.png");
 	m_smpHeart->SetDispH(m_smpHpNum->GetDispH());
 	m_smpHeart->SetDispW(m_smpHpNum->GetDispH());
 	m_smpHeart->UpDateSpriteSs();
 
-	//Œvƒ}[ƒN.
+	//æ™‚è¨ˆãƒãƒ¼ã‚¯.
 	m_smpClock = make_unique<clsSprite2D>();
 	m_smpClock->Create(Resource->GetSpriteRenderSet().pDevice11, Resource->GetSpriteRenderSet().pContext11, "Data\\Image\\Time.png");
 	m_smpClock->SetDispH(m_smpClearTimeNum->GetDispH());
 	m_smpClock->SetDispW(m_smpClearTimeNum->GetDispH());
 	m_smpClock->UpDateSpriteSs();
 
-	//ƒXƒRƒA•¶š.
+	//ã‚¹ã‚³ã‚¢æ–‡å­—.
 	m_smpScoreTxt = make_unique<clsSprite2D>();
 	m_smpScoreTxt->Create(Resource->GetSpriteRenderSet().pDevice11, Resource->GetSpriteRenderSet().pContext11, "Data\\Image\\ScoreTxt.png");
 	m_smpScoreTxt->SetDispH(m_smpHpNum->GetDispH());
 	m_smpScoreTxt->SetDispW(m_smpHpNum->GetDispH() * 2);
 	m_smpScoreTxt->UpDateSpriteSs();
 
-	//ƒ_ƒ[ƒVJ‚ğó‚¯‚½‚Æ‚«‚Ì“_–Å—p‰æ‘œ.
+	//ãƒ€ãƒ¡ãƒ¼ã‚·ã‚›ã‚’å—ã‘ãŸã¨ãã®ç‚¹æ»…ç”¨ç”»åƒ.
 	m_smpDamageImg = make_unique<clsSprite2D>();
 	m_smpDamageImg->Create(Resource->GetSpriteRenderSet().pDevice11, Resource->GetSpriteRenderSet().pContext11, "Data\\Image\\Damage.png");
 
-	//‰¹Šyì¬.
-	//BGMì¬.
+	//éŸ³æ¥½ä½œæˆ.
+	//BGMä½œæˆ.
 #if 1
 	m_vsmpBgm.push_back(make_unique<clsSound>());
 	m_vsmpBgm[0]->Open("Data\\Sound\\BGM\\StageScene.mp3", "StageBGM00", Resource->GetSpriteRenderSet().hWnd);
@@ -121,7 +121,7 @@ void clsStageScene::Create()
 
 #endif // 1
 
-	//’e‚Ì”­Ë‰¹ì¬.
+	//å¼¾ã®ç™ºå°„éŸ³ä½œæˆ.
 #if 1
 	m_vsmpShotSe.push_back(make_unique<clsSound>());
 	strcpy(m_vsmpShotSe[0]->m_stSoundData.sPath, "Data\\Sound\\SE\\Shot01.mp3");
@@ -137,7 +137,7 @@ void clsStageScene::Create()
 
 #endif // 1
 
-	//“G‚É’e‚ª“–‚½‚Á‚½‚Ì‰¹.
+	//æ•µã«å¼¾ãŒå½“ãŸã£ãŸæ™‚ã®éŸ³.
 #if 1
 	m_vsmpHitSe.push_back(make_unique<clsSound>());
 	strcpy(m_vsmpHitSe[0]->m_stSoundData.sPath, "Data\\Sound\\SE\\EnemyHit.mp3");
@@ -161,10 +161,10 @@ void clsStageScene::Init()
 	m_stMode = Stage;
 	m_iScore = 0;
 
-	//ƒAƒjƒ[ƒVƒ‡ƒ“Œo‰ßŠÔ
+	//ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³çµŒéæ™‚é–“
 	m_smpPlayer->m_dAnimTime = 0;
 
-	//ƒAƒjƒ[ƒVƒ‡ƒ“‘¬“x.
+	//ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³é€Ÿåº¦.
 	m_smpPlayer->m_dAnimSpeed = 0.03f;
 
 	m_smpPlayer->m_dAnimNum = 1;
@@ -206,7 +206,7 @@ void clsStageScene::Init()
 void clsStageScene::UpDate()
 {
 	m_icnt++;
-	//ƒAƒjƒ[ƒVƒ‡ƒ“‘¬“x‰ÁZ‚Íæ‚É.
+	//ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³é€Ÿåº¦åŠ ç®—ã¯å…ˆã«.
 	m_smpPlayer->m_dAnimTime += m_smpPlayer->m_dAnimSpeed;
 	if (m_smpPlayer->m_dAnimNum == 7)
 	{
@@ -217,7 +217,7 @@ void clsStageScene::UpDate()
 			m_smpPlayer->ChangeAnimSet(m_smpPlayer->m_dAnimNum);
 		}
 	}
-	//‰¹ŠyŠÖ˜A.
+	//éŸ³æ¥½é–¢é€£.
 	{
 		for (UINT i = 0; i < m_vsmpBgm.size(); i++)
 		{
@@ -286,7 +286,7 @@ void clsStageScene::UpDate()
 		}
 	}
 
-	//ƒQ[ƒ€ƒNƒŠƒA”»’f—p.
+	//ã‚²ãƒ¼ãƒ ã‚¯ãƒªã‚¢åˆ¤æ–­ç”¨.
 	if (m_iClearTime < 1 && m_stMode == Stage)
 	{
 		m_stMode = Clear;
@@ -296,7 +296,7 @@ void clsStageScene::UpDate()
 		reverse(Resource->m_viScore.begin(), Resource->m_viScore.end());
 	}
 
-	//“G‚Ì“®‚«.
+	//æ•µã®å‹•ã.
 	for (UINT i = 0; i < m_vsmpEnemy.size(); i++)
 	{
 		if (m_vsmpEnemy[i]->GetEnableFlg())
@@ -311,7 +311,7 @@ void clsStageScene::UpDate()
 		m_bPlayerDamage = false;
 	}
 
-	//’eŠÛ‚Ì‰Šú‰»—p.
+	//å¼¾ä¸¸ã®åˆæœŸåŒ–ç”¨.
 #if _DEBUG
 	if (GetAsyncKeyState('I') & 0x0001/*||m_pDxInput->IsPressKey( enPKey_00 )*/) {
 		for (UINT i = 0; i < m_vsmpShot.size(); i++)
@@ -321,7 +321,7 @@ void clsStageScene::UpDate()
 	}
 #endif // 0
 
-	//“–‚½‚è”»’è.
+	//å½“ãŸã‚Šåˆ¤å®š.
 	HitCheak();
 }
 
@@ -364,18 +364,25 @@ void clsStageScene::Fire()
 	}
 }
 
-void clsStageScene::ModelRender1()
+void clsStageScene::Render()
 {
 	m_stModelRenderSet = Resource->GetModelRenderSet();
 
-	//u’n–Êv‚Ì•\¦.
+	//ã€Œåœ°é¢ã€ã®è¡¨ç¤º.
 	m_smpGround->Render(m_stModelRenderSet.mView, m_stModelRenderSet.mProj, m_stModelRenderSet.vLight, m_stModelRenderSet.vEye);
 
-	//u©‹@v‚Ì•\¦.
+	SetDepth(false);
+	for (UINT i = 0; i < m_vsmpEnemy.size(); i++)
+	{
+		m_vsmpEnemy[i]->ExpRender();
+	}
+	SetDepth(true);
+
+	//ã€Œè‡ªæ©Ÿã€ã®è¡¨ç¤º.
 	m_smpPlayer->Render(m_stModelRenderSet.mView, m_stModelRenderSet.mProj, m_stModelRenderSet.vLight, m_stModelRenderSet.vEye);
 
-	//“–‚½‚è”»’èŠm”F—p.
-#if 1
+	//å½“ãŸã‚Šåˆ¤å®šç¢ºèªç”¨.
+#if _DEBUG
 	for (size_t i = 0; i < m_vsmpShotSphere.size(); i++)
 	{
 		m_vsmpShotSphere[i]->Render(m_stModelRenderSet.mView, m_stModelRenderSet.mProj, m_stModelRenderSet.vLight, m_stModelRenderSet.vEye);
@@ -387,15 +394,9 @@ void clsStageScene::ModelRender1()
 	m_smpPlayerSphere->Render(m_stModelRenderSet.mView, m_stModelRenderSet.mProj, m_stModelRenderSet.vLight, m_stModelRenderSet.vEye);
 
 #endif // 0
-}
-void clsStageScene::ExpRender() {
-	for (UINT i = 0; i < m_vsmpEnemy.size(); i++)
-	{
-		m_vsmpEnemy[i]->ExpRender();
-	}
-}
-void clsStageScene::ModelRender2() {
-	//ƒVƒ‡ƒbƒg.
+
+
+	//ã‚·ãƒ§ãƒƒãƒˆ.
 	for (UINT i = 0; i < m_vsmpShot.size(); i++)
 	{
 		if (m_vsmpShot[i]->GetShotFlg())
@@ -407,7 +408,7 @@ void clsStageScene::ModelRender2() {
 		}
 	}
 
-	//ƒXƒLƒ“ƒƒbƒVƒ…‚Ì•\¦.
+	//ã‚¹ã‚­ãƒ³ãƒ¡ãƒƒã‚·ãƒ¥ã®è¡¨ç¤º.
 	for (UINT i = 0; i < m_vsmpEnemy.size(); i++)
 	{
 		if (m_vsmpEnemy[i]->GetEnableFlg())
@@ -415,10 +416,9 @@ void clsStageScene::ModelRender2() {
 			m_vsmpEnemy[i]->Render(m_stModelRenderSet.mView, m_stModelRenderSet.mProj, m_stModelRenderSet.vLight, m_stModelRenderSet.vEye);
 		}
 	}
-}
 
-void clsStageScene::SpriteRender()
-{
+	SetDepth(false);
+
 	if (m_bTargetPointHitCheackFlg)
 	{
 		m_smpTargetPointHit->Render();
@@ -449,51 +449,53 @@ void clsStageScene::SpriteRender()
 	m_smpClock->Render();
 
 	BlackOut();
+
+	SetDepth(true);
 }
 
 void clsStageScene::Release()
 {
-	//ƒLƒƒƒ‰ƒNƒ^ƒNƒ‰ƒX‚Ì”jŠü.
+	//ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ã‚¯ãƒ©ã‚¹ã®ç ´æ£„.
 	for (UINT i = 0; i < m_vsmpEnemy.size(); i++)
 	{
-		//ƒ‚ƒfƒ‹ƒf[ƒ^‚ÌŠÖ˜A•t‚¯‰ğœ.
+		//ãƒ¢ãƒ‡ãƒ«ãƒ‡ãƒ¼ã‚¿ã®é–¢é€£ä»˜ã‘è§£é™¤.
 		m_vsmpEnemy[i]->DetachModel();
-		//”jŠü.
+		//ç ´æ£„.
 		m_vsmpEnemy[i].reset();
 		m_vsmpEnemy[i] = NULL;
 	}
-	//ƒ|ƒCƒ“ƒ^”z—ñ‚ğ”jŠü.
+	//ãƒã‚¤ãƒ³ã‚¿é…åˆ—ã‚’ç ´æ£„.
 	m_vsmpEnemy.clear();
 	m_vsmpEnemy.shrink_to_fit();
 
 	for (UINT i = 0; i < m_vsmpShot.size(); i++)
 	{
-		//ƒ‚ƒfƒ‹ƒf[ƒ^‚ÌŠÖ˜A•t‚¯‰ğœ.
+		//ãƒ¢ãƒ‡ãƒ«ãƒ‡ãƒ¼ã‚¿ã®é–¢é€£ä»˜ã‘è§£é™¤.
 		m_vsmpShot[i]->DetachModel();
-		//”jŠü.
+		//ç ´æ£„.
 		m_vsmpShot[i].reset();
 		m_vsmpShot[i] = NULL;
 	}
-	//ƒ|ƒCƒ“ƒ^”z—ñ‚ğ”jŠü.
+	//ãƒã‚¤ãƒ³ã‚¿é…åˆ—ã‚’ç ´æ£„.
 	m_vsmpShot.clear();
 	m_vsmpShot.shrink_to_fit();
 
-	//”jŠü.
+	//ç ´æ£„.
 	m_smpGround->DetachModel();
 	m_smpGround.reset();
 	m_smpGround = NULL;
 
-	//”jŠü.
+	//ç ´æ£„.
 	m_smpPlayer->DetachModel();
 	m_smpPlayer.reset();
 	m_smpPlayer = NULL;
 
-	//”š‰æ‘œ”jŠü.
+	//æ•°å­—ç”»åƒç ´æ£„.
 
 	SAFE_RELEASE(m_smpHpNum);
 	SAFE_RELEASE(m_smpClearTimeNum);
 
-	//‰¹Šy”jŠü.
+	//éŸ³æ¥½ç ´æ£„.
 	m_vsmpBgm[0]->Close();
 	for (UINT i = 0; i < m_vsmpShotSe.size(); i++)
 	{
@@ -507,15 +509,15 @@ void clsStageScene::Release()
 
 void clsStageScene::HitCheak()
 {
-	//“–‚½‚è”»’è‚ÍÅŒã’n–Ê‚Æ‚Ì”»’è.
+	//å½“ãŸã‚Šåˆ¤å®šã¯æœ€å¾Œåœ°é¢ã¨ã®åˆ¤å®š.
 	for (size_t i = 0; i < m_vsmpEnemy.size(); i++) {
-		//Œğ“_‚ÌÀ•W‚©‚çyÀ•W‚ğ“G‚ÌyÀ•W‚Æ‚µ‚ÄƒZƒbƒg.
+		//äº¤ç‚¹ã®åº§æ¨™ã‹ã‚‰yåº§æ¨™ã‚’æ•µã®yåº§æ¨™ã¨ã—ã¦ã‚»ãƒƒãƒˆ.
 		m_vsmpEnemy[i]->SetPositionY(0.9f + IntersectionLocation(m_vsmpEnemy[i].get(), m_smpGround.get(), D3DXVECTOR3(0.0f, -1.0f, 0.0f)).y);
 	}
 
 	for (UINT i = 0; i < m_vsmpEnemy.size(); i++)
 	{
-		//ŒvZ—p•Ï”.
+		//è¨ˆç®—ç”¨å¤‰æ•°.
 		if (InnerProductDot(m_smpPlayer->GetPosition(), m_vsmpEnemy[i]->GetPosition(), m_smpPlayer->GetRotationY(), CSS::fTagetAngle))
 		{
 			m_bTargetPointHitCheackFlg = true;
@@ -523,7 +525,7 @@ void clsStageScene::HitCheak()
 		}
 	}
 
-	//’e‚Æ“G‚Æ‚Ì“–‚½‚è”»’è.
+	//å¼¾ã¨æ•µã¨ã®å½“ãŸã‚Šåˆ¤å®š.
 	for (UINT i = 0; i < m_vsmpShotSphere.size(); i++)
 	{
 		if (!m_vsmpShot[i]->GetShotFlg())
@@ -559,7 +561,7 @@ void clsStageScene::HitCheak()
 		}
 	}
 
-	//©‹@‚Æ“G‚Ì“–‚½‚è”»’è.
+	//è‡ªæ©Ÿã¨æ•µã®å½“ãŸã‚Šåˆ¤å®š.
 	if (!m_bPlayerDamage && m_iPlayerinvincible < 0)
 	{
 		for (UINT i = 0; i < m_vsmpEnemy.size(); i++)
@@ -591,59 +593,59 @@ void clsStageScene::HitCheak()
 	}
 }
 
-//Õ“Ë”»’è.
+//è¡çªåˆ¤å®š.
 bool clsStageScene::Collision(
-	clsDX9Mesh* pAttacker,	//UŒ‚‘¤.
-	clsDX9Mesh* pTarget)	//•W“I.
+	clsDX9Mesh* pAttacker,	//æ”»æ’ƒå´.
+	clsDX9Mesh* pTarget)	//æ¨™çš„.
 {
-	//‚Q‚Â‚Ì•¨‘Ì‚Ì’†SŠÔ‚Ì‹——£‚ğ‹‚ß‚é.
+	//ï¼’ã¤ã®ç‰©ä½“ã®ä¸­å¿ƒé–“ã®è·é›¢ã‚’æ±‚ã‚ã‚‹.
 	D3DXVECTOR3 vLength
 		= pTarget->m_vPos - pAttacker->m_vPos;
-	//’·‚³‚É•ÏŠ·‚·‚é.
+	//é•·ã•ã«å¤‰æ›ã™ã‚‹.
 	float Length = D3DXVec3Length(&vLength);
 
-	//‚Q•¨‘ÌŠÔ‚Ì‹——£‚ªA‚Q•¨‘Ì‚Ì”¼Œa‚ğ‘«‚µ‚½‚à‚æ‚è.
-	//¬‚³‚¢‚Æ‚¢‚¤‚±‚Æ‚ÍAƒXƒtƒBƒA“¯m‚ªd‚È‚Á‚Ä‚¢‚é.
-	//iÕ“Ë‚µ‚Ä‚¢‚éj‚Æ‚¢‚¤‚±‚Æ.
+	//ï¼’ç‰©ä½“é–“ã®è·é›¢ãŒã€ï¼’ç‰©ä½“ã®åŠå¾„ã‚’è¶³ã—ãŸã‚‚ã‚ˆã‚Š.
+	//å°ã•ã„ã¨ã„ã†ã“ã¨ã¯ã€ã‚¹ãƒ•ã‚£ã‚¢åŒå£«ãŒé‡ãªã£ã¦ã„ã‚‹.
+	//ï¼ˆè¡çªã—ã¦ã„ã‚‹ï¼‰ã¨ã„ã†ã“ã¨.
 	if (Length <=
 		pAttacker->m_Sphere.fRadius + pTarget->m_Sphere.fRadius)
 	{
-		return true;//Õ“Ë.
+		return true;//è¡çª.
 	}
-	return false;//Õ“Ë‚µ‚Ä‚¢‚È‚¢.
+	return false;//è¡çªã—ã¦ã„ãªã„.
 }
 
 bool clsStageScene::Collision(
-	clsCharacter* pAttacker,	//UŒ‚‘¤.
-	clsCharacter* pTarget)		//•W“I.
+	clsCharacter* pAttacker,	//æ”»æ’ƒå´.
+	clsCharacter* pTarget)		//æ¨™çš„.
 {
 	pAttacker->SetPositionY(0.0f);
 	pTarget->SetPositionY(0.0f);
-	//‚Q‚Â‚Ì•¨‘Ì‚Ì’†SŠÔ‚Ì‹——£‚ğ‹‚ß‚é.
+	//ï¼’ã¤ã®ç‰©ä½“ã®ä¸­å¿ƒé–“ã®è·é›¢ã‚’æ±‚ã‚ã‚‹.
 	D3DXVECTOR3 vLength
 		= pTarget->GetPosition() - pAttacker->GetPosition();
-	//’·‚³‚É•ÏŠ·‚·‚é.
+	//é•·ã•ã«å¤‰æ›ã™ã‚‹.
 	float Length = D3DXVec3Length(&vLength);
 
-	//‚Q•¨‘ÌŠÔ‚Ì‹——£‚ªA‚Q•¨‘Ì‚Ì”¼Œa‚ğ‘«‚µ‚½‚à‚æ‚è.
-	//¬‚³‚¢‚Æ‚¢‚¤‚±‚Æ‚ÍAƒXƒtƒBƒA“¯m‚ªd‚È‚Á‚Ä‚¢‚é.
-	//iÕ“Ë‚µ‚Ä‚¢‚éj‚Æ‚¢‚¤‚±‚Æ.
+	//ï¼’ç‰©ä½“é–“ã®è·é›¢ãŒã€ï¼’ç‰©ä½“ã®åŠå¾„ã‚’è¶³ã—ãŸã‚‚ã‚ˆã‚Š.
+	//å°ã•ã„ã¨ã„ã†ã“ã¨ã¯ã€ã‚¹ãƒ•ã‚£ã‚¢åŒå£«ãŒé‡ãªã£ã¦ã„ã‚‹.
+	//ï¼ˆè¡çªã—ã¦ã„ã‚‹ï¼‰ã¨ã„ã†ã“ã¨.
 	if (Length <=
 		pAttacker->m_Sphere.fRadius + pTarget->m_Sphere.fRadius)
 	{
-		return true;//Õ“Ë.
+		return true;//è¡çª.
 	}
-	return false;//Õ“Ë‚µ‚Ä‚¢‚È‚¢.
+	return false;//è¡çªã—ã¦ã„ãªã„.
 }
 
 D3DXVECTOR3 clsStageScene::IntersectionLocation(clsGameObject* pAttacker, clsCharacter* pTarget, D3DXVECTOR3 RayOrientation)
 {
-	FLOAT		fDistance;	//‹——£.
-	D3DXVECTOR3 vIntersect;	//Œğ·À•W.
-							//Œ»İˆÊ’u‚ğƒRƒs[.
+	FLOAT		fDistance;	//è·é›¢.
+	D3DXVECTOR3 vIntersect;	//äº¤å·®åº§æ¨™.
+							//ç¾åœ¨ä½ç½®ã‚’ã‚³ãƒ”ãƒ¼.
 	pAttacker->m_vRay = pAttacker->GetPosition();
 
-	//²ƒxƒNƒgƒ‹‚ğ‚±‚±‚Åw’è.
+	//è»¸ãƒ™ã‚¯ãƒˆãƒ«ã‚’ã“ã“ã§æŒ‡å®š.
 	pAttacker->m_vAxis
 		= RayOrientation;
 
@@ -653,32 +655,32 @@ D3DXVECTOR3 clsStageScene::IntersectionLocation(clsGameObject* pAttacker, clsCha
 	return vIntersect;
 }
 
-//ƒŒƒC‚ÆƒƒbƒVƒ…‚Ì“–‚½‚è”»’è.
+//ãƒ¬ã‚¤ã¨ãƒ¡ãƒƒã‚·ãƒ¥ã®å½“ãŸã‚Šåˆ¤å®š.
 bool clsStageScene::Intersect(
-	clsGameObject* pAttacker,	//Šî€‚Ì•¨‘Ì.
-	clsCharacter*  pTarget,		//‘ÎÛ‚Ì•¨‘Ì.
-	float* pfDistance,			//(out)‹——£.
-	D3DXVECTOR3* pvIntersect)	//(out)Œğ·À•W.
+	clsGameObject* pAttacker,	//åŸºæº–ã®ç‰©ä½“.
+	clsCharacter*  pTarget,		//å¯¾è±¡ã®ç‰©ä½“.
+	float* pfDistance,			//(out)è·é›¢.
+	D3DXVECTOR3* pvIntersect)	//(out)äº¤å·®åº§æ¨™.
 {
-	D3DXMATRIXA16 matRot;	//‰ñ“]s—ñ.
+	D3DXMATRIXA16 matRot;	//å›è»¢è¡Œåˆ—.
 
-	//‰ñ“]s—ñ‚ğŒvZ.
+	//å›è»¢è¡Œåˆ—ã‚’è¨ˆç®—.
 	D3DXMatrixRotationY(&matRot, pAttacker->GetRotationY());
 
-	//²ƒxƒNƒgƒ‹‚ğ—pˆÓ.
+	//è»¸ãƒ™ã‚¯ãƒˆãƒ«ã‚’ç”¨æ„.
 	D3DXVECTOR3 vecAxisZ;
-	//Z²ƒxƒNƒgƒ‹‚»‚Ì‚à‚Ì‚ğŒ»İ‚Ì‰ñ“]ó‘Ô‚É‚æ‚è•ÏŠ·‚·‚é.
+	//Zè»¸ãƒ™ã‚¯ãƒˆãƒ«ãã®ã‚‚ã®ã‚’ç¾åœ¨ã®å›è»¢çŠ¶æ…‹ã«ã‚ˆã‚Šå¤‰æ›ã™ã‚‹.
 	D3DXVec3TransformCoord(
 		&vecAxisZ, &pAttacker->m_vAxis, &matRot);
 
 	D3DXVECTOR3 vecStart, vecEnd, vecDistance;
-	//ƒŒƒC‚ÌŠJnI—¹ˆÊ’u‚ğAttacker‚Æ‡‚í‚¹‚é.
+	//ãƒ¬ã‚¤ã®é–‹å§‹çµ‚äº†ä½ç½®ã‚’Attackerã¨åˆã‚ã›ã‚‹.
 	vecStart = vecEnd = pAttacker->m_vRay;
-	//Attacker‚ÌÀ•W‚É‰ñ“]À•W‚ğ‡¬‚·‚é.
+	//Attackerã®åº§æ¨™ã«å›è»¢åº§æ¨™ã‚’åˆæˆã™ã‚‹.
 	vecEnd += vecAxisZ * 1.0f;
 
-	//‘ÎÛ‚ª“®‚¢‚Ä‚¢‚é•¨‘Ì‚Å‚àA‘ÎÛ‚Ìworlds—ñ‚ÌA
-	//‹ts—ñ‚ğ—p‚¢‚ê‚ÎA³‚µ‚­ƒŒƒC‚ª“–‚½‚é.
+	//å¯¾è±¡ãŒå‹•ã„ã¦ã„ã‚‹ç‰©ä½“ã§ã‚‚ã€å¯¾è±¡ã®worldè¡Œåˆ—ã®ã€
+	//é€†è¡Œåˆ—ã‚’ç”¨ã„ã‚Œã°ã€æ­£ã—ããƒ¬ã‚¤ãŒå½“ãŸã‚‹.
 	D3DXMATRIX matWorld;
 	D3DXMatrixTranslation(
 		&matWorld,
@@ -686,99 +688,99 @@ bool clsStageScene::Intersect(
 		pTarget->GetPositionY(),
 		pTarget->GetPositionZ());
 
-	//‹ts—ñ‚ğ‹‚ß‚é.
+	//é€†è¡Œåˆ—ã‚’æ±‚ã‚ã‚‹.
 	D3DXMatrixInverse(&matWorld, NULL, &matWorld);
 	D3DXVec3TransformCoord(
 		&vecStart, &vecStart, &matWorld);
 	D3DXVec3TransformCoord(
 		&vecEnd, &vecEnd, &matWorld);
 
-	//‹——£‚ğ‹‚ß‚é.
+	//è·é›¢ã‚’æ±‚ã‚ã‚‹.
 	vecDistance = vecEnd - vecStart;
 
-	BOOL bHit = false;	//–½’†ƒtƒ‰ƒO.
+	BOOL bHit = false;	//å‘½ä¸­ãƒ•ãƒ©ã‚°.
 
-	DWORD dwIndex = 0;		//ƒCƒ“ƒfƒbƒNƒX”Ô†.
-	D3DXVECTOR3 vVertex[3];	//’¸“_À•W.
-	FLOAT U = 0, V = 0;			//(out)dSƒqƒbƒgÀ•W.
+	DWORD dwIndex = 0;		//ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ç•ªå·.
+	D3DXVECTOR3 vVertex[3];	//é ‚ç‚¹åº§æ¨™.
+	FLOAT U = 0, V = 0;			//(out)é‡å¿ƒãƒ’ãƒƒãƒˆåº§æ¨™.
 
-	//ƒƒbƒVƒ…‚ÆƒŒƒC‚ÌŒğ·‚ğ’²‚×‚é.
+	//ãƒ¡ãƒƒã‚·ãƒ¥ã¨ãƒ¬ã‚¤ã®äº¤å·®ã‚’èª¿ã¹ã‚‹.
 	D3DXIntersect(
-		pTarget->GetMesh(),	//‘ÎÛƒƒbƒVƒ….
-		&vecStart,			//ŠJnˆÊ’u.
-		&vecDistance,		//ƒŒƒC‚Ì‹——£.
-		&bHit,				//(out)”»’èŒ‹‰Ê.
-		&dwIndex,	//(out)bHit‚ªTrueAƒŒƒC‚Ìn“_‚É.
-		//Å‚à‹ß‚­‚Ì–Ê‚ÌƒCƒ“ƒfƒbƒNƒX’l‚Ö‚Ìƒ|ƒCƒ“ƒ^.
-		&U, &V,				//(out)dSƒqƒbƒgÀ•W.
-		pfDistance,			//ƒ^[ƒQƒbƒg‚Æ‚Ì‹——£.
+		pTarget->GetMesh(),	//å¯¾è±¡ãƒ¡ãƒƒã‚·ãƒ¥.
+		&vecStart,			//é–‹å§‹ä½ç½®.
+		&vecDistance,		//ãƒ¬ã‚¤ã®è·é›¢.
+		&bHit,				//(out)åˆ¤å®šçµæœ.
+		&dwIndex,	//(out)bHitãŒTrueæ™‚ã€ãƒ¬ã‚¤ã®å§‹ç‚¹ã«.
+		//æœ€ã‚‚è¿‘ãã®é¢ã®ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹å€¤ã¸ã®ãƒã‚¤ãƒ³ã‚¿.
+		&U, &V,				//(out)é‡å¿ƒãƒ’ãƒƒãƒˆåº§æ¨™.
+		pfDistance,			//ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã¨ã®è·é›¢.
 		NULL, NULL);
 	if (bHit) {
-		//–½’†‚µ‚½‚Æ‚«.
+		//å‘½ä¸­ã—ãŸã¨ã.
 		FindVerticesOnPoly(
 			pTarget->GetMeshForRay(), dwIndex, vVertex);
-		//dSÀ•W‚©‚çŒğ·“_‚ğZo.
-		//ƒ[ƒJƒ‹Œğ“_p‚ÍAv0 + U*(v1-v0) + V*(v2-v0)‚Å‹‚Ü‚é.
+		//é‡å¿ƒåº§æ¨™ã‹ã‚‰äº¤å·®ç‚¹ã‚’ç®—å‡º.
+		//ãƒ­ãƒ¼ã‚«ãƒ«äº¤ç‚¹pã¯ã€v0 + U*(v1-v0) + V*(v2-v0)ã§æ±‚ã¾ã‚‹.
 		*pvIntersect =
 			vVertex[0]
 			+ U * (vVertex[1] - vVertex[0])
 			+ V * (vVertex[2] - vVertex[0]);
 
-		return true;//–½’†‚µ‚Ä‚¢‚é.
+		return true;//å‘½ä¸­ã—ã¦ã„ã‚‹.
 	}
-	return false;//ŠO‚ê‚Ä‚¢‚é.
+	return false;//å¤–ã‚Œã¦ã„ã‚‹.
 }
 
-//Œğ·ˆÊ’u‚Ìƒ|ƒŠƒSƒ“‚Ì’¸“_‚ğŒ©‚Â‚¯‚é.
-//¦’¸“_À•W‚Íƒ[ƒJƒ‹À•W.
+//äº¤å·®ä½ç½®ã®ãƒãƒªã‚´ãƒ³ã®é ‚ç‚¹ã‚’è¦‹ã¤ã‘ã‚‹.
+//â€»é ‚ç‚¹åº§æ¨™ã¯ãƒ­ãƒ¼ã‚«ãƒ«åº§æ¨™.
 HRESULT clsStageScene::FindVerticesOnPoly(
 	LPD3DXMESH pTarget, DWORD dwPolyIndex,
 	D3DXVECTOR3* pVecVertices)
 {
-	//’¸“_‚²‚Æ‚ÌƒoƒCƒg”‚ğæ“¾.
+	//é ‚ç‚¹ã”ã¨ã®ãƒã‚¤ãƒˆæ•°ã‚’å–å¾—.
 	DWORD dwStride = pTarget->GetNumBytesPerVertex();
-	//’¸“_”‚ğæ“¾.
+	//é ‚ç‚¹æ•°ã‚’å–å¾—.
 	DWORD dwVertexAmt = pTarget->GetNumVertices();
-	//–Ê”‚ğæ“¾.
+	//é¢æ•°ã‚’å–å¾—.
 	DWORD dwPolyAmt = pTarget->GetNumFaces();
 
 	WORD* pwPoly = NULL;
 
-	//ƒCƒ“ƒfƒbƒNƒXƒoƒbƒtƒ@‚ğƒƒbƒN(“Çƒ‚[ƒh)
+	//ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãƒãƒƒãƒ•ã‚¡ã‚’ãƒ­ãƒƒã‚¯(èª­è¾¼ãƒ¢ãƒ¼ãƒ‰)
 	pTarget->LockIndexBuffer(
 		D3DLOCK_READONLY, (VOID**)&pwPoly);
-	BYTE* pbVertices = NULL;//’¸“_(ƒoƒCƒgŒ^)
-	FLOAT* pfVertices = NULL;//’¸“_(floatŒ^)
-	LPDIRECT3DVERTEXBUFFER9 VB = NULL;//’¸“_ƒoƒbƒtƒ@.
-	pTarget->GetVertexBuffer(&VB);//’¸“_î•ñ‚Ìæ“¾.
+	BYTE* pbVertices = NULL;//é ‚ç‚¹(ãƒã‚¤ãƒˆå‹)
+	FLOAT* pfVertices = NULL;//é ‚ç‚¹(floatå‹)
+	LPDIRECT3DVERTEXBUFFER9 VB = NULL;//é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡.
+	pTarget->GetVertexBuffer(&VB);//é ‚ç‚¹æƒ…å ±ã®å–å¾—.
 
-	//’¸“_ƒoƒbƒtƒ@‚ÌƒƒbƒN.
+	//é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡ã®ãƒ­ãƒƒã‚¯.
 	if (SUCCEEDED(
 		VB->Lock(0, 0, (VOID**)&pbVertices, 0)))
 	{
-		//ƒ|ƒŠƒSƒ“‚Ì’¸“_‚Ì‚P‚Â–Ú‚ğæ“¾.
+		//ãƒãƒªã‚´ãƒ³ã®é ‚ç‚¹ã®ï¼‘ã¤ç›®ã‚’å–å¾—.
 		pfVertices
 			= (FLOAT*)&pbVertices[dwStride*pwPoly[dwPolyIndex * 3]];
 		pVecVertices[0].x = pfVertices[0];
 		pVecVertices[0].y = pfVertices[1];
 		pVecVertices[0].z = pfVertices[2];
 
-		//ƒ|ƒŠƒSƒ“‚Ì’¸“_‚Ì‚Q‚Â–Ú‚ğæ“¾.
+		//ãƒãƒªã‚´ãƒ³ã®é ‚ç‚¹ã®ï¼’ã¤ç›®ã‚’å–å¾—.
 		pfVertices
 			= (FLOAT*)&pbVertices[dwStride*pwPoly[dwPolyIndex * 3 + 1]];
 		pVecVertices[1].x = pfVertices[0];
 		pVecVertices[1].y = pfVertices[1];
 		pVecVertices[1].z = pfVertices[2];
 
-		//ƒ|ƒŠƒSƒ“‚Ì’¸“_‚Ì‚R‚Â–Ú‚ğæ“¾.
+		//ãƒãƒªã‚´ãƒ³ã®é ‚ç‚¹ã®ï¼“ã¤ç›®ã‚’å–å¾—.
 		pfVertices
 			= (FLOAT*)&pbVertices[dwStride*pwPoly[dwPolyIndex * 3 + 2]];
 		pVecVertices[2].x = pfVertices[0];
 		pVecVertices[2].y = pfVertices[1];
 		pVecVertices[2].z = pfVertices[2];
 
-		pTarget->UnlockIndexBuffer();	//ƒƒbƒN‰ğœ.
-		VB->Unlock();	//ƒƒbƒN‰ğœ.
+		pTarget->UnlockIndexBuffer();	//ãƒ­ãƒƒã‚¯è§£é™¤.
+		VB->Unlock();	//ãƒ­ãƒƒã‚¯è§£é™¤.
 	}
 	VB->Release();
 
@@ -786,13 +788,13 @@ HRESULT clsStageScene::FindVerticesOnPoly(
 }
 bool clsStageScene::InnerProductDot(const D3DXVECTOR3& vPos, const D3DXVECTOR3& vTargetPos, const float& fYAxis, const float& fAngle)
 {
-	//“ñ“_ŠÔ‚ÌƒxƒNƒgƒ‹‚ğZo.
+	//äºŒç‚¹é–“ã®ãƒ™ã‚¯ãƒˆãƒ«ã‚’ç®—å‡º.
 	D3DXVECTOR3 vToTargetDir = vTargetPos - vPos;
 
-	//“ñ‚Â‚ÌƒxƒNƒgƒ‹‚ğ³‹K‰»‚·‚é(ˆÊ’u‚ÍŠÖŒW‚È‚­‚È‚è•ûŒüƒxƒNƒgƒ‹‚É‚È‚é).
+	//äºŒã¤ã®ãƒ™ã‚¯ãƒˆãƒ«ã‚’æ­£è¦åŒ–ã™ã‚‹(ä½ç½®ã¯é–¢ä¿‚ãªããªã‚Šæ–¹å‘ãƒ™ã‚¯ãƒˆãƒ«ã«ãªã‚‹).
 	D3DXVec3Normalize(&vToTargetDir, &vToTargetDir);
 
-	//³–Ê•ûŒü‚ğæ‚é‚½‚ß‚ÉY‚Ì‰ñ“]²‚Ìƒ}ƒgƒŠƒNƒX‚ğì¬.
+	//æ­£é¢æ–¹å‘ã‚’å–ã‚‹ãŸã‚ã«Yã®å›è»¢è»¸ã®ãƒãƒˆãƒªã‚¯ã‚¹ã‚’ä½œæˆ.
 	D3DXMATRIX mYaw;
 	D3DXMatrixRotationY(&mYaw, fYAxis);
 	D3DXVECTOR3 vForWordDir;
@@ -802,7 +804,7 @@ bool clsStageScene::InnerProductDot(const D3DXVECTOR3& vPos, const D3DXVECTOR3& 
 		&mYaw);
 
 	float InnerProduct;
-	//ƒvƒŒƒCƒ„[³–Ê‘¤‚ÆÀÛ‚Ì‘Šè‚Æ‚ÌƒxƒNƒgƒ‹.
+	//ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼æ­£é¢å´ã¨å®Ÿéš›ã®ç›¸æ‰‹ã¨ã®ãƒ™ã‚¯ãƒˆãƒ«.
 	InnerProduct = D3DXVec3Dot(&vForWordDir, &vToTargetDir);
 	InnerProduct = acosf(InnerProduct);
 	InnerProduct = InnerProduct * 180.0f;
@@ -813,40 +815,40 @@ bool clsStageScene::InnerProductDot(const D3DXVECTOR3& vPos, const D3DXVECTOR3& 
 	}
 	return false;
 }
-//ƒXƒtƒBƒAì¬.
+//ã‚¹ãƒ•ã‚£ã‚¢ä½œæˆ.
 HRESULT clsStageScene::InitSphere(clsDX9Mesh* pMesh, float fScale)
 {
-	LPDIRECT3DVERTEXBUFFER9 pVB = NULL;	//’¸“_ƒoƒbƒtƒ@.
-	void*		pVertices = NULL;	//’¸“_
-	D3DXVECTOR3 vCenter;		//’†S.
-	float		fRadius;			//”¼Œa.
+	LPDIRECT3DVERTEXBUFFER9 pVB = NULL;	//é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡.
+	void*		pVertices = NULL;	//é ‚ç‚¹
+	D3DXVECTOR3 vCenter;		//ä¸­å¿ƒ.
+	float		fRadius;			//åŠå¾„.
 
-	//’¸“_ƒoƒbƒtƒ@‚ğæ“¾.
+	//é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡ã‚’å–å¾—.
 	if (FAILED(pMesh->m_pMesh->GetVertexBuffer(&pVB)))
 	{
 		return E_FAIL;
 	}
 
-	//ƒƒbƒVƒ…‚Ì’¸“_ƒoƒbƒtƒ@‚ğƒƒbƒN‚·‚é.
+	//ãƒ¡ãƒƒã‚·ãƒ¥ã®é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡ã‚’ãƒ­ãƒƒã‚¯ã™ã‚‹.
 	if (FAILED(pVB->Lock(0, 0, &pVertices, 0)))
 	{
 		SAFE_RELEASE(pVB);
 		return E_FAIL;
 	}
 
-	//ƒƒbƒVƒ…‚ÌŠOÚ‰~‚Ì’†S‚Æ”¼Œa‚ğŒvZ‚·‚é.
+	//ãƒ¡ãƒƒã‚·ãƒ¥ã®å¤–æ¥å††ã®ä¸­å¿ƒã¨åŠå¾„ã‚’è¨ˆç®—ã™ã‚‹.
 	D3DXComputeBoundingSphere(
 		(D3DXVECTOR3*)pVertices,
-		pMesh->m_pMesh->GetNumVertices(),//’¸“_‚Ì”.
-		D3DXGetFVFVertexSize(pMesh->m_pMesh->GetFVF()),//’¸“_‚Ìî•ñ.
-		&vCenter,	//(out)’†SÀ•W.
-		&fRadius);	//(out)”¼Œa.
+		pMesh->m_pMesh->GetNumVertices(),//é ‚ç‚¹ã®æ•°.
+		D3DXGetFVFVertexSize(pMesh->m_pMesh->GetFVF()),//é ‚ç‚¹ã®æƒ…å ±.
+		&vCenter,	//(out)ä¸­å¿ƒåº§æ¨™.
+		&fRadius);	//(out)åŠå¾„.
 
-	//ƒAƒ“ƒƒbƒN.
+	//ã‚¢ãƒ³ãƒ­ãƒƒã‚¯.
 	pVB->Unlock();
 	SAFE_RELEASE(pVB);
 
-	//’†S‚Æ”¼Œa‚ğ\‘¢‘Ì‚Éİ’è.
+	//ä¸­å¿ƒã¨åŠå¾„ã‚’æ§‹é€ ä½“ã«è¨­å®š.
 	pMesh->m_Sphere.vCenter = vCenter;
 	pMesh->m_Sphere.fRadius = fRadius * fScale;
 

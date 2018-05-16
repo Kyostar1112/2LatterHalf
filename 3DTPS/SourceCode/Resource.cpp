@@ -186,3 +186,20 @@ bool clsResource::IsRangeSkinModel(enSkinModel enModel)
 
 	return false;
 }
+
+//深度テスト(Zテスト) ON/OFF切替.
+void clsResource::SetDepth(bool bFlg)
+{
+	//深度テスト(Zテスト)を有効にする.
+	D3D11_DEPTH_STENCIL_DESC	depthStencilDesc;
+	ZeroMemory(&depthStencilDesc,
+		sizeof(D3D11_DEPTH_STENCIL_DESC));
+	depthStencilDesc.DepthEnable = bFlg;
+
+	GetSpriteRenderSet().pDevice11->CreateDepthStencilState(
+		&depthStencilDesc, &m_pDepthStencilState);
+
+	GetSpriteRenderSet().pContext11->OMSetDepthStencilState(
+		m_pDepthStencilState, 1);
+}
+

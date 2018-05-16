@@ -115,7 +115,12 @@ public:
 			}
 		}
 	}
+	//深度テスト(Zテスト) ON/OFF切替.
+	void SetDepth(bool bFlg);
 private:
+	//深度(Z)テスト設定.
+	ID3D11DepthStencilState* m_pDepthStencilState;
+
 	//生成やコピーを禁止する.
 	clsResource();
 	clsResource(const clsResource& rhs);

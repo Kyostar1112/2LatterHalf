@@ -15,8 +15,7 @@ public:
 	void Create();
 	void Init();
 	void UpDate();
-	void ModelRender();
-	void SpriteRender();
+	void Render();
 	void Release();
 
 	void MusicStop()

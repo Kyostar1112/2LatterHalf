@@ -104,9 +104,6 @@ private:
 	//デバッグテキストクラス.
 	unique_ptr<clsDebugText>	m_smpText;
 
-	//深度(Z)テスト設定.
-	ID3D11DepthStencilState* m_pDepthStencilState;
-
 	//コントローラクラス.
 	unique_ptr<clsDxInput>	m_smpDxInput;
 
@@ -153,9 +150,6 @@ public:
 
 	//メッシュ読込関数（まとめた）
 	HRESULT MeshRead();
-
-	//深度テスト(Zテスト) ON/OFF切替.
-	void SetDepth(bool bFlg);
 
 	//レイとメッシュの当たり判定.
 	bool Intersect(

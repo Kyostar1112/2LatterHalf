@@ -37,11 +37,7 @@ public:
 	void Create();
 	void Init();
 	void UpDate();
-	void ModelRender() {};
-	void ModelRender1();
-	void ExpRender();
-	void ModelRender2();
-	void SpriteRender();
+	void Render();
 	void Release();
 
 	vector<unique_ptr<clsEnemy>>		m_vsmpEnemy;	//É{ÉX.

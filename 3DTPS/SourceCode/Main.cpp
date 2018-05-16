@@ -398,42 +398,19 @@ void clsMain::Render()
 	switch (m_enScene)
 	{
 	case Title:
-		m_smpTitleScene->ModelRender();
-
-		SetDepth(false);
-		m_smpTitleScene->SpriteRender();
-		SetDepth(true);
+		m_smpTitleScene->Render();
 		break;
 	case Stage:
-		m_smpStageScene->ModelRender1();
-		SetDepth(false);
-		m_smpStageScene->ExpRender();
-		SetDepth(true);
-		m_smpStageScene->ModelRender2();
-		SetDepth(false);
-		m_smpStageScene->SpriteRender();
-		SetDepth(true);
+		m_smpStageScene->Render();
 		break;
 	case Over:
-		m_smpOverScene->ModelRender();
-
-		SetDepth(false);
-		m_smpOverScene->SpriteRender();
-		SetDepth(true);
+		m_smpOverScene->Render();
 		break;
 	case Clear:
-		m_smpClearScene->ModelRender();
-
-		SetDepth(false);
-		m_smpClearScene->SpriteRender();
-		SetDepth(true);
+		m_smpClearScene->Render();
 		break;
 	case Result:
-		m_smpResultScene->ModelRender();
-
-		SetDepth(false);
-		m_smpResultScene->SpriteRender();
-		SetDepth(true);
+		m_smpResultScene->Render();
 		break;
 	}
 
@@ -622,18 +599,11 @@ HRESULT clsMain::InitD3D()
 		&m_pBackBuffer_TexRTV,
 		m_pBackBuffer_DSTexDSV);
 
-	//深度テスト(Zテスト)を有効にする.
-	D3D11_DEPTH_STENCIL_DESC	depthStencilDesc;
-	ZeroMemory(&depthStencilDesc,
-		sizeof(D3D11_DEPTH_STENCIL_DESC));
-	depthStencilDesc.DepthEnable = true;
+	//リソースクラス.
+	m_pResource = clsResource::GetInstance();
+	m_pResource->Init(m_hWnd, m_pDevice, m_pDeviceContext);
 
-	if (SUCCEEDED(m_pDevice->CreateDepthStencilState(
-		&depthStencilDesc, &m_pDepthStencilState)))
-	{
-		m_pDeviceContext->OMSetDepthStencilState(
-			m_pDepthStencilState, 1);
-	}
+	Resource->SetDepth(false);
 
 	//ビューポートの設定.
 	D3D11_VIEWPORT vp;
@@ -717,21 +687,13 @@ HRESULT clsMain::MeshRead()
 	//デプスステンシルバックバッファ.
 	m_pDeviceContext->ClearDepthStencilView(m_pBackBuffer_DSTexDSV, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
 
-	SetDepth(false);
-
 	m_smpLoadString->Render();
 
 	m_smpLoadString->Flashing(0.0005f);
 	m_smpLoadCircle->Render();
 
-	SetDepth(true);
-
 	//レンダリングされたイメージを表示.
 	m_pSwapChain->Present(0, 0);
-
-	//リソースクラス.
-	m_pResource = clsResource::GetInstance();
-	m_pResource->Init(m_hWnd, m_pDevice, m_pDeviceContext);
 
 	/*ここからスタティックモデル*/
 	m_pResource->CreateStaticModel(
@@ -794,22 +756,6 @@ HRESULT clsMain::MeshRead()
 	m_smpOverScene->MusicStop();
 
 	return S_OK;
-}
-
-//深度テスト(Zテスト) ON/OFF切替.
-void clsMain::SetDepth(bool bFlg)
-{
-	//深度テスト(Zテスト)を有効にする.
-	D3D11_DEPTH_STENCIL_DESC	depthStencilDesc;
-	ZeroMemory(&depthStencilDesc,
-		sizeof(D3D11_DEPTH_STENCIL_DESC));
-	depthStencilDesc.DepthEnable = bFlg;
-
-	m_pDevice->CreateDepthStencilState(
-		&depthStencilDesc, &m_pDepthStencilState);
-
-	m_pDeviceContext->OMSetDepthStencilState(
-		m_pDepthStencilState, 1);
 }
 
 //レイとメッシュの当たり判定.
