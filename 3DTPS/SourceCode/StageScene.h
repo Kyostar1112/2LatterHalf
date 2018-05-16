@@ -23,7 +23,7 @@ namespace ConstantStageScene {
 	const int iStageClearTimedigit = 2;	//クリアまでの数字の桁数.
 	const int iStageEnemyDowndigit = 4;	//敵の撃破したスコアの桁数.
 	const int iStageClearTimeMax = 60;	//ゲームクリアまでの時間.
-	const float fTagetAngle = 20.0f;		//ターゲットの照準を色を変える角度.
+	const float fTagetAngle = 35.0f;		//ターゲットの照準を色を変える角度.
 }
 namespace CSS = ConstantStageScene;
 
