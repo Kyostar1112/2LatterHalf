@@ -443,7 +443,7 @@ void clsMain::Render()
 	{
 		char strDbgTxt[256];
 		int iDbgY = 10;
-		const int CDBGY = 25;
+		const int CDBGY = 30;
 
 		sprintf_s(strDbgTxt, "Ply:x[%f],y[%f],z[%f]",
 			m_smpStageScene->m_smpPlayer->GetPositionX(),
@@ -468,6 +468,16 @@ void clsMain::Render()
 			m_smpStageScene->m_smpPlayer->GetRotationY());
 		m_smpText->Render(strDbgTxt, 0, iDbgY);
 		iDbgY += CDBGY;
+
+		for (UINT i = 0; i < CSS::iEnemyMax; i++)
+		{
+			sprintf_s(strDbgTxt, "HitInnerProduct[%d]:[%f]",
+				i,
+				m_smpStageScene->InnerProduct[i]);
+			m_smpText->Render(strDbgTxt, 0, iDbgY);
+			iDbgY += CDBGY;
+		}
+
 	}
 #endif//#ifdef _DEBUG
 
