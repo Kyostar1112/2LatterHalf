@@ -31,7 +31,7 @@ void clsPlayer::Render(D3DXMATRIX& mView, D3DXMATRIX& mProj,
 
 	float fDeg = GetRotationY();
 
-	float rad =  -fDeg;
+	float rad = -fDeg;
 
 	float tmpfX, tmpfZ;
 

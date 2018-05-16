@@ -3,9 +3,10 @@
 const float PI = 3.141592f;
 namespace ConstantEnemy
 {
-	const float fSpawnLength	= 30.0f;//敵が出てくる距離.
-	const int   iExpImg			= 3;	//爆発画像の数.
-	const int	iAttakInterval	= 180;	//攻撃間隔.
+	const float fSpawnLength = 30.0f;//敵が出てくる距離.
+	const int   iExpImg = 3;	//爆発画像の数.
+	const int	iAttakInterval = 150;	//攻撃間隔.
+	const double dAnimSpeed = 0.02;	//アニメーション再生速度.
 }
 
 namespace CE = ConstantEnemy;
@@ -73,7 +74,7 @@ void clsEnemy::Spawn()
 	vTmp.z += fZ;
 	SetPosition(vTmp);
 
-	m_dAnimSpeed = 0.01f;
+	m_dAnimSpeed = CE::dAnimSpeed;
 	m_iAnimNo = 0;
 
 	m_bEnableFlg = true;
@@ -184,4 +185,3 @@ void clsEnemy::ExpRender()	//爆発の表示処理.
 		}
 	}
 }
-

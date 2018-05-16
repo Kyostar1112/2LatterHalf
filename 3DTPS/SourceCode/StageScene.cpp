@@ -312,7 +312,6 @@ void clsStageScene::UpDate()
 
 	//“–‚½‚è”»’è.
 	HitCheak();
-
 }
 
 void clsStageScene::RightRoll(float MovePoint)

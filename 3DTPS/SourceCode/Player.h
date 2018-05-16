@@ -15,8 +15,6 @@ public:
 	double m_dAnimNum;
 
 private:
-
-
 };
 
 #endif  //#ifdef _C_PLAYER_H_
