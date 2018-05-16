@@ -510,13 +510,13 @@ void clsStageScene::HitCheak()
 	//当たり判定は最後地面との判定.
 	for (size_t i = 0; i < m_vsmpEnemy.size(); i++) {
 		//交点の座標からy座標を敵のy座標としてセット.
-		m_vsmpEnemy[i]->SetPositionY(0.9f + IntersectionLocation(m_vsmpEnemy[i].get(), m_smpGround.get(), D3DXVECTOR3(0.0f,-1.0f,0.0f) ).y);
+		m_vsmpEnemy[i]->SetPositionY(0.9f + IntersectionLocation(m_vsmpEnemy[i].get(), m_smpGround.get(), D3DXVECTOR3(0.0f, -1.0f, 0.0f)).y);
 	}
 
 	for (UINT i = 0; i < m_vsmpEnemy.size(); i++)
 	{
 		//計算用変数.
-		if (InnerProductDot( m_smpPlayer->GetPosition(), m_vsmpEnemy[i]->GetPosition(), m_smpPlayer->GetRotationY(), CSS::fTagetAngle))
+		if (InnerProductDot(m_smpPlayer->GetPosition(), m_vsmpEnemy[i]->GetPosition(), m_smpPlayer->GetRotationY(), CSS::fTagetAngle))
 		{
 			m_bTargetPointHitCheackFlg = true;
 			break;
@@ -784,7 +784,7 @@ HRESULT clsStageScene::FindVerticesOnPoly(
 
 	return S_OK;
 }
-bool clsStageScene::InnerProductDot( const D3DXVECTOR3& vPos, const D3DXVECTOR3& vTargetPos, const float& fYAxis, const float& fAngle )
+bool clsStageScene::InnerProductDot(const D3DXVECTOR3& vPos, const D3DXVECTOR3& vTargetPos, const float& fYAxis, const float& fAngle)
 {
 	//二点間のベクトルを算出.
 	D3DXVECTOR3 vToTargetDir = vTargetPos - vPos;
