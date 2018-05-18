@@ -12,25 +12,25 @@
     <Filter Include="シェーダー ファイル">
       <UniqueIdentifier>{f32f7ddd-e2aa-4111-89bf-09523bc1e5b7}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ソース ファイル\Enemy">
-      <UniqueIdentifier>{d3f8e23d-39ca-411b-8c8b-09b2f6fc1c18}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ソース ファイル\Player">
-      <UniqueIdentifier>{7a4a6843-4864-4269-99f8-1c610a386e25}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ソース ファイル\00SuperClass">
       <UniqueIdentifier>{5b4f2c24-371f-4a46-a89d-606ebc0e6452}</UniqueIdentifier>
     </Filter>
     <Filter Include="ソース ファイル\01SceneMgr">
       <UniqueIdentifier>{282f78e9-7fe1-4dec-972e-f4b4c3df2740}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ソース ファイル\System">
-      <UniqueIdentifier>{faa08449-010f-4aee-a5c9-66aea3de7aeb}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ソース ファイル\GameSystem">
+    <Filter Include="ソース ファイル\10GameSystem">
       <UniqueIdentifier>{6aac8a36-30a6-4b65-be58-8ae4ccc70cb4}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ソース ファイル\Sprite">
+    <Filter Include="ソース ファイル\11System">
+      <UniqueIdentifier>{faa08449-010f-4aee-a5c9-66aea3de7aeb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\20Player">
+      <UniqueIdentifier>{7a4a6843-4864-4269-99f8-1c610a386e25}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\21Enemy">
+      <UniqueIdentifier>{d3f8e23d-39ca-411b-8c8b-09b2f6fc1c18}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\30Sprite">
       <UniqueIdentifier>{724ce3eb-6481-4b36-8be4-cf845fffa909}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -42,13 +42,13 @@
       <Filter>ソース ファイル\00SuperClass</Filter>
     </ClCompile>
     <ClCompile Include="SourceCode\Sprite.cpp">
-      <Filter>ソース ファイル\Sprite</Filter>
+      <Filter>ソース ファイル\30Sprite</Filter>
     </ClCompile>
     <ClCompile Include="SourceCode\Sprite2D.cpp">
-      <Filter>ソース ファイル\Sprite</Filter>
+      <Filter>ソース ファイル\30Sprite</Filter>
     </ClCompile>
     <ClCompile Include="SourceCode\Sp2DMgrPushButn.cpp">
-      <Filter>ソース ファイル\Sprite</Filter>
+      <Filter>ソース ファイル\30Sprite</Filter>
     </ClCompile>
     <ClCompile Include="SourceCode\Character.cpp">
       <Filter>ソース ファイル\00SuperClass</Filter>
@@ -78,46 +78,46 @@
       <Filter>ソース ファイル\00SuperClass</Filter>
     </ClCompile>
     <ClCompile Include="SourceCode\Enemy.cpp">
-      <Filter>ソース ファイル\Enemy</Filter>
+      <Filter>ソース ファイル\21Enemy</Filter>
     </ClCompile>
     <ClCompile Include="SourceCode\Player.cpp">
-      <Filter>ソース ファイル\Player</Filter>
+      <Filter>ソース ファイル\20Player</Filter>
     </ClCompile>
     <ClCompile Include="SourceCode\PShot.cpp">
-      <Filter>ソース ファイル\Player</Filter>
+      <Filter>ソース ファイル\20Player</Filter>
     </ClCompile>
     <ClCompile Include="SourceCode\DebugText.cpp">
-      <Filter>ソース ファイル\Sprite</Filter>
+      <Filter>ソース ファイル\30Sprite</Filter>
     </ClCompile>
     <ClCompile Include="SourceCode\Common.cpp">
       <Filter>ソース ファイル\00SuperClass</Filter>
     </ClCompile>
     <ClCompile Include="SourceCode\Sound.cpp">
-      <Filter>ソース ファイル\System</Filter>
+      <Filter>ソース ファイル\11System</Filter>
     </ClCompile>
     <ClCompile Include="SourceCode\Num.cpp">
-      <Filter>ソース ファイル\Sprite</Filter>
+      <Filter>ソース ファイル\30Sprite</Filter>
     </ClCompile>
     <ClCompile Include="SourceCode\Resource.cpp">
-      <Filter>ソース ファイル\GameSystem</Filter>
+      <Filter>ソース ファイル\10GameSystem</Filter>
     </ClCompile>
     <ClCompile Include="SourceCode\Ray.cpp">
-      <Filter>ソース ファイル\GameSystem</Filter>
+      <Filter>ソース ファイル\10GameSystem</Filter>
     </ClCompile>
     <ClCompile Include="SourceCode\File.cpp">
-      <Filter>ソース ファイル\GameSystem</Filter>
+      <Filter>ソース ファイル\10GameSystem</Filter>
     </ClCompile>
     <ClCompile Include="SourceCode\Explosin.cpp">
-      <Filter>ソース ファイル\Sprite</Filter>
+      <Filter>ソース ファイル\30Sprite</Filter>
     </ClCompile>
     <ClCompile Include="SourceCode\DxInput.cpp">
-      <Filter>ソース ファイル\System</Filter>
+      <Filter>ソース ファイル\11System</Filter>
     </ClCompile>
     <ClCompile Include="SourceCode\Effects.cpp">
-      <Filter>ソース ファイル\System</Filter>
+      <Filter>ソース ファイル\11System</Filter>
     </ClCompile>
     <ClCompile Include="SourceCode\Main.cpp">
-      <Filter>ソース ファイル\GameSystem</Filter>
+      <Filter>ソース ファイル\10GameSystem</Filter>
     </ClCompile>
     <ClCompile Include="SourceCode\Sphere.cpp">
       <Filter>ソース ファイル</Filter>
@@ -131,13 +131,13 @@
       <Filter>ソース ファイル\00SuperClass</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\Sprite.h">
-      <Filter>ソース ファイル\Sprite</Filter>
+      <Filter>ソース ファイル\30Sprite</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\Sprite2D.h">
-      <Filter>ソース ファイル\Sprite</Filter>
+      <Filter>ソース ファイル\30Sprite</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\Sp2DMgrPushButn.h">
-      <Filter>ソース ファイル\Sprite</Filter>
+      <Filter>ソース ファイル\30Sprite</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\Character.h">
       <Filter>ソース ファイル\00SuperClass</Filter>
@@ -167,46 +167,46 @@
       <Filter>ソース ファイル\00SuperClass</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\Enemy.h">
-      <Filter>ソース ファイル\Enemy</Filter>
+      <Filter>ソース ファイル\21Enemy</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\Player.h">
-      <Filter>ソース ファイル\Player</Filter>
+      <Filter>ソース ファイル\20Player</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\PShot.h">
-      <Filter>ソース ファイル\Player</Filter>
+      <Filter>ソース ファイル\20Player</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\DebugText.h">
-      <Filter>ソース ファイル\Sprite</Filter>
+      <Filter>ソース ファイル\30Sprite</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\Common.h">
       <Filter>ソース ファイル\00SuperClass</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\Sound.h">
-      <Filter>ソース ファイル\System</Filter>
+      <Filter>ソース ファイル\11System</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\Num.h">
-      <Filter>ソース ファイル\Sprite</Filter>
+      <Filter>ソース ファイル\30Sprite</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\Resource.h">
-      <Filter>ソース ファイル\GameSystem</Filter>
+      <Filter>ソース ファイル\10GameSystem</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\Ray.h">
-      <Filter>ソース ファイル\GameSystem</Filter>
+      <Filter>ソース ファイル\10GameSystem</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\File.h">
-      <Filter>ソース ファイル\GameSystem</Filter>
+      <Filter>ソース ファイル\10GameSystem</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\Explosin.h">
-      <Filter>ソース ファイル\Sprite</Filter>
+      <Filter>ソース ファイル\30Sprite</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\DxInput.h">
-      <Filter>ソース ファイル\System</Filter>
+      <Filter>ソース ファイル\11System</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\Effects.h">
-      <Filter>ソース ファイル\System</Filter>
+      <Filter>ソース ファイル\11System</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\Main.h">
-      <Filter>ソース ファイル\GameSystem</Filter>
+      <Filter>ソース ファイル\10GameSystem</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\Global.h">
       <Filter>ソース ファイル</Filter>

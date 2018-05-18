@@ -8,6 +8,7 @@
 //定数.
 
 clsMain*	g_pClsMain = NULL;
+mutex m_mtx;
 
 //======================================
 //	メイン関数.
@@ -736,10 +737,9 @@ HRESULT clsMain::MeshRead()
 	m_smpLoadCircle->SetPatarnU(0.0f);
 	m_smpLoadCircle->SetPatarnV(0.0f);
 	m_smpLoadCircle->SetAlpha(1.0f);
-
-
 	thread th1([this]() {
-		//リソースクラス.
+
+		lock_guard<mutex> lock(m_mtx);		//リソースクラス.
 		m_pResource = clsResource::GetInstance();
 		m_pResource->Init(m_hWnd, m_pDevice, m_pDeviceContext);
 
@@ -799,8 +799,8 @@ HRESULT clsMain::MeshRead()
 		m_smpOverScene->MusicStop();
 
 		m_bLoadFlg = true;
-
 	});
+	th1.detach();
 
 
 	while (true)
@@ -826,7 +826,6 @@ HRESULT clsMain::MeshRead()
 
 		if (m_bLoadFlg)
 		{
-			th1.join();
 			break;
 		}
 	}
