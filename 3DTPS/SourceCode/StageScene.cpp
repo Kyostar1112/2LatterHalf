@@ -291,9 +291,6 @@ void clsStageScene::UpDate()
 	{
 		m_stMode = Clear;
 		Resource->m_viScore.push_back(m_iScore);
-		sort(Resource->m_viScore.begin(), Resource->m_viScore.end());
-		Resource->m_viScore.erase(unique(Resource->m_viScore.begin(), Resource->m_viScore.end()), Resource->m_viScore.end());
-		reverse(Resource->m_viScore.begin(), Resource->m_viScore.end());
 	}
 
 	//敵の動き.
