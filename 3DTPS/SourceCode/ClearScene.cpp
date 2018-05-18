@@ -25,17 +25,6 @@ void clsClearScene::Create()
 	m_smpClearTxt = make_unique<clsSprite2D>();
 	m_smpClearTxt->Create(Resource->GetSpriteRenderSet().pDevice11, Resource->GetSpriteRenderSet().pContext11, "Data\\Image\\ClearTxt.png");
 
-	//最終スコア.
-	m_smpThankyouTxt = make_unique<clsSprite2D>();
-	m_smpThankyouTxt->Create(Resource->GetSpriteRenderSet().pDevice11, Resource->GetSpriteRenderSet().pContext11, "Data\\Image\\Thankyou.png");
-
-	//最終スコアテキスト.
-	m_smpLastScoreTxt = make_unique<clsSprite2D>();
-	m_smpLastScoreTxt->Create(Resource->GetSpriteRenderSet().pDevice11, Resource->GetSpriteRenderSet().pContext11, "Data\\Image\\LastScore.png");
-
-	m_smpLastScoreNum = make_unique<clsNum>();
-	m_smpLastScoreNum->Create(4);
-
 	m_smpPushTxt = make_unique<clsPushTxt>();
 	m_smpPushTxt->Init(Resource->GetSpriteRenderSet().pDevice11, Resource->GetSpriteRenderSet().pContext11);
 }
@@ -47,15 +36,7 @@ void clsClearScene::Init()
 	m_smpBgm->Play();
 	m_smpClearBack->SetPos(0.0f, 0.0f);
 	m_smpClearTxt->SetPos(WND_W / 2 - m_smpClearTxt->GetSs().Disp.w / 2,
-		WND_H / 2 - m_smpClearTxt->GetSs().Disp.h / 2 - 200.0f);
-
-	m_smpThankyouTxt->SetPos(WND_W / 2 - m_smpThankyouTxt->GetSs().Disp.w / 2,
-		m_smpClearTxt->GetPos().y +	m_smpClearTxt->GetSs().Disp.h - 400.0f);
-
-	m_smpLastScoreTxt->SetPos(WND_W / 2 - m_smpLastScoreTxt->GetSs().Disp.w / 2,
-		m_smpThankyouTxt->GetPos().y +	m_smpThankyouTxt->GetSs().Disp.h - 400.0f);
-	m_smpLastScoreNum->SetPosX(20.0f);
-	m_smpLastScoreNum->SetPosY(20.0f);
+		WND_H / 2 - m_smpClearTxt->GetSs().Disp.h / 2 );
 }
 
 void clsClearScene::UpDate()
@@ -75,9 +56,6 @@ void clsClearScene::Render()
 	SetDepth(false);
 	m_smpClearBack->Render();
 	m_smpClearTxt->Render();
-	m_smpThankyouTxt->Render();
-	m_smpLastScoreTxt->Render();
-	m_smpLastScoreNum->Render(Resource->m_viScore.back());
 	m_smpPushTxt->Render();
 	BlackOut();
 	SetDepth(true);
