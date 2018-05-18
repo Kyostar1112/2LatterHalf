@@ -395,7 +395,6 @@ void clsStageScene::Render()
 
 #endif // 0
 
-
 	//ショット.
 	for (UINT i = 0; i < m_vsmpShot.size(); i++)
 	{
@@ -509,7 +508,7 @@ void clsStageScene::Release()
 
 void clsStageScene::HitTestOfEnemyAndGround()
 {
-		//当たり判定は最後,地面との判定.
+	//当たり判定は最後,地面との判定.
 	for (size_t i = 0; i < m_vsmpEnemy.size(); i++) {
 		//交点の座標からy座標を敵のy座標としてセット.
 		m_vsmpEnemy[i]->SetPositionY(0.9f + IntersectionLocation(m_vsmpEnemy[i].get(), m_smpGround.get(), D3DXVECTOR3(0.0f, -1.0f, 0.0f)).y);
@@ -527,7 +526,6 @@ void clsStageScene::HitTestOfEnemyAndAlignment()
 			break;
 		}
 	}
-
 }
 
 void clsStageScene::HitTestOfEnemyAndBullet()
@@ -604,7 +602,6 @@ void clsStageScene::HitTestOfShipAndEnemy()
 			}
 		}
 	}
-
 }
 
 void clsStageScene::HitCheak()
@@ -617,7 +614,6 @@ void clsStageScene::HitCheak()
 
 	HitTestOfShipAndEnemy();
 }
-
 
 //衝突判定.
 bool clsStageScene::Collision(

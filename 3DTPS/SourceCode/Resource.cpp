@@ -202,4 +202,3 @@ void clsResource::SetDepth(bool bFlg)
 	GetSpriteRenderSet().pContext11->OMSetDepthStencilState(
 		m_pDepthStencilState, 1);
 }
-

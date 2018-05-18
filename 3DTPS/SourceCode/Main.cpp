@@ -445,7 +445,6 @@ void clsMain::Render()
 			m_smpStageScene->m_smpPlayer->GetRotationY());
 		m_smpText->Render(strDbgTxt, 0, iDbgY);
 		iDbgY += CDBGY;
-
 	}
 #endif//#ifdef _DEBUG
 
@@ -711,9 +710,10 @@ HRESULT clsMain::MeshRead()
 	Resource->m_smpFile = make_unique<clsFile>();
 	Resource->m_smpFile->Init("Data\\Txt\\ScoreRank.csv");
 	Resource->m_smpFile->Read();
+	Resource->m_viScore.resize(Resource->m_smpFile->GetDataArrayNumMax());
 	for (int i = 0; i < Resource->m_smpFile->GetDataArrayNumMax(); i++)
 	{
-		Resource->m_viScore.push_back(Resource->m_smpFile->GetDataArray(i));
+		Resource->m_viScore[i] = Resource->m_smpFile->GetDataArray(i);
 	}
 
 	m_bTitleFlg = true;

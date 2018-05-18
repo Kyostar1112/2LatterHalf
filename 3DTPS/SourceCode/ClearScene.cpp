@@ -36,7 +36,7 @@ void clsClearScene::Init()
 	m_smpBgm->Play();
 	m_smpClearBack->SetPos(0.0f, 0.0f);
 	m_smpClearTxt->SetPos(WND_W / 2 - m_smpClearTxt->GetSs().Disp.w / 2,
-		WND_H / 2 - m_smpClearTxt->GetSs().Disp.h / 2 );
+		WND_H / 2 - m_smpClearTxt->GetSs().Disp.h / 2);
 }
 
 void clsClearScene::UpDate()

@@ -35,6 +35,6 @@ void clsPlayerShot::FireInterval()
 
 void clsPlayerShot::FireInit()
 {
-	m_vPos.y =  -10.0f;
+	m_vPos.y = -10.0f;
 	m_bShotFlg = false;
 }

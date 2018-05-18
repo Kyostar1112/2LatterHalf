@@ -74,7 +74,6 @@ public:
 
 private:
 
-
 	unique_ptr<clsSprite2D> m_smpBlack;	//ˆÃ“]—p.
 	unique_ptr<clsSprite2D> m_smpWhite;	//ˆÃ“]—p.
 

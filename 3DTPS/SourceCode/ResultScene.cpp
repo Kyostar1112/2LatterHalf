@@ -84,7 +84,6 @@ void clsResultScene::UpDate()
 
 void clsResultScene::Render()
 {
-
 	SetDepth(false);
 	m_smpBack->Render();
 	m_smpTxt->Render();
