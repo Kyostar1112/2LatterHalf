@@ -717,7 +717,6 @@ HRESULT clsMain::InitSphere(clsDX9Mesh* pMesh, float fScale)
 //メッシュ読込関数（まとめた）
 HRESULT clsMain::MeshRead()
 {
-
 	m_bLoadFlg = false;
 
 	m_smpLoadString = make_unique<clsSprite2D>();
@@ -738,7 +737,6 @@ HRESULT clsMain::MeshRead()
 	m_smpLoadCircle->SetPatarnV(0.0f);
 	m_smpLoadCircle->SetAlpha(1.0f);
 	thread th1([this]() {
-
 		lock_guard<mutex> lock(m_mtx);		//リソースクラス.
 		m_pResource = clsResource::GetInstance();
 		m_pResource->Init(m_hWnd, m_pDevice, m_pDeviceContext);
@@ -801,7 +799,6 @@ HRESULT clsMain::MeshRead()
 		m_bLoadFlg = true;
 	});
 	th1.detach();
-
 
 	while (true)
 	{
