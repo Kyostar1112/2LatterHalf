@@ -6,6 +6,7 @@
 #include <vector>
 #include <string>
 #include <fstream>
+#include <thread>
 //#include"MyMacro.h"
 
 using namespace std;
@@ -49,7 +50,10 @@ public:
 
 	//ファイルを開く(Txt,Csvのみ).
 	inline void Open(HWND hWnd) {
-		ShellExecute(hWnd, NULL, m_Data.sPath.c_str(), NULL, NULL, SW_SHOWNORMAL);
+		m_hWnd = hWnd;
+		std::thread th1([this]{
+			ShellExecute(m_hWnd, NULL, m_Data.sPath.c_str(), NULL, NULL, SW_SHOWNORMAL);
+		});
 	}
 
 	//配列の最大数.
@@ -113,6 +117,8 @@ public:
 	}
 
 private:
+
+	HWND m_hWnd;
 
 	//文字列置換.
 	string ReplaceString
