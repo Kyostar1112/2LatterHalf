@@ -25,6 +25,8 @@
 #include "ClearScene.h"
 #include "ResultScene.h"
 
+#include<atomic>
+
 //======================================
 //	ƒ‰ƒCƒuƒ‰ƒŠ.
 //======================================
@@ -141,7 +143,7 @@ private:
 	unique_ptr<clsSprite2D> m_smpLoadString;
 	unique_ptr<clsSprite2D> m_smpLoadCircle;
 
-	volatile bool m_bLoadFlg;
+	atomic<bool> m_bLoadFlg;
 
 	void SceneChange();
 	bool m_bTitleFlg;
