@@ -800,7 +800,7 @@ HRESULT clsMain::MeshRead()
 	});
 	th1.detach();
 
-	while (true)
+	while (m_bLoadFlg == false)
 	{
 		//画面のクリア.
 		float ClearColor[4] = { 0.0f, 0.0f, 0.0f, 1.0f };//クリア色(RGBA順:255の比率で出す)
@@ -821,10 +821,6 @@ HRESULT clsMain::MeshRead()
 		//レンダリングされたイメージを表示.
 		m_pSwapChain->Present(0, 0);
 
-		if (m_bLoadFlg)
-		{
-			break;
-		}
 	}
 
 	return S_OK;
